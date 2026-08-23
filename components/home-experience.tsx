@@ -60,18 +60,30 @@ function isPanelKey(value: string | null): value is PanelKey {
 export default function HomeExperience({ works }: { works: Work[] }) {
   const [open, setOpen] = useState<OpenKey | null>(null);
   const [clip, setClip] = useState<HeroClip | null>(null);
-  const [autoplay, setAutoplay] = useState(true);
+  const [playing, setPlaying] = useState(true);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   // 再生するクリップは読み込みごとにランダム。サーバとクライアントで
   // 結果が食い違わないよう、マウント後に決めて1本だけ取りに行く。
   useEffect(() => {
     const pick = HERO_CLIPS[Math.floor(Math.random() * HERO_CLIPS.length)];
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- クライアント固有の値をマウント時に一度だけ決める
     setClip(pick);
-    // 動きを減らす設定の人には自動再生せず、poster を見せたままにする
-    if (reduce) setAutoplay(false);
   }, []);
+
+  // 映像そのものがこのサイトの主役なので、prefers-reduced-motion でも
+  // 自動再生は止めない。代わりに止める手段を必ず用意する。
+  function togglePlay() {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) {
+      void v.play();
+      setPlaying(true);
+    } else {
+      v.pause();
+      setPlaying(false);
+    }
+  }
 
   // UI（CLOSE / 暗幕 / Esc）で閉じたのか、パネルを開いたままページ遷移して
   // アンマウントされたのかを区別する。後者で history.back() すると遷移が潰れる。
@@ -189,15 +201,18 @@ export default function HomeExperience({ works }: { works: Work[] }) {
         {clip && (
           <video
             key={clip.video}
+            ref={videoRef}
             className="absolute inset-0 size-full object-cover"
             src={clip.video}
             poster={clip.poster}
             aria-label={clip.alt}
-            autoPlay={autoplay}
+            autoPlay
             muted
             loop
             playsInline
             preload="auto"
+            onPlay={() => setPlaying(true)}
+            onPause={() => setPlaying(false)}
           />
         )}
 
@@ -234,6 +249,18 @@ export default function HomeExperience({ works }: { works: Work[] }) {
             className="h-auto w-[150px] drop-shadow-[0_6px_30px_rgba(0,0,0,0.45)] md:w-[220px]"
           />
         </div>
+
+        {/* 自動再生を止める手段。動きを減らしたい人のための逃げ道なので、
+            装飾を足さず文字だけで置く。 */}
+        {clip && (
+          <button
+            type="button"
+            onClick={togglePlay}
+            className="absolute bottom-9 left-5 font-inter text-[11px] tracking-[0.24em] text-pale/70 transition-colors hover:text-pale md:bottom-11 md:left-16"
+          >
+            {playing ? "PAUSE" : "PLAY"}
+          </button>
+        )}
 
         <div className="absolute right-5 bottom-9 flex gap-9 font-inter text-[11px] tracking-[0.12em] md:right-16 md:bottom-11">
           <Link href="/works" className="border-b border-pale/50 pb-1 text-pale">
