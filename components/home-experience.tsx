@@ -9,12 +9,16 @@ import { company, contactCopy, vision } from "@/lib/site-content";
 import type { Work } from "@/lib/works";
 
 /* ── ヒーロー素材 ─────────────────────────────────────────────
-   最終的には専用のヒーロー動画に差し替える（README §7-1）。
-   HERO_VIDEO に public 配下のパスを入れれば <video> に切り替わる。
+   動画を置くと <video> に切り替わる。手順:
+     1. public/hero/hero.mp4 に置く（H.264 / 音声なし / ループ想定）
+     2. NEXT_PUBLIC_HERO_VIDEO=/hero/hero.mp4 を .env.local と Vercel に設定
+   大きいファイルはリポジトリに入れず、外部URL（Vercel Blob 等）を
+   同じ環境変数に入れてもよい。読み込み中と失敗時は HERO_IMAGE を出す。
+
    夕景版（hero-evening）は未支給。支給されたら HERO_IMAGE を時間帯で
    出し分ける（h>=17 || h<6 で夕景）実装をここに足す。               */
 const HERO_IMAGE = "/hero/hero-day.jpg";
-const HERO_VIDEO: string | null = null;
+const HERO_VIDEO: string | null = process.env.NEXT_PUBLIC_HERO_VIDEO || null;
 const HERO_IS_PLACEHOLDER = true;
 
 type PanelKey = "vision" | "company" | "service" | "works" | "contact";
@@ -25,6 +29,14 @@ const panelMeta: Record<PanelKey, { label: string; title: string }> = {
   service: { label: "SERVICE", title: "事業内容" },
   works: { label: "WORKS", title: "制作実績" },
   contact: { label: contactCopy.label, title: contactCopy.title },
+};
+
+// パネルの内容に対応するフルページ。TOPからしか辿れない情報を作らないための導線で、
+// パネル右上の「↗ フルページ」に出る。お問合せはパネル内で完結させるので持たない。
+const fullPageOf: Partial<Record<PanelKey, string>> = {
+  works: "/works",
+  vision: "/about#vision",
+  company: "/about",
 };
 
 const navItems: { key: PanelKey; label: string }[] = [
@@ -99,6 +111,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
   }, [panelOpen]);
 
   const meta = open && open !== "menu" ? panelMeta[open] : null;
+  const fullPageHref = open && open !== "menu" ? fullPageOf[open] : undefined;
 
   const logoColor = panelOpen ? "text-ink" : "text-pale";
   const navColor = panelOpen ? "text-mist" : "text-pale/88";
@@ -153,14 +166,16 @@ export default function HomeExperience({ works }: { works: Work[] }) {
       {/* ── ヒーロー：ここから動かさない ── */}
       <div className="relative h-[100svh] min-h-[560px] overflow-hidden md:min-h-[760px]">
         {HERO_VIDEO ? (
+          // 動画は自前の動きを持つので apZoom はかけない
           <video
-            className="ap-zoom absolute inset-0 size-full object-cover"
+            className="absolute inset-0 size-full object-cover"
             src={HERO_VIDEO}
             poster={HERO_IMAGE}
             autoPlay
             muted
             loop
             playsInline
+            preload="auto"
           />
         ) : (
           <Image
@@ -220,9 +235,9 @@ export default function HomeExperience({ works }: { works: Work[] }) {
                   {meta ? meta.label : "MENU"}
                 </div>
                 <div className="flex items-center gap-5">
-                  {open === "works" && (
+                  {fullPageHref && (
                     <Link
-                      href="/works"
+                      href={fullPageHref}
                       title="フルページで見る"
                       className="flex shrink-0 items-center gap-1.5 border-b border-mist pb-[3px] font-inter text-[11px] tracking-[0.1em] whitespace-nowrap text-mist"
                     >

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import PageCta from "@/components/page-cta";
 import SiteFooter from "@/components/site-footer";
 import SiteHeader from "@/components/site-header";
@@ -31,21 +32,22 @@ export default async function WorksPage() {
           </h1>
         </div>
 
-        {/* 実ロゴ未支給のため文字組みで仮置き（README §7-4） */}
-        <div className="flex flex-wrap items-center gap-x-14 gap-y-9 border-b border-fog px-5 pb-12 md:px-16">
-          <div className="w-full font-inter text-[11px] tracking-[0.2em] text-mist">CLIENTS</div>
-          {clients.map((c) => (
-            <div
-              key={c.name}
-              className={
-                c.type === "serif"
-                  ? "font-serif-jp text-[17px] md:text-[19px]"
-                  : "font-inter text-[14px] font-medium md:text-[15px]"
-              }
-            >
-              {c.name}
-            </div>
-          ))}
+        {/* 実ロゴ未支給。public/clients/ の SAMPLE 入りSVGを仮置き（README §7-4） */}
+        <div className="border-b border-fog px-5 pb-12 md:px-16">
+          <div className="mb-7 font-inter text-[11px] tracking-[0.2em] text-mist">CLIENTS</div>
+          <ul className="flex list-none flex-wrap items-center gap-x-10 gap-y-6 p-0">
+            {clients.map((c) => (
+              <li key={c.name}>
+                <Image
+                  src={c.logo}
+                  alt={c.name}
+                  width={260}
+                  height={76}
+                  className="h-[60px] w-auto opacity-80 md:h-[76px]"
+                />
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div className="pt-10">
