@@ -5,7 +5,10 @@ import { notFound } from "next/navigation";
 import PageCta from "@/components/page-cta";
 import SiteFooter from "@/components/site-footer";
 import SiteHeader from "@/components/site-header";
-import { getWork, getWorkNeighbours, getWorks } from "@/lib/works";
+import { getWork, getWorkNeighbours, getWorks, workMeta } from "@/lib/works";
+
+// microCMS の更新を再デプロイなしで反映する
+export const revalidate = 60;
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -20,7 +23,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   if (!work) return { title: "実績が見つかりません" };
   return {
     title: work.title,
-    description: work.lead ?? `${work.title}｜${work.category} · ${work.year}`,
+    description: work.lead ?? `${work.title}｜${workMeta(work)}`,
     alternates: { canonical: `/works/${work.slug}` },
     openGraph: { images: [work.thumbnail] },
   };
@@ -57,7 +60,7 @@ export default async function WorkDetailPage({ params }: Params) {
 
         <header className="border-b border-fog px-5 pt-14 pb-12 md:px-16 md:pt-22">
           <div className="font-inter text-[11px] tracking-[0.24em] text-blue">
-            {work.category} · {work.year}
+            {workMeta(work)}
           </div>
           <h1 className="mt-5 font-serif-jp text-[30px] leading-[1.5] font-medium md:text-[44px]">
             {work.title}

@@ -6,6 +6,9 @@ import WorksGrid from "@/components/works-grid";
 import { clients } from "@/lib/site-content";
 import { getWorks } from "@/lib/works";
 
+// microCMS の更新を再デプロイなしで反映する
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "制作実績",
   description:

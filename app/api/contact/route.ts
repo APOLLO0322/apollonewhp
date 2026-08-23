@@ -6,9 +6,11 @@ import { company } from "@/lib/site-content";
 export const runtime = "nodejs";
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
+// Vercel 側は CONTACT_FROM_EMAIL / CONTACT_TO_EMAIL で登録済み。
 // 認証済みドメインの送信元アドレス。未設定なら Resend の共有ドメインを使う。
-const CONTACT_FROM = process.env.CONTACT_FROM ?? "APOLLO <onboarding@resend.dev>";
-const CONTACT_TO = process.env.CONTACT_TO ?? company.mail;
+const CONTACT_FROM =
+  process.env.CONTACT_FROM_EMAIL ?? process.env.CONTACT_FROM ?? "APOLLO <onboarding@resend.dev>";
+const CONTACT_TO = process.env.CONTACT_TO_EMAIL ?? process.env.CONTACT_TO ?? company.mail;
 
 function escapeHtml(value: string) {
   return value

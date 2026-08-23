@@ -3,11 +3,13 @@
 
 export type WorkCategory = "MOVIE" | "SNS" | "BRANDING" | "PHOTO";
 
+export const workCategories: WorkCategory[] = ["MOVIE", "SNS", "BRANDING", "PHOTO"];
+
 export type Work = {
   slug: string;
   title: string;
   category: WorkCategory;
-  year: string;
+  year?: string;
   thumbnail: string;
   lead?: string;
   overview?: string;
@@ -125,7 +127,7 @@ type MicroCmsWork = {
   slug: string;
   title: string;
   category: WorkCategory | WorkCategory[];
-  year: string;
+  year?: string;
   thumbnail: MicroCmsImage;
   lead?: string;
   overview?: string;
@@ -136,11 +138,19 @@ type MicroCmsWork = {
   featured?: boolean;
 };
 
+// microCMS 側の値は小文字（movie / sns …）で入っているため大文字に寄せる。
+// 表示・絞り込みの両方がこの正規化に依存している。
+function normalizeCategory(value: WorkCategory | WorkCategory[] | undefined): WorkCategory {
+  const raw = Array.isArray(value) ? value[0] : value;
+  const upper = String(raw ?? "").toUpperCase();
+  return (workCategories as string[]).includes(upper) ? (upper as WorkCategory) : "MOVIE";
+}
+
 function normalize(item: MicroCmsWork): Work {
   return {
     slug: item.slug,
     title: item.title,
-    category: (Array.isArray(item.category) ? item.category[0] : item.category) ?? "MOVIE",
+    category: normalizeCategory(item.category),
     year: item.year,
     thumbnail: item.thumbnail.url,
     lead: item.lead,
@@ -157,7 +167,7 @@ function normalize(item: MicroCmsWork): Work {
 function sortWorks(list: Work[]): Work[] {
   return [...list].sort((a, b) => {
     if (!!a.featured !== !!b.featured) return a.featured ? -1 : 1;
-    return b.year.localeCompare(a.year);
+    return (b.year ?? "").localeCompare(a.year ?? "");
   });
 }
 
@@ -189,4 +199,7 @@ export async function getWorkNeighbours(slug: string) {
   return { prev: i > 0 ? list[i - 1] : undefined, next: i >= 0 && i < list.length - 1 ? list[i + 1] : undefined };
 }
 
-export const workCategories: WorkCategory[] = ["MOVIE", "SNS", "BRANDING", "PHOTO"];
+// 年が未入力のレコードがあるため、区切りの中黒を出し分ける
+export function workMeta(work: Work): string {
+  return work.year ? `${work.category} · ${work.year}` : work.category;
+}

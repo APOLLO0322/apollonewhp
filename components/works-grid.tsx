@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { workCategories, type Work, type WorkCategory } from "@/lib/works";
+import { workCategories, workMeta, type Work, type WorkCategory } from "@/lib/works";
 
 type Filter = "ALL" | WorkCategory;
 
@@ -49,7 +49,7 @@ export default function WorksGrid({ works }: { works: Work[] }) {
             </div>
             <div className="mt-[18px] text-[15px] leading-[1.5]">{w.title}</div>
             <div className="mt-2 font-inter text-[10px] tracking-[0.08em] text-mist">
-              {w.category} · {w.year}
+              {workMeta(w)}
             </div>
           </Link>
         ))}

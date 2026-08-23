@@ -8,7 +8,7 @@ import {
   services,
   vision,
 } from "@/lib/site-content";
-import type { Work } from "@/lib/works";
+import { workMeta, type Work } from "@/lib/works";
 
 /* 罫線1本 + 132px/1fr の定義リスト。カード・角丸・影は使わない。 */
 function TableRows({ rows, size }: { rows: { k: string; v: string }[]; size: "md" | "sm" }) {
@@ -159,7 +159,7 @@ export function WorksPanel({ works }: { works: Work[] }) {
             </div>
             <div className="mt-2.5 text-sm leading-[1.6]">{w.title}</div>
             <div className="mt-1.5 font-inter text-[10px] tracking-[0.06em] text-mist">
-              {w.category} · {w.year}
+              {workMeta(w)}
             </div>
           </Link>
         ))}
