@@ -38,7 +38,27 @@ npm run dev
 | `CONTACT_FROM_EMAIL` / `CONTACT_TO_EMAIL` | 送信元 / 受信先 |
 | `MICROCMS_SERVICE_DOMAIN` / `MICROCMS_API_KEY` | 制作実績。未設定なら静的データ |
 | `NEXT_PUBLIC_SITE_URL` | OGP・canonical |
-| `NEXT_PUBLIC_HERO_VIDEO` | ヒーロー動画のパスまたはURL。未設定なら静止画 |
+
+## ヒーロー動画の追加・差し替え
+
+カメラ撮って出しは HEVC（H.265）で、Chrome系に再生できない環境がある。
+必ず H.264 に変換してから `public/hero/` に置くこと。macOS標準のSwiftだけで変換できる。
+
+```bash
+swift tools/transcode.swift 入力.MP4 public/hero/hero-04.mp4 3500 1080
+```
+
+`3500` はkbps、`1080` は最大高さ。音声トラックは落とされる（無音でないと自動再生されない）。
+poster は先頭フレームから作る。
+
+```bash
+qlmanage -t -s 1600 -o . public/hero/hero-04.mp4
+sips -s format jpeg -Z 1280 --setProperty formatOptions 38 hero-04.mp4.png --out public/hero/hero-04.jpg
+rm hero-04.mp4.png
+```
+
+最後に `components/home-experience.tsx` の `HERO_CLIPS` に1行足す。
+1本あたり5MB前後を目安に。大きくなるならリポジトリではなく Vercel Blob に置く。
 
 ## microCMS スキーマ（`works`）
 
@@ -51,12 +71,12 @@ npm run dev
 
 | # | 内容 | 現状 |
 |---|---|---|
-| 1 | ヒーロー動画 | 未支給。`public/hero/hero.mp4` に置き `NEXT_PUBLIC_HERO_VIDEO=/hero/hero.mp4` を設定すると `<video>` に切り替わる（外部URLも可） |
-| 2 | ヒーロー画像 | 支給の 9479×6319 / 7MB を **2400px / 898KB に圧縮して** `public/hero/hero-day.jpg` に配置済み |
-| 3 | 夕景のヒーロー画像 | 未支給。`HERO_EVENING` が null の間は日中画像のみ |
-| 4 | CLIENTS ロゴ | 未支給。`public/clients/*.svg` に SAMPLE 入りの仮ロゴを配置。同名で差し替えるだけでよい（SVG推奨 / 高さ76px相当） |
+| 1 | ヒーロー動画 | 支給の3本を変換して `public/hero/hero-01〜03.mp4` に配置。読み込みごとに1本をランダム再生。増減は `components/home-experience.tsx` の `HERO_CLIPS` |
+| 2 | ヒーロー静止画 | 動画に置き換えたため廃止。`hero-0N.jpg` は各動画の先頭フレームで、読み込み中の poster としてのみ使う |
+| 3 | 時間帯での出し分け | 未実装。`HERO_CLIPS` を朝夕でフィルタすれば足せる |
+| 4 | CLIENTS ロゴ | 実ロゴ・社名ともに未確定。`public/clients/01〜07.svg` に番号だけの枠を仮置き。`lib/site-content.ts` の `clients` で件数・社名・パスを差し替える（SVG推奨 / 高さ76px相当） |
 | 5 | 実績の動画・詳細本文 | パッションリーダーズ以外は未入稿。詳細ページは OVERVIEW / STILLS が無い場合その枠を出さない |
-| 6 | `PLACEHOLDER — 差し替え予定` の表示 | ヒーロー右上。`HERO_IS_PLACEHOLDER` を false にすると消える |
+| 6 | `PLACEHOLDER — 差し替え予定` の表示 | ヒーロー右上。実素材が入ったので `HERO_IS_PLACEHOLDER = false` にして非表示中。仮素材に戻すときは true |
 
 ## デザイン正典との差分（実装判断）
 

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 76" width="260" height="76" role="img" aria-label="クライアントロゴ 06（仮）">
+  <title>クライアントロゴ 06（仮）</title>
+  <rect x="0.5" y="0.5" width="259" height="75" fill="none" stroke="#C9CFCF" stroke-width="1"/>
+  <text x="130.0" y="38.0" fill="#5F6768" font-family="'Inter','Helvetica Neue',Arial,sans-serif"
+        font-size="22" font-weight="400" letter-spacing="0.12em"
+        text-anchor="middle" dominant-baseline="central">06</text>
+  <text x="252" y="69" fill="#C9CFCF" font-family="'Inter',Arial,sans-serif" font-size="7"
+        letter-spacing="0.16em" text-anchor="end">SAMPLE</text>
+</svg>

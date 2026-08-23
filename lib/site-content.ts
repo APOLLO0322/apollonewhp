@@ -81,19 +81,14 @@ export const aboutMessage = {
   body: "ただ私は、四国の自然を壊したいわけではありません。きれいなものは出来るだけきれいなまま、地元企業様との連携で全世界の人々に魅力を発信していきたいと思っています。\n\n私たちは、実績や数字よりも先に「人」を映したいと考えています。かたちのない想いや情熱を、丁寧に汲み取り、写真と動画というかたちにしていく。その一本を見た誰かが「なんかいいな」と感じてくれたら——それこそが、私たちのつくりたい価値です。",
 };
 
-// 実ロゴは未支給。public/clients/ の SAMPLE 入りSVGを仮置きしている（README §7-4）。
-// 支給されたら同じファイル名で差し替えるだけでよい。SVG推奨、なければPNG（透過・高さ76px相当）。
+// 実ロゴ・社名ともに未確定。public/clients/ に番号だけの枠を仮置きしている（README §7-4）。
+// 支給されたら logo を差し替え、name を実際の社名にする。件数もここで増減させる。
 export type Client = { name: string; logo: string };
 
-export const clients: Client[] = [
-  { name: "税理士法人 片山会計", logo: "/clients/katayama-kaikei.svg" },
-  { name: "Passion Leaders", logo: "/clients/passion-leaders.svg" },
-  { name: "岩屋寺", logo: "/clients/iwayaji.svg" },
-  { name: "FC MANTICORE", logo: "/clients/fc-manticore.svg" },
-  { name: "NINE STORIES", logo: "/clients/nine-stories.svg" },
-  { name: "エヒメアイムサービス", logo: "/clients/ehime-im-service.svg" },
-  { name: "SOL ET LUNA", logo: "/clients/sol-et-luna.svg" },
-];
+export const clients: Client[] = Array.from({ length: 7 }, (_, i) => {
+  const num = String(i + 1).padStart(2, "0");
+  return { name: `クライアントロゴ ${num}（仮）`, logo: `/clients/${num}.svg` };
+});
 
 export const contactCopy = {
   label: "CONTACT",

@@ -9,17 +9,22 @@ import { company, contactCopy, vision } from "@/lib/site-content";
 import type { Work } from "@/lib/works";
 
 /* ── ヒーロー素材 ─────────────────────────────────────────────
-   動画を置くと <video> に切り替わる。手順:
-     1. public/hero/hero.mp4 に置く（H.264 / 音声なし / ループ想定）
-     2. NEXT_PUBLIC_HERO_VIDEO=/hero/hero.mp4 を .env.local と Vercel に設定
-   大きいファイルはリポジトリに入れず、外部URL（Vercel Blob 等）を
-   同じ環境変数に入れてもよい。読み込み中と失敗時は HERO_IMAGE を出す。
+   読み込みごとに1本をランダムで再生する。poster は各動画の先頭フレーム
+   （読み込み中の数百msだけ出る。静止画そのものは表示しない）。
 
-   夕景版（hero-evening）は未支給。支給されたら HERO_IMAGE を時間帯で
-   出し分ける（h>=17 || h<6 で夕景）実装をここに足す。               */
-const HERO_IMAGE = "/hero/hero-day.jpg";
-const HERO_VIDEO: string | null = process.env.NEXT_PUBLIC_HERO_VIDEO || null;
-const HERO_IS_PLACEHOLDER = true;
+   足すとき: H.264 / 音声なし / 1920x1080 / 3.5Mbps 程度に変換して
+   public/hero/ に置き、この配列に1行足す。変換手順は README を参照。
+   時間帯で出し分けたくなったら、この配列を朝夕でフィルタすればよい。  */
+type HeroClip = { video: string; poster: string; alt: string };
+
+const HERO_CLIPS: HeroClip[] = [
+  { video: "/hero/hero-01.mp4", poster: "/hero/hero-01.jpg", alt: "瀬戸内の入江" },
+  { video: "/hero/hero-02.mp4", poster: "/hero/hero-02.jpg", alt: "車窓から愛媛の町を撮る" },
+  { video: "/hero/hero-03.mp4", poster: "/hero/hero-03.jpg", alt: "木漏れ日の庭" },
+];
+
+// 仮素材の注記。本番素材が確定したら false のままでよい
+const HERO_IS_PLACEHOLDER = false;
 
 type PanelKey = "vision" | "company" | "service" | "works" | "contact";
 
@@ -54,6 +59,19 @@ function isPanelKey(value: string | null): value is PanelKey {
 
 export default function HomeExperience({ works }: { works: Work[] }) {
   const [open, setOpen] = useState<OpenKey | null>(null);
+  const [clip, setClip] = useState<HeroClip | null>(null);
+  const [autoplay, setAutoplay] = useState(true);
+
+  // 再生するクリップは読み込みごとにランダム。サーバとクライアントで
+  // 結果が食い違わないよう、マウント後に決めて1本だけ取りに行く。
+  useEffect(() => {
+    const pick = HERO_CLIPS[Math.floor(Math.random() * HERO_CLIPS.length)];
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- クライアント固有の値をマウント時に一度だけ決める
+    setClip(pick);
+    // 動きを減らす設定の人には自動再生せず、poster を見せたままにする
+    if (reduce) setAutoplay(false);
+  }, []);
 
   // UI（CLOSE / 暗幕 / Esc）で閉じたのか、パネルを開いたままページ遷移して
   // アンマウントされたのかを区別する。後者で history.back() すると遷移が潰れる。
@@ -165,32 +183,38 @@ export default function HomeExperience({ works }: { works: Work[] }) {
 
       {/* ── ヒーロー：ここから動かさない ── */}
       <div className="relative h-[100svh] min-h-[560px] overflow-hidden md:min-h-[760px]">
-        {HERO_VIDEO ? (
-          // 動画は自前の動きを持つので apZoom はかけない
+        {/* 動画は自前の動きを持つので apZoom はかけない。
+            poster が即座に出るのでフェードインは挟まない（非表示タブで
+            トランジションが止まると真っ黒のままになるため）。 */}
+        {clip && (
           <video
+            key={clip.video}
             className="absolute inset-0 size-full object-cover"
-            src={HERO_VIDEO}
-            poster={HERO_IMAGE}
-            autoPlay
+            src={clip.video}
+            poster={clip.poster}
+            aria-label={clip.alt}
+            autoPlay={autoplay}
             muted
             loop
             playsInline
             preload="auto"
           />
-        ) : (
-          <Image
-            src={HERO_IMAGE}
-            alt="愛媛の風景"
-            fill
-            priority
-            sizes="100vw"
-            className="ap-zoom object-cover"
-          />
         )}
 
+        {/* 上下は文字（ヘッダー・実績を見る）の可読性、中央はロゴの可読性のため。
+            映像全体を暗くすると「きれいなものはきれいなまま」に反するので、
+            中央は spec §3.6 の墨40%を円形に置くだけに留める。 */}
         <div
           aria-hidden
-          className="absolute inset-0 bg-linear-to-b from-ink/15 via-ink/5 to-ink/55"
+          className="absolute inset-0 bg-linear-to-b from-ink/35 via-ink/5 to-ink/55"
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 38% 34% at 50% 48%, rgba(22,25,26,0.40), rgba(22,25,26,0) 72%)",
+          }}
         />
 
         {HERO_IS_PLACEHOLDER && (
@@ -200,13 +224,14 @@ export default function HomeExperience({ works }: { works: Work[] }) {
         )}
 
         <div className="ap-fade absolute inset-0 flex flex-col items-center justify-center gap-6">
+          {/* 映像の上なので白抜き版を使う（spec §3.6）。黒版は明色背景用に温存 */}
           <Image
-            src="/logo/apollo-logo.png"
+            src="/logo/apollo-logo-white.png"
             alt={company.name}
-            width={870}
-            height={944}
+            width={3123}
+            height={3416}
             priority
-            className="h-auto w-[150px] drop-shadow-[0_6px_30px_rgba(0,0,0,0.35)] md:w-[220px]"
+            className="h-auto w-[150px] drop-shadow-[0_6px_30px_rgba(0,0,0,0.45)] md:w-[220px]"
           />
         </div>
 
