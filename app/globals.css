@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+/* ── デザイントークン（handoff README §2） ─────────────────── */
+@theme {
+  --color-ink: #16191a;   /* 墨 */
+  --color-mist: #5f6768;  /* 霞 */
+  --color-fog: #c9cfcf;   /* 霧 */
+  --color-pale: #f4f6f6;  /* 淡霧 */
+  --color-blue: #1b6fa8;  /* 宙 */
+  --color-green: #4fd3a4; /* 若葉 — 送信完了メッセージのみ */
+  --color-body: #3a3a38;
+
+  /* 見出し・和文の主役コピー / 本文・UI / 欧文ラベル（README §2.2） */
+  --font-serif-jp: "Noto Serif JP", "Hiragino Mincho ProN", serif;
+  --font-sans-jp: "Noto Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
+  --font-inter: "Inter", "Helvetica Neue", Arial, sans-serif;
+
+  --ease-panel: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-fade: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── モーション（README §2.3） ─────────────────────────────── */
+@keyframes apFade {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes apPanelIn {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+@keyframes apZoom {
+  from { transform: scale(1.08); }
+  to   { transform: scale(1); }
+}
+@keyframes apKen {
+  from { transform: scale(1.03); }
+  to   { transform: scale(1.1); }
+}
+
+.ap-fade   { animation: apFade 1.2s var(--ease-fade) both; }
+.ap-fade-q { animation: apFade 0.7s ease both; }
+.ap-panel-in { animation: apPanelIn 0.6s var(--ease-panel) both; }
+.ap-zoom   { animation: apZoom 20s ease-out forwards; }
+.ap-ken    { animation: apKen 26s ease-out infinite alternate; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ap-fade, .ap-fade-q, .ap-panel-in, .ap-zoom, .ap-ken { animation: none; }
+}
+
+/* ── ベース ────────────────────────────────────────────────── */
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-sans-jp);
+  font-weight: 300;
+  color: var(--color-ink);
+  background: var(--color-pale);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+
+::selection { background: var(--color-blue); color: var(--color-pale); }
+
+:focus-visible { outline: 2px solid var(--color-blue); outline-offset: 3px; }
+
+/* ── 反復して使う型（カード・角丸・影は使わない） ─────────── */
+
+/* 入力欄は下線のみ（README §3.4） */
+.ap-field {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid var(--color-fog);
+  background: transparent;
+  padding: 10px 2px;
+  font-family: var(--font-sans-jp);
+  font-size: 16px; /* iOSのズーム回避のため16px未満にしない */
+  color: var(--color-ink);
+  outline: none;
+  border-radius: 0;
+  transition: border-color 0.25s ease;
+}
+.ap-field:focus { border-bottom-color: var(--color-blue); }
+.ap-field::placeholder { color: #a8adad; }
+textarea.ap-field { resize: none; line-height: 1.9; }
+
+/* チップ（角丸なし） */
+.ap-chip {
+  font-family: var(--font-sans-jp);
+  font-size: 13px;
+  padding: 10px 20px;
+  border: 1px solid var(--color-fog);
+  background: transparent;
+  color: var(--color-body);
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.ap-chip[aria-pressed="true"] {
+  border-color: var(--color-blue);
+  background: var(--color-blue);
+  color: var(--color-pale);
+}
+
+/* 画像リンクのホバー。装飾は増やさず、寄りだけ */
+.ap-media img { transition: transform 1.2s var(--ease-fade); }
+.ap-media:hover img { transform: scale(1.035); }
+
+/* パネル内スクロールバーを主張させない */
+.ap-scroll { scrollbar-width: thin; scrollbar-color: var(--color-fog) transparent; }
