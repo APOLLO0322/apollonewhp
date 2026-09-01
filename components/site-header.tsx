@@ -2,16 +2,24 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { navHref, navLabel, navOrder } from "@/lib/nav";
 
 export type NavCurrent = "works" | "about" | "contact" | null;
 
+// 順番・表記・遷移先は lib/nav.ts が正。
 // 事業内容の独立ページは作らない。Home のパネルを開いて見せる（README §0）。
-const items: { href: string; label: string; key: NavCurrent }[] = [
-  { href: "/?panel=service", label: "事業内容", key: null },
-  { href: "/works", label: "制作実績", key: "works" },
-  { href: "/about#vision", label: "理念", key: "about" },
-  { href: "/about", label: "会社概要", key: "about" },
-];
+const currentOf: Record<string, NavCurrent> = {
+  vision: "about",
+  works: "works",
+  service: null,
+  company: "about",
+};
+
+const items = navOrder.map((key) => ({
+  href: navHref[key],
+  label: navLabel[key],
+  key: currentOf[key],
+}));
 
 export default function SiteHeader({ current = null }: { current?: NavCurrent }) {
   const [open, setOpen] = useState(false);
@@ -42,7 +50,7 @@ export default function SiteHeader({ current = null }: { current?: NavCurrent })
               current === "contact" ? "border-ink text-ink" : "border-blue text-blue"
             }`}
           >
-            お問合せ
+            {navLabel.contact}
           </Link>
         </nav>
 
@@ -63,7 +71,7 @@ export default function SiteHeader({ current = null }: { current?: NavCurrent })
               key={item.label}
               href={item.href}
               onClick={() => setOpen(false)}
-              className="border-b border-fog py-4 font-serif-jp text-xl font-medium"
+              className="border-b border-fog py-4 font-inter text-lg tracking-[0.2em]"
             >
               {item.label}
             </Link>
@@ -71,9 +79,9 @@ export default function SiteHeader({ current = null }: { current?: NavCurrent })
           <Link
             href="/contact"
             onClick={() => setOpen(false)}
-            className="border-b border-fog py-4 font-serif-jp text-xl font-medium text-blue"
+            className="border-b border-fog py-4 font-inter text-lg tracking-[0.2em] text-blue"
           >
-            お問合せ
+            {navLabel.contact}
           </Link>
         </nav>
       )}

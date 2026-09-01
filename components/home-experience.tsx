@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import ContactForm from "@/components/contact-form";
 import { CompanyPanel, ServicePanel, VisionPanel, WorksPanel } from "@/components/panels";
+import { navLabel, navOrder } from "@/lib/nav";
 import { company, contactCopy, vision } from "@/lib/site-content";
 import type { Work } from "@/lib/works";
 
@@ -44,12 +45,8 @@ const fullPageOf: Partial<Record<PanelKey, string>> = {
   company: "/about",
 };
 
-const navItems: { key: PanelKey; label: string }[] = [
-  { key: "service", label: "事業内容" },
-  { key: "works", label: "制作実績" },
-  { key: "vision", label: "理念" },
-  { key: "company", label: "会社概要" },
-];
+// 順番・表記は lib/nav.ts が正。PanelKey と NavKey は同じキー体系。
+const navItems = navOrder;
 
 type OpenKey = PanelKey | "menu";
 
@@ -161,14 +158,14 @@ export default function HomeExperience({ works }: { works: Work[] }) {
         </button>
 
         <nav className="hidden items-center gap-11 font-inter text-[11px] tracking-[0.18em] md:flex">
-          {navItems.map((item) => (
+          {navItems.map((key) => (
             <button
-              key={item.key}
+              key={key}
               type="button"
-              onClick={() => setOpen(item.key)}
+              onClick={() => setOpen(key)}
               className={`whitespace-nowrap transition-colors duration-500 ${navColor}`}
             >
-              {item.label}
+              {navLabel[key]}
             </button>
           ))}
           <button
@@ -176,7 +173,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
             onClick={() => setOpen("contact")}
             className={`border-b pb-1 whitespace-nowrap transition-colors duration-500 ${ctaColor}`}
           >
-            お問合せ
+            {navLabel.contact}
           </button>
         </nav>
 
@@ -309,22 +306,22 @@ export default function HomeExperience({ works }: { works: Work[] }) {
               <div className="px-5 pt-8 pb-24 md:px-18">
                 {open === "menu" ? (
                   <nav className="flex flex-col">
-                    {navItems.map((item) => (
+                    {navItems.map((key) => (
                       <button
-                        key={item.key}
+                        key={key}
                         type="button"
-                        onClick={() => setOpen(item.key)}
-                        className="border-t border-fog py-6 text-left font-serif-jp text-[28px] font-medium tracking-[0.03em]"
+                        onClick={() => setOpen(key)}
+                        className="border-t border-fog py-6 text-left font-inter text-[22px] font-normal tracking-[0.2em]"
                       >
-                        {item.label}
+                        {navLabel[key]}
                       </button>
                     ))}
                     <button
                       type="button"
                       onClick={() => setOpen("contact")}
-                      className="border-t border-b border-fog py-6 text-left font-serif-jp text-[28px] font-medium tracking-[0.03em] text-blue"
+                      className="border-t border-b border-fog py-6 text-left font-inter text-[22px] font-normal tracking-[0.2em] text-blue"
                     >
-                      お問合せ
+                      {navLabel.contact}
                     </button>
                   </nav>
                 ) : (

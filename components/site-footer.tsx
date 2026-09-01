@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { navHref, navLabel } from "@/lib/nav";
 import { company } from "@/lib/site-content";
 
 // Home にはフッターを置かない（README §3.5）。フルページのみ。
@@ -14,15 +15,15 @@ export default function SiteFooter() {
       </div>
       <div className="flex gap-12 font-inter text-xs text-mist">
         <div className="flex flex-col gap-3.5">
-          <Link href="/about#vision">理念</Link>
-          <Link href="/about">会社概要</Link>
+          <Link href={navHref.vision}>{navLabel.vision}</Link>
+          <Link href={navHref.works}>{navLabel.works}</Link>
         </div>
         <div className="flex flex-col gap-3.5">
-          <Link href="/?panel=service">事業内容</Link>
-          <Link href="/works">制作実績</Link>
+          <Link href={navHref.service}>{navLabel.service}</Link>
+          <Link href={navHref.company}>{navLabel.company}</Link>
         </div>
         <div className="flex flex-col gap-3.5">
-          <Link href="/contact">お問合せ</Link>
+          <Link href={navHref.contact}>{navLabel.contact}</Link>
           <a href={company.privacyUrl} target="_blank" rel="noopener noreferrer">
             個人情報保護方針
           </a>
