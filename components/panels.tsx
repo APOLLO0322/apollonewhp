@@ -10,14 +10,15 @@ import {
 } from "@/lib/site-content";
 import { workMeta, type Work } from "@/lib/works";
 
-/* 罫線1本 + 132px/1fr の定義リスト。カード・角丸・影は使わない。 */
+/* 罫線1本 + ラベル/1fr の定義リスト。カード・角丸・影は使わない。
+   パネルは画面幅の4割なので、ラベル列は詰めて本文の折り返しを避ける。 */
 function TableRows({ rows, size }: { rows: { k: string; v: string }[]; size: "md" | "sm" }) {
   return (
     <dl className="flex max-w-[560px] flex-col">
       {rows.map((row) => (
         <div
           key={row.k}
-          className="grid grid-cols-[92px_1fr] gap-5 border-t border-fog py-5 sm:grid-cols-[132px_1fr]"
+          className="grid grid-cols-[84px_1fr] gap-4 border-t border-fog py-5 sm:grid-cols-[104px_1fr] sm:gap-5"
         >
           <dt className="text-xs leading-[1.9] tracking-[0.08em] text-mist">{row.k}</dt>
           <dd

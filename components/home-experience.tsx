@@ -277,9 +277,9 @@ export default function HomeExperience({ works }: { works: Work[] }) {
               role="dialog"
               aria-modal="true"
               aria-label={meta ? `${meta.label} パネル` : "メニュー"}
-              className="ap-panel-in ap-scroll absolute inset-y-0 right-0 z-[7] w-full overflow-y-auto bg-pale/78 text-ink backdrop-blur-[22px] backdrop-saturate-[1.3] md:w-[min(62vw,880px)]"
+              className="ap-panel-in ap-scroll absolute inset-y-0 right-0 z-[7] w-full overflow-y-auto bg-pale/55 text-ink backdrop-blur-[14px] backdrop-saturate-[1.3] md:w-[min(40vw,640px)]"
             >
-              <div className="flex items-center justify-between px-5 pt-28 md:px-18 md:pt-33">
+              <div className="flex items-center justify-between px-5 pt-28 md:px-12 md:pt-33">
                 <div className="font-inter text-[11px] tracking-[0.28em] text-blue">
                   {meta ? meta.label : "MENU"}
                 </div>
@@ -303,7 +303,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
                 </div>
               </div>
 
-              <div className="px-5 pt-8 pb-24 md:px-18">
+              <div className="px-5 pt-8 pb-24 md:px-12">
                 {open === "menu" ? (
                   <nav className="flex flex-col">
                     {navItems.map((key) => (
@@ -326,7 +326,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
                   </nav>
                 ) : (
                   <>
-                    <h2 className="ap-fade-q font-serif-jp text-[30px] leading-[1.5] font-medium tracking-[0.03em] whitespace-pre-line md:text-[42px]">
+                    <h2 className="ap-fade-q font-serif-jp text-[26px] leading-[1.5] font-medium tracking-[0.03em] whitespace-pre-line md:text-[34px]">
                       {meta?.title}
                     </h2>
 
