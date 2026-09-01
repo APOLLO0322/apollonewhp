@@ -34,14 +34,28 @@ function TableRows({ rows, size }: { rows: { k: string; v: string }[]; size: "md
   );
 }
 
+// 原稿の改行は幅の広いパネルを前提にした行組みなので、4割幅では
+// 行末が孤立する。空行だけを段落の区切りとして扱い、あとは自然に流す。
+function paragraphs(text: string): string[] {
+  return text.split(/\n{2,}/).map((block) => block.split("\n").join(""));
+}
+
 export function VisionPanel() {
   return (
     <>
-      <div className="mt-9 max-w-[520px] whitespace-pre-line text-base leading-[2.1] text-mist">
-        {vision.body}
+      <div className="mt-9 max-w-[520px] text-base leading-[2.1] text-mist">
+        {paragraphs(vision.body).map((p) => (
+          <p key={p} className="mt-6 first:mt-0">
+            {p}
+          </p>
+        ))}
       </div>
-      <div className="mt-12 max-w-[520px] whitespace-pre-line border-t border-fog pt-8 font-serif-jp text-lg leading-[2.1] text-ink">
-        {repMessage}
+      <div className="mt-12 max-w-[520px] border-t border-fog pt-8 font-serif-jp text-lg leading-[2.1] text-ink">
+        {paragraphs(repMessage).map((p) => (
+          <p key={p} className="mt-6 first:mt-0">
+            {p}
+          </p>
+        ))}
       </div>
     </>
   );

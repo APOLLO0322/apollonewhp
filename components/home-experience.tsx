@@ -143,6 +143,8 @@ export default function HomeExperience({ works }: { works: Work[] }) {
   const logoColor = panelOpen ? "text-ink" : "text-pale";
   const navColor = panelOpen ? "text-mist" : "text-pale/88";
   const ctaColor = panelOpen ? "text-ink border-ink" : "text-pale border-pale/60";
+  // 明色のパネルの上に来たら影は邪魔になるので外す
+  const onMedia = panelOpen ? "" : "ap-on-media";
 
   return (
     <div className="relative mx-auto max-w-[1600px] overflow-hidden bg-ink">
@@ -154,14 +156,12 @@ export default function HomeExperience({ works }: { works: Work[] }) {
           type="button"
           onClick={close}
           aria-label="ホームへ"
-          className={`font-inter text-[13px] font-normal tracking-[0.36em] transition-colors duration-500 md:text-[15px] ${logoColor}`}
+          className={`font-inter text-[13px] font-normal tracking-[0.36em] transition-colors duration-500 md:text-[15px] ${logoColor} ${onMedia}`}
         >
           APOLLO
         </button>
 
-        <nav className={`hidden items-center font-inter text-[11px] tracking-[0.18em] md:flex ${
-            panelOpen ? "gap-7" : "gap-11"
-          }`}>
+        <nav className={`hidden items-center gap-7 font-inter text-[11px] tracking-[0.18em] md:flex ${onMedia}`}>
           {navItems.map((key) => (
             <button
               key={key}
@@ -187,7 +187,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
           <button
             type="button"
             onClick={() => setOpen("menu")}
-            className="font-inter text-[11px] tracking-[0.24em] text-pale md:hidden"
+            className="ap-on-media font-inter text-[11px] tracking-[0.24em] text-pale md:hidden"
           >
             MENU
           </button>
@@ -217,20 +217,12 @@ export default function HomeExperience({ works }: { works: Work[] }) {
           />
         )}
 
-        {/* 上下は文字（ヘッダー・実績を見る）の可読性、中央はロゴの可読性のため。
-            映像全体を暗くすると「きれいなものはきれいなまま」に反するので、
-            中央は spec §3.6 の墨40%を円形に置くだけに留める。 */}
+        {/* 映像の色をできるだけそのまま見せたいので、暗幕は上下だけ。
+            上はヘッダー、下は PAUSE と「実績を見る」の可読性のため。
+            画面の中央〜大半は素通しで、ロゴは影で浮かせて読ませる。 */}
         <div
           aria-hidden
-          className="absolute inset-0 bg-linear-to-b from-ink/35 via-ink/5 to-ink/55"
-        />
-        <div
-          aria-hidden
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 38% 34% at 50% 48%, rgba(22,25,26,0.40), rgba(22,25,26,0) 72%)",
-          }}
+          className="absolute inset-0 bg-linear-to-b from-ink/30 via-transparent to-ink/50"
         />
 
         {HERO_IS_PLACEHOLDER && (
@@ -247,7 +239,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
             width={3123}
             height={3416}
             priority
-            className="h-auto w-[150px] drop-shadow-[0_6px_30px_rgba(0,0,0,0.45)] md:w-[220px]"
+            className="h-auto w-[150px] [filter:drop-shadow(0_2px_6px_rgba(22,25,26,0.55))_drop-shadow(0_8px_40px_rgba(22,25,26,0.45))] md:w-[220px]"
           />
         </div>
 
@@ -257,13 +249,13 @@ export default function HomeExperience({ works }: { works: Work[] }) {
           <button
             type="button"
             onClick={togglePlay}
-            className="absolute bottom-9 left-5 font-inter text-[11px] tracking-[0.24em] text-pale/70 transition-colors hover:text-pale md:bottom-11 md:left-16"
+            className="ap-on-media absolute bottom-9 left-5 font-inter text-[11px] tracking-[0.24em] text-pale/85 transition-colors hover:text-pale md:bottom-11 md:left-16"
           >
             {playing ? "PAUSE" : "PLAY"}
           </button>
         )}
 
-        <div className="absolute right-5 bottom-9 flex gap-9 font-inter text-[11px] tracking-[0.12em] md:right-16 md:bottom-11">
+        <div className="ap-on-media absolute right-5 bottom-9 flex gap-9 font-inter text-[11px] tracking-[0.12em] md:right-16 md:bottom-11">
           <Link href="/works" className="border-b border-pale/50 pb-1 text-pale">
             実績を見る
           </Link>
@@ -275,13 +267,13 @@ export default function HomeExperience({ works }: { works: Work[] }) {
             <div
               onClick={close}
               aria-hidden
-              className="absolute inset-0 z-[6] bg-ink/40"
+              className="absolute inset-0 z-[6] bg-ink/20"
             />
             <div
               role="dialog"
               aria-modal="true"
               aria-label={meta ? `${meta.label} パネル` : "メニュー"}
-              className="ap-panel-in ap-scroll absolute inset-y-0 right-0 z-[7] w-full overflow-y-auto bg-pale/55 text-ink backdrop-blur-[14px] backdrop-saturate-[1.3] md:w-[clamp(520px,40vw,720px)]"
+              className="ap-panel-in ap-scroll absolute inset-y-0 right-0 z-[7] w-full overflow-y-auto bg-pale/55 text-ink backdrop-blur-[8px] backdrop-saturate-[1.3] md:w-[clamp(520px,40vw,720px)]"
             >
               <div className="flex items-center justify-between px-5 pt-28 md:px-12 md:pt-33">
                 <div className="font-inter text-[11px] tracking-[0.28em] text-blue">
