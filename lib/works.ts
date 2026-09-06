@@ -3,7 +3,12 @@
 
 export type WorkCategory = "MOVIE" | "SNS" | "BRANDING" | "PHOTO";
 
+// CMS側の選択肢。値の検証に使うので BRANDING も残す。
 export const workCategories: WorkCategory[] = ["MOVIE", "SNS", "BRANDING", "PHOTO"];
+
+// 一覧の絞り込みに出すカテゴリ。BRANDING は「何を作ったか」ではなく
+// 「何のために作ったか」なので、こちらではなくタグ側で扱う。
+export const categoryFilters: WorkCategory[] = ["MOVIE", "SNS", "PHOTO"];
 
 export type Work = {
   slug: string;

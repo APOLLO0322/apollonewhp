@@ -1,30 +1,53 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import WorkCardBody from "@/components/work-card";
 import WorkThumb from "@/components/work-thumb";
-import { workCategories, type Work, type WorkCategory } from "@/lib/works";
+import { serviceTags } from "@/lib/site-content";
+import { categoryFilters, type Work, type WorkCategory } from "@/lib/works";
 
 type Filter = "ALL" | WorkCategory;
 
+/* 絞り込みは2軸ある。
+   CATEGORY = 何を作ったか（映像 / SNS / 写真）
+   TAG      = 何のために作ったか（事業内容パネルのメニューと同じ）
+   軸が違うことが見た目で分かるよう、行を分けてラベルを付け、
+   チップの形も変えている（カテゴリ＝角、タグ＝角丸2px）。 */
+
+function FilterRow({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="flex flex-col gap-3 md:flex-row md:items-start md:gap-6">
+      <div className="pt-2.5 font-label text-[10px] tracking-[0.2em] text-mist md:w-16 md:shrink-0">
+        {label}
+      </div>
+      <div className="flex flex-wrap gap-2.5">{children}</div>
+    </div>
+  );
+}
+
 export default function WorksGrid({ works }: { works: Work[] }) {
   const [filter, setFilter] = useState<Filter>("ALL");
+  const [tag, setTag] = useState<string | null>(null);
 
-  // タグは事業内容パネルのメニューから /works?tag=... で渡ってくる。
-  // カテゴリの絞り込みとは併用できる（AND）。
+  // タグは事業内容パネルのメニューから /works?tag=... でも渡ってくる。
   //
   // useSearchParams を使うとこのツリーがクライアント専用になり、
   // 実績へのリンクが初期HTMLから消えてクローラが辿れなくなる。
   // URLはマウント後に自前で読み、サーバでは全件を描画しておく。
-  const router = useRouter();
-  const [tag, setTag] = useState<string | null>(null);
-
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- 初回マウント時のURL読み取り
     setTag(new URLSearchParams(window.location.search).get("tag"));
   }, []);
+
+  // 同じタグをもう一度押したら解除。共有できるようURLも書き換えるが、
+  // Nextのナビゲーションは起こさない（再取得も再描画も不要なので）。
+  function toggleTag(next: string) {
+    const value = tag === next ? null : next;
+    setTag(value);
+    const url = value ? `/works?tag=${encodeURIComponent(value)}` : "/works";
+    window.history.replaceState(null, "", url);
+  }
 
   const visible = works.filter((w) => {
     if (filter !== "ALL" && w.category !== filter) return false;
@@ -34,34 +57,42 @@ export default function WorksGrid({ works }: { works: Work[] }) {
 
   return (
     <>
-      <div className="flex flex-wrap items-center gap-2.5 px-5 pb-10 font-label text-[11px] tracking-[0.08em] md:px-16">
-        {(["ALL", ...workCategories] as Filter[]).map((f) => (
-          <button
-            key={f}
-            type="button"
-            onClick={() => setFilter(f)}
-            aria-pressed={filter === f}
-            className={`px-5 py-[9px] transition-colors ${
-              filter === f
-                ? "bg-ink text-pale"
-                : "border border-fog text-mist hover:border-mist"
-            }`}
-          >
-            {f}
-          </button>
-        ))}
+      <div className="flex flex-col gap-6 px-5 pb-12 md:px-16">
+        <FilterRow label="CATEGORY">
+          {(["ALL", ...categoryFilters] as Filter[]).map((f) => (
+            <button
+              key={f}
+              type="button"
+              onClick={() => setFilter(f)}
+              aria-pressed={filter === f}
+              className={`px-5 py-[9px] font-label text-[11px] tracking-[0.08em] transition-colors ${
+                filter === f
+                  ? "bg-ink text-pale"
+                  : "border border-fog text-mist hover:border-mist"
+              }`}
+            >
+              {f}
+            </button>
+          ))}
+        </FilterRow>
 
-        {tag && (
-          <button
-            type="button"
-            onClick={() => router.push("/works")}
-            className="ml-1 flex items-center gap-2.5 border border-blue px-5 py-[9px] text-blue transition-colors hover:bg-blue hover:text-pale"
-            aria-label={`タグ「${tag}」の絞り込みを解除`}
-          >
-            {tag}
-            <span aria-hidden>×</span>
-          </button>
-        )}
+        <FilterRow label="TAG">
+          {serviceTags.map((t) => (
+            <button
+              key={t}
+              type="button"
+              onClick={() => toggleTag(t)}
+              aria-pressed={tag === t}
+              className={`rounded-[2px] border px-3.5 py-2 text-xs tracking-[0.04em] transition-colors duration-200 ${
+                tag === t
+                  ? "border-logo-blue bg-logo-blue text-pale"
+                  : "border-ink/25 bg-pale/40 text-ink hover:border-ink/60"
+              }`}
+            >
+              {t}
+            </button>
+          ))}
+        </FilterRow>
       </div>
 
       {/* 霧色を敷いてカードを淡霧で抜く組み方だと、3の倍数に満たない
