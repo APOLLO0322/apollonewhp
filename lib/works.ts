@@ -226,3 +226,45 @@ export function workHeading(work: Work): string {
 export function workSummary(work: Work): string | undefined {
   return work.summary?.trim() || work.lead?.trim() || undefined;
 }
+
+/* ホバー中だけ流す背景再生用の埋め込みURL。
+   Vimeo は background=1 が用意されていてUIも出ない。
+   YouTube は同等の指定を並べるが、タイトルとロゴが一瞬出る。
+   Instagram には背景再生の手段がないので null を返す（静止画のまま）。 */
+export function previewEmbedUrl(work: Work): string | null {
+  const url = work.videoUrl?.trim();
+  if (!url) return null;
+
+  const vimeo = url.match(/vimeo\.com\/(\d+)(?:\/([0-9a-zA-Z]+))?/);
+  if (vimeo) {
+    const [, id, hash] = vimeo;
+    const params = new URLSearchParams({
+      background: "1",
+      autoplay: "1",
+      loop: "1",
+      muted: "1",
+      autopause: "0",
+    });
+    if (hash) params.set("h", hash);
+    return `https://player.vimeo.com/video/${id}?${params}`;
+  }
+
+  const yt = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/);
+  if (yt) {
+    const id = yt[1];
+    const params = new URLSearchParams({
+      autoplay: "1",
+      mute: "1",
+      loop: "1",
+      playlist: id,
+      controls: "0",
+      modestbranding: "1",
+      rel: "0",
+      playsinline: "1",
+      disablekb: "1",
+    });
+    return `https://www.youtube-nocookie.com/embed/${id}?${params}`;
+  }
+
+  return null;
+}

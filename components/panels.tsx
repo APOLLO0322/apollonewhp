@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import {
   companyRows,
@@ -9,6 +8,7 @@ import {
   services,
   vision,
 } from "@/lib/site-content";
+import WorkThumb from "@/components/work-thumb";
 import { workHeading, workMeta, workSummary, type Work } from "@/lib/works";
 
 /* 罫線1本 + ラベル/1fr の定義リスト。カード・角丸・影は使わない。
@@ -193,14 +193,8 @@ export function WorksPanel({ works }: { works: Work[] }) {
             FEATURED
           </div>
           <Link href={`/works/${featured.slug}`} className="ap-media block">
-            <div className="relative mt-4 aspect-video overflow-hidden">
-              <Image
-                src={featured.thumbnail}
-                alt={featured.title}
-                fill
-                sizes="(max-width: 767px) 100vw, 62vw"
-                className="object-cover"
-              />
+            <div className="mt-4">
+              <WorkThumb work={featured} aspect="video" sizes="(max-width: 767px) 100vw, 62vw" />
             </div>
             <WorkCardBody work={featured} size="md" />
           </Link>
@@ -210,15 +204,7 @@ export function WorksPanel({ works }: { works: Work[] }) {
       <div className="grid grid-cols-1 gap-x-7 gap-y-9 border-t border-fog py-8 sm:grid-cols-2">
         {rest.map((w) => (
           <Link key={w.slug} href={`/works/${w.slug}`} className="ap-media block">
-            <div className="relative aspect-[4/3] overflow-hidden">
-              <Image
-                src={w.thumbnail}
-                alt={w.title}
-                fill
-                sizes="(max-width: 767px) 100vw, 31vw"
-                className="object-cover"
-              />
-            </div>
+            <WorkThumb work={w} aspect="43" sizes="(max-width: 767px) 100vw, 31vw" />
             <WorkCardBody work={w} size="sm" />
           </Link>
         ))}
