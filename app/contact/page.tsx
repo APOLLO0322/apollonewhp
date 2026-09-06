@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import ContactForm from "@/components/contact-form";
 import SiteFooter from "@/components/site-footer";
 import SiteHeader from "@/components/site-header";
-import { company, contactCopy } from "@/lib/site-content";
+import { contactCopy } from "@/lib/site-content";
 
 /* 左の列に流す縦動画。public/contact/ に置いてここにパスを書くと、
    墨のべた塗りから映像に切り替わる。未設定なら従来どおり墨のまま。
    ヒーローと同じく H.264 / 音声なし / 3.5Mbps 程度に変換してから置く
    （tools/transcode.swift を使う）。縦位置は 9:16 を想定。 */
-const CONTACT_VIDEO: string | null = null;
+const CONTACT_VIDEO: string | null = "/contact/contact.mp4";
 
 export const metadata: Metadata = {
   title: "お問合せ",
@@ -24,7 +24,7 @@ export default function ContactPage() {
 
       <div className="mx-auto max-w-[1440px]">
         <div className="grid lg:grid-cols-[0.85fr_1.15fr]">
-          <div className="relative flex flex-col justify-between overflow-hidden bg-ink px-5 py-16 text-pale md:px-16 md:py-24">
+          <div className="relative flex min-h-[280px] flex-col justify-between overflow-hidden bg-ink px-5 py-16 text-pale md:px-16 md:py-24 lg:min-h-0">
             {CONTACT_VIDEO && (
               <>
                 <video
@@ -44,22 +44,8 @@ export default function ContactPage() {
               </>
             )}
             <div className="relative">
-              <div className="font-label text-[11px] tracking-[0.24em] text-blue">
+              <div className="ap-on-media font-label text-[11px] tracking-[0.24em] text-pale">
                 {contactCopy.label}
-              </div>
-            </div>
-            <div className="relative mt-14 flex flex-col gap-5 font-label text-xs tracking-[0.06em]">
-              <div className="border-t border-pale/20 pt-4">
-                <span className="text-pale/50">MAIL</span>
-                <br />
-                <a href={`mailto:${company.mail}`} className="text-sm">
-                  {company.mail}
-                </a>
-              </div>
-              <div className="border-t border-pale/20 pt-4">
-                <span className="text-pale/50">HOURS</span>
-                <br />
-                <span className="text-sm">{company.hours}</span>
               </div>
             </div>
           </div>
