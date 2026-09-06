@@ -64,13 +64,12 @@ export default function WorksGrid({ works }: { works: Work[] }) {
         )}
       </div>
 
-      <div className="grid grid-cols-1 gap-px border-b border-fog bg-fog sm:grid-cols-2 lg:grid-cols-3">
+      {/* 霧色を敷いてカードを淡霧で抜く組み方だと、3の倍数に満たない
+          最終行の空きマスに下地の霧色が出てしまう。パネルと同じく
+          罫線なし・余白だけで組む。 */}
+      <div className="grid grid-cols-1 gap-x-7 gap-y-12 border-b border-fog px-5 pb-16 sm:grid-cols-2 md:px-16 lg:grid-cols-3">
         {visible.map((w) => (
-          <Link
-            key={w.slug}
-            href={`/works/${w.slug}`}
-            className="ap-media bg-pale p-5 md:p-8"
-          >
+          <Link key={w.slug} href={`/works/${w.slug}`} className="ap-media block">
             <WorkThumb
               work={w}
               aspect="43"
