@@ -261,7 +261,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
             そのぶん暗い映像の上では濃色のロゴが沈むので、淡霧の帯を
             敷いてその上に置く。2セット並べて半分ぶん動かし継ぎ目を消す。
             パネル（z-7）より下の z-2 なので、開くと右側は隠れる。 */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] overflow-hidden bg-pale/88 py-4">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] overflow-hidden bg-pale/70 py-4">
           <div className="ap-marquee flex w-max items-center gap-14 md:gap-20">
             {[...clients, ...clients].map((c, i) => (
               <Image
