@@ -36,23 +36,18 @@ function TableRows({ rows, size }: { rows: { k: string; v: string }[]; size: "md
 }
 
 export function VisionPanel() {
+  // 理念と代表の言葉は地続きの一続きの文章として読ませる。
+  // 罫線での分割や、色・サイズの出し分けはしない。
+  const blocks = [...paragraphs(vision.body), ...paragraphs(repMessage)];
+
   return (
-    <>
-      <div className="mt-9 max-w-[520px] text-base leading-[2.1] text-mist">
-        {paragraphs(vision.body).map((p) => (
-          <p key={p} className="mt-6 first:mt-0">
-            {p}
-          </p>
-        ))}
-      </div>
-      <div className="mt-12 max-w-[520px] border-t border-fog pt-8 font-display text-lg leading-[2.1] tracking-[0.04em] text-ink">
-        {paragraphs(repMessage).map((p) => (
-          <p key={p} className="mt-6 first:mt-0">
-            {p}
-          </p>
-        ))}
-      </div>
-    </>
+    <div className="mt-9 max-w-[520px] text-base leading-[2.1] text-body">
+      {blocks.map((t) => (
+        <p key={t} className="mt-6 first:mt-0">
+          {t}
+        </p>
+      ))}
+    </div>
   );
 }
 

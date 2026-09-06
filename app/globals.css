@@ -10,13 +10,13 @@
   --color-green: #4fd3a4; /* 若葉 — 送信完了メッセージのみ */
   --color-body: #3a3a38;
 
-  /* 書体は Zen Kaku Gothic New の1書体に統一。和文と欧文が同じ設計者の
-     手によるので、和欧混植でも字面と重心がそろう。役割の differences は
-     ウェイトと字間だけでつける。display / body / label は将来の差し替え
-     余地として名前だけ分けてある。 */
-  --font-display: "Zen Kaku Gothic New", "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
-  --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
-  --font-label: "Zen Kaku Gothic New", "Helvetica Neue", Arial, sans-serif;
+  /* 書体は IBM Plex Sans JP の1書体に統一。終筆が丸まらず直線的で、
+     和文はIwata、欧文は企業書体として設計されているため、11pxを広い
+     字間で組んでも緩まない。役割の差はウェイトと字間だけでつける。
+     display / body / label は将来の差し替え余地として名前だけ分けてある。 */
+  --font-display: "IBM Plex Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
+  --font-body: "IBM Plex Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
+  --font-label: "IBM Plex Sans JP", "Helvetica Neue", Arial, sans-serif;
 
   --ease-panel: cubic-bezier(0.65, 0, 0.35, 1);
   --ease-fade: cubic-bezier(0.22, 1, 0.36, 1);
