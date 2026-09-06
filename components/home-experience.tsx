@@ -218,13 +218,8 @@ export default function HomeExperience({ works }: { works: Work[] }) {
           />
         )}
 
-        {/* 映像の色をできるだけそのまま見せたいので、暗幕は上下だけ。
-            上はヘッダー、下は PAUSE と「実績を見る」の可読性のため。
-            画面の中央〜大半は素通しで、ロゴは影で浮かせて読ませる。 */}
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-linear-to-b from-ink/30 via-transparent to-ink/50"
-        />
+        {/* 映像には一切色を乗せない。撮って出しの色をそのまま見せる。
+            上に載る文字とロゴは ap-on-media の影だけで読ませる。 */}
 
         {HERO_IS_PLACEHOLDER && (
           <div className="absolute top-24 right-6 z-[2] font-label text-[9px] tracking-[0.1em] text-pale/60">

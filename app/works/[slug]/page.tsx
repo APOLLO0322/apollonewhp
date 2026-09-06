@@ -81,24 +81,23 @@ export default async function WorkDetailPage({ params }: Params) {
             fill
             priority
             sizes="100vw"
-            className="ap-ken object-cover opacity-90"
+            className="ap-ken object-cover"
           />
-          <div aria-hidden className="absolute inset-0 bg-linear-to-b from-ink/10 to-ink/30" />
           {work.videoUrl ? (
             <a
               href={work.videoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="absolute inset-0 flex flex-col items-center justify-center gap-4.5"
+              className="ap-on-media absolute inset-0 flex flex-col items-center justify-center gap-4.5"
             >
-              <span className="flex size-[70px] items-center justify-center rounded-full border border-pale/85 text-[19px] text-pale">
+              <span className="flex size-[70px] items-center justify-center rounded-full border border-pale/85 text-[19px] text-pale [filter:drop-shadow(0_1px_3px_rgba(22,25,26,0.7))]">
                 ▶
               </span>
-              <span className="font-label text-[11px] tracking-[0.24em] text-pale/85">PLAY</span>
+              <span className="font-label text-[11px] tracking-[0.24em] text-pale">PLAY</span>
             </a>
           ) : (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4.5">
-              <span className="font-label text-[11px] tracking-[0.24em] text-pale/85">
+            <div className="ap-on-media absolute inset-0 flex flex-col items-center justify-center gap-4.5">
+              <span className="font-label text-[11px] tracking-[0.24em] text-pale">
                 MOVIE — 準備中
               </span>
             </div>

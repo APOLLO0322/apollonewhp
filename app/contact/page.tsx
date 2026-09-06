@@ -36,15 +36,10 @@ export default function ContactPage() {
                   playsInline
                   preload="auto"
                 />
-                {/* 映像の上でも文字が読めるよう、上下を締める */}
-                <div
-                  aria-hidden
-                  className="absolute inset-0 bg-linear-to-b from-ink/60 via-ink/25 to-ink/70"
-                />
               </>
             )}
             <div className="relative">
-              <div className="ap-on-media font-label text-[11px] tracking-[0.24em] text-pale">
+              <div className="ap-on-media-strong font-label text-[11px] tracking-[0.24em] text-pale">
                 {contactCopy.label}
               </div>
             </div>
