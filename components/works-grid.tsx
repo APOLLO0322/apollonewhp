@@ -21,8 +21,8 @@ type Filter = "ALL" | WorkCategory;
 
 function FilterRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-3 md:flex-row md:items-start md:gap-6">
-      <div className="pt-2.5 font-label text-[10px] tracking-[0.2em] text-mist md:w-16 md:shrink-0">
+    <div className="flex flex-col gap-3 md:flex-row md:items-baseline md:gap-6">
+      <div className="font-label text-[10px] tracking-[0.2em] text-mist md:w-16 md:shrink-0">
         {label}
       </div>
       <div className="flex flex-wrap gap-x-7 gap-y-3">{children}</div>
@@ -87,7 +87,7 @@ export default function WorksGrid({ works }: { works: Work[] }) {
               type="button"
               onClick={() => toggleTag(t)}
               aria-pressed={tag === t}
-              className={`border-b pb-1.5 text-[13px] tracking-[0.04em] transition-colors duration-200 ${
+              className={`border-b pb-1.5 font-label text-xs tracking-[0.06em] transition-colors duration-200 ${
                 tag === t
                   ? "border-logo-blue text-ink"
                   : "border-transparent text-mist hover:text-ink"
