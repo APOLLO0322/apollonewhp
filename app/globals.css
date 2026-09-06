@@ -104,11 +104,15 @@
   background: transparent;
   padding: 10px 2px;
   font-family: var(--font-body);
-  font-size: 16px; /* iOSのズーム回避のため16px未満にしない */
+  font-size: 16px; /* iOSのズーム回避のため、タッチ環境では16px未満にしない */
   color: var(--color-ink);
   outline: none;
   border-radius: 0;
   transition: border-color 0.25s ease;
+}
+/* 指で触らない画面では少し落として、ラベルとの落差を詰める */
+@media (min-width: 768px) {
+  .ap-field { font-size: 15px; }
 }
 .ap-field:focus { border-bottom-color: var(--color-blue); }
 /* 淡霧の上に #a8adad では比2.1でほぼ見えなかった */
@@ -118,10 +122,10 @@ textarea.ap-field { resize: none; line-height: 1.9; }
 /* チップ（角丸なし） */
 .ap-chip {
   font-family: var(--font-body);
-  font-size: 13px;
-  padding: 10px 20px;
+  font-size: 12px;
+  padding: 8px 14px;
   border-radius: 2px;
-  border: 1px solid var(--color-fog);
+  border: 1px solid rgb(22 25 26 / 0.25);
   background: transparent;
   color: var(--color-body);
   transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;

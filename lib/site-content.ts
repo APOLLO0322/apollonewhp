@@ -115,7 +115,8 @@ export const clients: Client[] = [
 
 export const contactCopy = {
   label: "CONTACT",
-  title: "まだ見ぬ景色の話を、\n聞かせてください。",
+  // 見出しは置かない。CONTACT のラベルだけで用は足りる
+  title: "",
   lead: "まだ形になっていなくても大丈夫です、お気軽にご相談ください。",
 };
 

@@ -344,9 +344,12 @@ export default function HomeExperience({ works }: { works: Work[] }) {
                   </nav>
                 ) : (
                   <>
-                    <h2 className="ap-fade-q font-display text-[26px] leading-[1.5] font-medium tracking-[0.06em] whitespace-pre-line md:text-[34px]">
-                      {meta?.title}
-                    </h2>
+                    {/* お問合せは見出しを持たない。CONTACT のラベルで足りる */}
+                    {meta?.title && (
+                      <h2 className="ap-fade-q font-display text-[26px] leading-[1.5] font-medium tracking-[0.06em] whitespace-pre-line md:text-[34px]">
+                        {meta.title}
+                      </h2>
+                    )}
 
                     {open === "vision" && <VisionPanel />}
                     {open === "company" && <CompanyPanel />}

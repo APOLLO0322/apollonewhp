@@ -29,7 +29,7 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-[11px] tracking-[0.06em] text-mist">
+      <span className="mb-1.5 block text-xs tracking-[0.06em] text-mist">
         {label}
         {required && <span className="text-blue"> *</span>}
       </span>
@@ -121,7 +121,7 @@ export default function ContactForm({ variant = "panel" }: { variant?: Variant }
         </div>
       )}
 
-      <div className={`grid gap-6 sm:grid-cols-2 sm:gap-x-7 ${gridMax}`}>
+      <div className={`grid gap-5 sm:grid-cols-2 sm:gap-x-7 ${gridMax}`}>
         <Field label="お名前" required>
           <input
             className="ap-field"
@@ -170,8 +170,8 @@ export default function ContactForm({ variant = "panel" }: { variant?: Variant }
         </Field>
       </div>
 
-      <fieldset className={`mt-8 border-none p-0 ${gridMax}`}>
-        <legend className="mb-2.5 p-0 text-[11px] tracking-[0.06em] text-mist">
+      <fieldset className={`mt-7 border-none p-0 ${gridMax}`}>
+        <legend className="mb-2.5 p-0 text-xs tracking-[0.06em] text-mist">
           ご相談内容 <span className="text-blue">*</span>
         </legend>
         <div className="flex flex-wrap gap-2.5">
@@ -189,7 +189,7 @@ export default function ContactForm({ variant = "panel" }: { variant?: Variant }
         </div>
       </fieldset>
 
-      <div className={`mt-8 grid gap-6 sm:grid-cols-2 sm:gap-x-7 ${gridMax}`}>
+      <div className={`mt-7 grid gap-5 sm:grid-cols-2 sm:gap-x-7 ${gridMax}`}>
         <Field label="撮影希望時期">
           <input
             className="ap-field"
@@ -212,7 +212,7 @@ export default function ContactForm({ variant = "panel" }: { variant?: Variant }
         </Field>
       </div>
 
-      <div className={`mt-8 ${gridMax}`}>
+      <div className={`mt-7 ${gridMax}`}>
         <Field label="メッセージ">
           <textarea
             className="ap-field"
