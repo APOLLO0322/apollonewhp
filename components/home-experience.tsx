@@ -357,7 +357,6 @@ export default function HomeExperience({ works }: { works: Work[] }) {
                     {open === "works" && <WorksPanel works={works} />}
                     {open === "contact" && (
                       <div className="mt-6">
-                        <p className="text-[15px] leading-[2] text-mist-panel">{contactCopy.lead}</p>
                         <div className="mt-8">
                           <ContactForm variant="panel" />
                         </div>

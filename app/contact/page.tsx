@@ -23,9 +23,6 @@ export default function ContactPage() {
               <div className="font-label text-[11px] tracking-[0.24em] text-blue">
                 {contactCopy.label}
               </div>
-              <p className="mt-6 max-w-[340px] text-sm leading-[2.2] text-pale/72">
-                {contactCopy.lead}
-              </p>
             </div>
             <div className="mt-14 flex flex-col gap-5 font-label text-xs tracking-[0.06em]">
               <div className="border-t border-pale/20 pt-4">

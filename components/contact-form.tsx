@@ -29,7 +29,7 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-xs tracking-[0.06em] text-mist">
+      <span className="mb-1.5 block text-xs tracking-[0.06em] text-ink">
         {label}
         {required && <span className="text-blue"> *</span>}
       </span>
@@ -114,9 +114,9 @@ export default function ContactForm({ variant = "panel" }: { variant?: Variant }
   const gridMax = isPage ? "" : "max-w-[520px]";
 
   return (
-    <form onSubmit={handleSubmit} noValidate>
+    <form onSubmit={handleSubmit} noValidate data-variant={variant}>
       {isPage && (
-        <div className="mb-10 text-[11px] tracking-[0.1em] text-mist">
+        <div className="mb-10 text-[11px] tracking-[0.1em] text-body">
           下記フォームよりお問合せください。<span className="text-blue">*</span> は必須項目です。
         </div>
       )}
@@ -171,7 +171,7 @@ export default function ContactForm({ variant = "panel" }: { variant?: Variant }
       </div>
 
       <fieldset className={`mt-7 border-none p-0 ${gridMax}`}>
-        <legend className="mb-2.5 p-0 text-xs tracking-[0.06em] text-mist">
+        <legend className="mb-2.5 p-0 text-xs tracking-[0.06em] text-ink">
           ご相談内容 <span className="text-blue">*</span>
         </legend>
         <div className="flex flex-wrap gap-2.5">
@@ -241,7 +241,7 @@ export default function ContactForm({ variant = "panel" }: { variant?: Variant }
         >
           {status === "sending" ? "送信中…" : "送信する →"}
         </button>
-        <p className="text-[11px] leading-[1.8] text-mist">
+        <p className="text-[11px] leading-[1.8] text-body">
           送信をもって
           <a
             href={company.privacyUrl}

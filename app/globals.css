@@ -117,6 +117,8 @@
 .ap-field:focus { border-bottom-color: var(--color-blue); }
 /* 淡霧の上に #a8adad では比2.1でほぼ見えなかった */
 .ap-field::placeholder { color: #6b7374; }
+/* パネルは半透明で背景が中間調まで沈むので、さらに濃くする */
+[data-variant="panel"] .ap-field::placeholder { color: #3f4546; }
 textarea.ap-field { resize: none; line-height: 1.9; }
 
 /* チップ（角丸なし） */
