@@ -4,9 +4,7 @@
 export const company = {
   name: "株式会社APOLLO",
   nameEn: "APOLLO Inc.",
-  tagline: "写真動画で、地域を元気に。",
   concept: "まだ、誰も見ていない景色へ。",
-  location: "松山, 愛媛",
   mail: "contact@apollone.jp",
   hours: "平日 10:00 – 19:00",
   privacyUrl: "https://apollone.jp/privacy-policy/",

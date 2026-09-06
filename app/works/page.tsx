@@ -54,7 +54,7 @@ export default async function WorksPage() {
           <WorksGrid works={works} />
         </div>
 
-        <PageCta heading="次は、あなたの物語をつくりに。" />
+        <PageCta heading="伝えたいのは、あなたの物語です。" />
       </div>
 
       <SiteFooter />

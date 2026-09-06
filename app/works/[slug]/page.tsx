@@ -65,7 +65,7 @@ export default async function WorkDetailPage({ params }: Params) {
           <div className="font-label text-[11px] tracking-[0.24em] text-blue">
             {workMeta(work)}
           </div>
-          <h1 className="mt-5 font-display text-[30px] leading-[1.5] font-medium tracking-[0.06em] md:text-[44px]">
+          <h1 className="mt-5 font-display text-[24px] leading-[1.6] font-medium tracking-[0.06em] md:text-[32px]">
             {work.title}
           </h1>
           {work.lead && (
@@ -124,9 +124,12 @@ export default async function WorkDetailPage({ params }: Params) {
             </div>
             <Link
               href="/contact"
-              className="mt-8 block border border-blue p-4 text-center font-label text-xs tracking-[0.1em] text-blue"
+              className="mt-8 flex items-center justify-center gap-2 rounded-[2px] bg-logo-blue px-5 py-3.5 text-[13px] tracking-[0.04em] text-pale transition-colors duration-300 hover:bg-ink"
             >
-              同じような制作を相談する →
+              制作のご相談
+              <span aria-hidden className="font-label text-[10px]">
+                →
+              </span>
             </Link>
           </div>
         </div>
