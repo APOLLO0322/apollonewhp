@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   companyRows,
   paragraphs,
+  profileBio,
   profileRows,
   repMessage,
   services,
@@ -79,7 +80,17 @@ export function CompanyPanel() {
             YUTA IKEGUCHI
           </span>
         </div>
-        <div className="mt-6">
+        {/* 経歴は本文なのでラベルを持たせず、パネル幅いっぱいに流す。
+            ブロック間は余白で区切る。 */}
+        <div className="mt-6 border-t border-fog pt-5 text-sm leading-[2] text-ink">
+          {profileBio.split("\n").map((block) => (
+            <p key={block} className="mt-5 first:mt-0">
+              {block}
+            </p>
+          ))}
+        </div>
+
+        <div className="mt-5">
           <TableRows rows={profileRows} size="sm" />
         </div>
       </div>
