@@ -21,7 +21,7 @@ function TableRows({ rows, size }: { rows: { k: string; v: string }[]; size: "md
           key={row.k}
           className="grid grid-cols-[84px_1fr] gap-4 border-t border-fog py-5 sm:grid-cols-[104px_1fr] sm:gap-5"
         >
-          <dt className="text-xs leading-[1.9] tracking-[0.08em] text-mist">{row.k}</dt>
+          <dt className="text-xs leading-[1.9] tracking-[0.08em] text-mist-panel">{row.k}</dt>
           <dd
             className={`m-0 whitespace-pre-line text-ink ${
               size === "md" ? "text-[15px] leading-[1.9]" : "text-sm leading-[2]"
@@ -59,12 +59,12 @@ export function CompanyPanel() {
       </div>
 
       <div className="mt-14 border-t border-fog pt-9">
-        <div className="font-label text-[11px] tracking-[0.16em] text-blue">
+        <div className="font-label text-[11px] tracking-[0.16em] text-blue-panel">
           PROFILE / 代表プロフィール
         </div>
         <div className="mt-5 flex flex-wrap items-baseline gap-4">
           <span className="font-display text-2xl tracking-[0.08em]">池口祐太</span>
-          <span className="font-label text-[11px] tracking-[0.1em] text-mist">YUTA IKEGUCHI</span>
+          <span className="font-label text-[11px] tracking-[0.1em] text-mist-panel">YUTA IKEGUCHI</span>
         </div>
         <div className="mt-6">
           <TableRows rows={profileRows} size="sm" />
@@ -82,13 +82,13 @@ export function ServicePanel() {
           <div key={s.num} className="relative overflow-hidden border-t border-fog py-9">
             <span
               aria-hidden
-              className="pointer-events-none absolute top-1.5 right-0 font-label text-[64px] leading-none font-medium text-blue/8 sm:text-[88px]"
+              className="pointer-events-none absolute top-1.5 right-0 font-label text-[64px] leading-none font-medium text-blue-panel/8 sm:text-[88px]"
             >
               {s.num}
             </span>
             <div className="relative">
               <h3 className="font-display text-2xl font-medium tracking-[0.06em]">{s.name}</h3>
-              <p className="mt-3.5 max-w-[440px] text-sm leading-[1.9] text-mist">{s.desc}</p>
+              <p className="mt-3.5 max-w-[440px] text-sm leading-[1.9] text-mist-panel">{s.desc}</p>
               <ul className="mt-5 flex list-none flex-wrap gap-2 p-0">
                 {s.menuItems.map((m) => (
                   <li
@@ -105,7 +105,7 @@ export function ServicePanel() {
       </div>
 
       <div className="mt-4 border-t border-fog pt-9">
-        <div className="mb-6 font-label text-[11px] tracking-[0.16em] text-mist">
+        <div className="mb-6 font-label text-[11px] tracking-[0.16em] text-mist-panel">
           FLOW / 制作の流れ
         </div>
         <ol className="relative m-0 list-none p-0 pl-7">
@@ -133,7 +133,7 @@ export function WorksPanel({ works }: { works: Work[] }) {
     <>
       {featured && (
         <div className="mt-8 border-t border-fog py-8">
-          <div className="font-label text-[10px] tracking-[0.16em] text-blue">FEATURED</div>
+          <div className="font-label text-[10px] tracking-[0.16em] text-blue-panel">FEATURED</div>
           <Link
             href={`/works/${featured.slug}`}
             className="ap-media relative mt-4 block aspect-video overflow-hidden"
@@ -163,7 +163,7 @@ export function WorksPanel({ works }: { works: Work[] }) {
               />
             </div>
             <div className="mt-2.5 text-sm leading-[1.6]">{w.title}</div>
-            <div className="mt-1.5 font-label text-[10px] tracking-[0.06em] text-mist">
+            <div className="mt-1.5 font-label text-[10px] tracking-[0.06em] text-mist-panel">
               {workMeta(w)}
             </div>
           </Link>
@@ -172,7 +172,7 @@ export function WorksPanel({ works }: { works: Work[] }) {
 
       <Link
         href="/works"
-        className="mt-3 mb-2 inline-block border-b border-blue pb-[3px] text-[13px] tracking-[0.08em] text-blue"
+        className="mt-3 mb-2 inline-block border-b border-blue-panel pb-[3px] text-[13px] tracking-[0.08em] text-blue-panel"
       >
         すべての実績を見る →
       </Link>

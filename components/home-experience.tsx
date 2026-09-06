@@ -139,7 +139,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
   const fullPageHref = open && open !== "menu" ? fullPageOf[open] : undefined;
 
   const logoColor = panelOpen ? "text-ink" : "text-pale";
-  const navColor = panelOpen ? "text-mist" : "text-pale/88";
+  const navColor = panelOpen ? "text-mist-panel" : "text-pale/88";
   const ctaColor = panelOpen ? "text-ink border-ink" : "text-pale border-pale/60";
   // 明色のパネルの上に来たら影は邪魔になるので外す
   const onMedia = panelOpen ? "" : "ap-on-media";
@@ -274,7 +274,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
               className="ap-panel-in ap-scroll absolute inset-y-0 right-0 z-[7] w-full overflow-y-auto bg-pale/55 text-ink backdrop-blur-[8px] backdrop-saturate-[1.3] md:w-[clamp(520px,40vw,720px)]"
             >
               <div className="flex items-center justify-between px-5 pt-28 md:px-12 md:pt-33">
-                <div className="font-label text-[11px] tracking-[0.28em] text-blue">
+                <div className="font-label text-[11px] tracking-[0.28em] text-blue-panel">
                   {meta ? meta.label : "MENU"}
                 </div>
                 <div className="flex items-center gap-5">
@@ -282,7 +282,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
                     <Link
                       href={fullPageHref}
                       title="フルページで見る"
-                      className="flex shrink-0 items-center gap-1.5 border-b border-mist pb-[3px] font-label text-[11px] tracking-[0.1em] whitespace-nowrap text-mist"
+                      className="flex shrink-0 items-center gap-1.5 border-b border-mist-panel pb-[3px] font-label text-[11px] tracking-[0.1em] whitespace-nowrap text-mist-panel"
                     >
                       ↗ フルページ
                     </Link>
@@ -290,7 +290,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
                   <button
                     type="button"
                     onClick={close}
-                    className="border-b border-mist pb-[3px] font-label text-[11px] tracking-[0.1em] text-mist"
+                    className="border-b border-mist-panel pb-[3px] font-label text-[11px] tracking-[0.1em] text-mist-panel"
                   >
                     CLOSE
                   </button>
@@ -313,7 +313,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
                     <button
                       type="button"
                       onClick={() => setOpen("contact")}
-                      className="border-t border-b border-fog py-6 text-left font-label text-[22px] font-normal tracking-[0.2em] text-blue"
+                      className="border-t border-b border-fog py-6 text-left font-label text-[22px] font-normal tracking-[0.2em] text-blue-panel"
                     >
                       {navLabel.contact}
                     </button>
@@ -330,7 +330,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
                     {open === "works" && <WorksPanel works={works} />}
                     {open === "contact" && (
                       <div className="mt-6">
-                        <p className="text-[15px] leading-[2] text-mist">{contactCopy.lead}</p>
+                        <p className="text-[15px] leading-[2] text-mist-panel">{contactCopy.lead}</p>
                         <div className="mt-8">
                           <ContactForm variant="panel" />
                         </div>
