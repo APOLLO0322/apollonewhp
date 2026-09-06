@@ -12,7 +12,13 @@ import { workMeta, type Work } from "@/lib/works";
 
 /* 罫線1本 + ラベル/1fr の定義リスト。カード・角丸・影は使わない。
    パネルは画面幅の4割なので、ラベル列は詰めて本文の折り返しを避ける。 */
-function TableRows({ rows, size }: { rows: { k: string; v: string }[]; size: "md" | "sm" }) {
+function TableRows({
+  rows,
+  size,
+}: {
+  rows: { k: string; v: string }[];
+  size: "md" | "sm";
+}) {
   return (
     <dl className="flex max-w-[560px] flex-col">
       {rows.map((row) => (
@@ -20,10 +26,14 @@ function TableRows({ rows, size }: { rows: { k: string; v: string }[]; size: "md
           key={row.k}
           className="grid grid-cols-[84px_1fr] gap-4 border-t border-fog py-5 sm:grid-cols-[104px_1fr] sm:gap-5"
         >
-          <dt className="text-xs leading-[1.9] tracking-[0.08em] text-mist-panel">{row.k}</dt>
+          <dt className="text-xs leading-[1.9] tracking-[0.08em] text-mist-panel">
+            {row.k}
+          </dt>
           <dd
             className={`m-0 whitespace-pre-line text-ink ${
-              size === "md" ? "text-[15px] leading-[1.9]" : "text-sm leading-[2]"
+              size === "md"
+                ? "text-[15px] leading-[1.9]"
+                : "text-sm leading-[2]"
             }`}
           >
             {row.v}
@@ -62,8 +72,12 @@ export function CompanyPanel() {
           PROFILE / 代表プロフィール
         </div>
         <div className="mt-5 flex flex-wrap items-baseline gap-4">
-          <span className="font-display text-2xl tracking-[0.08em]">池口祐太</span>
-          <span className="font-label text-[11px] tracking-[0.1em] text-mist-panel">YUTA IKEGUCHI</span>
+          <span className="font-display text-2xl tracking-[0.08em]">
+            池口祐太
+          </span>
+          <span className="font-label text-[11px] tracking-[0.1em] text-mist-panel">
+            YUTA IKEGUCHI
+          </span>
         </div>
         <div className="mt-6">
           <TableRows rows={profileRows} size="sm" />
@@ -77,7 +91,10 @@ export function ServicePanel() {
   return (
     <div className="mt-11 flex flex-col">
       {services.map((s) => (
-        <div key={s.num} className="relative overflow-hidden border-t border-fog py-9">
+        <div
+          key={s.num}
+          className="relative overflow-hidden border-t border-fog py-9"
+        >
           <span
             aria-hidden
             className="pointer-events-none absolute top-1.5 right-0 font-label text-[64px] leading-none font-medium text-blue-panel/8 sm:text-[88px]"
@@ -85,31 +102,37 @@ export function ServicePanel() {
             {s.num}
           </span>
           <div className="relative">
-            <h3 className="font-display text-2xl font-medium tracking-[0.06em]">{s.name}</h3>
-            <p className="mt-3.5 max-w-[440px] text-sm leading-[1.9] text-mist-panel">{s.desc}</p>
+            <h3 className="font-display text-2xl font-medium tracking-[0.06em]">
+              {s.name}
+            </h3>
+            <p className="mt-3.5 max-w-[440px] text-sm leading-[1.9] text-mist-panel">
+              {s.desc}
+            </p>
 
             {/* メニューは実績のタグ。押すと該当する実績だけを一覧で見せる。
                 塗りは淡霧40%だけでブラーはかけない。背後の映像が
                 そのまま透けることで、板が平坦に見えなくなる。
                 ホバーでロゴのドットの青に塗る。 */}
-            <ul className="mt-5 flex list-none flex-wrap gap-x-3 gap-y-2.5 p-0">
-              {s.menuItems.map((m) => (
-                <li key={m}>
-                  <Link
-                    href={`/works?tag=${encodeURIComponent(m)}`}
-                    className="group flex items-center gap-2 rounded-[2px] border border-ink/25 bg-pale/40 px-3.5 py-2 text-xs tracking-[0.04em] text-ink transition-all duration-300 hover:border-logo-blue hover:bg-logo-blue hover:text-pale"
-                  >
-                    {m}
-                    <span
-                      aria-hidden
-                      className="font-label text-[10px] text-mist-panel transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-pale"
+            {s.menuItems.length > 0 && (
+              <ul className="mt-5 flex list-none flex-wrap gap-x-3 gap-y-2.5 p-0">
+                {s.menuItems.map((m) => (
+                  <li key={m}>
+                    <Link
+                      href={`/works?tag=${encodeURIComponent(m)}`}
+                      className="group flex items-center gap-2 rounded-[2px] border border-ink/25 bg-pale/40 px-3.5 py-2 text-xs tracking-[0.04em] text-ink transition-all duration-300 hover:border-logo-blue hover:bg-logo-blue hover:text-pale"
                     >
-                      →
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+                      {m}
+                      <span
+                        aria-hidden
+                        className="font-label text-[10px] text-mist-panel transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-pale"
+                      >
+                        →
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
       ))}
@@ -125,7 +148,9 @@ export function WorksPanel({ works }: { works: Work[] }) {
     <>
       {featured && (
         <div className="mt-8 border-t border-fog py-8">
-          <div className="font-label text-[10px] tracking-[0.16em] text-blue-panel">FEATURED</div>
+          <div className="font-label text-[10px] tracking-[0.16em] text-blue-panel">
+            FEATURED
+          </div>
           <Link
             href={`/works/${featured.slug}`}
             className="ap-media relative mt-4 block aspect-video overflow-hidden"
@@ -144,7 +169,11 @@ export function WorksPanel({ works }: { works: Work[] }) {
 
       <div className="grid grid-cols-1 gap-7 border-t border-fog py-8 sm:grid-cols-2">
         {rest.map((w) => (
-          <Link key={w.slug} href={`/works/${w.slug}`} className="ap-media block">
+          <Link
+            key={w.slug}
+            href={`/works/${w.slug}`}
+            className="ap-media block"
+          >
             <div className="relative aspect-[4/3] overflow-hidden">
               <Image
                 src={w.thumbnail}
