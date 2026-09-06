@@ -117,6 +117,9 @@ export function ServicePanel() {
             <h3 className="font-display text-2xl font-medium tracking-[0.06em]">
               {s.name}
             </h3>
+            <p className="mt-3 font-display text-base leading-[1.8] tracking-[0.06em] text-blue-panel">
+              {s.tagline}
+            </p>
             <p className="mt-3.5 max-w-[440px] text-sm leading-[1.9] text-mist-panel">
               {s.desc}
             </p>
