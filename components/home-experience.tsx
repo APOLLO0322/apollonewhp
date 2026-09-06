@@ -193,7 +193,10 @@ export default function HomeExperience({ works }: { works: Work[] }) {
       </header>
 
       {/* ── ヒーロー：ここから動かさない ── */}
-      <div className="relative h-[100svh] min-h-[560px] overflow-hidden md:min-h-[760px]">
+      {/* 正典は min-height 760px だが、下端にロゴの帯を置いた以上、
+          ヒーローがビューポートより高いと帯が画面外に落ちる。
+          100svh を基本にして、極端に低い窓だけ min で受ける。 */}
+      <div className="relative h-[100svh] min-h-[420px] overflow-hidden">
         {/* 動画は自前の動きを持つので apZoom はかけない。
             poster が即座に出るのでフェードインは挟まない（非表示タブで
             トランジションが止まると真っ黒のままになるため）。 */}
@@ -248,17 +251,18 @@ export default function HomeExperience({ works }: { works: Work[] }) {
           <button
             type="button"
             onClick={togglePlay}
-            className="ap-on-media absolute bottom-9 left-5 font-label text-[11px] tracking-[0.24em] text-pale/85 transition-colors hover:text-pale md:bottom-11 md:left-16"
+            className="ap-on-media absolute bottom-24 left-5 font-label text-[11px] tracking-[0.24em] text-pale/85 transition-colors hover:text-pale md:bottom-28 md:left-16"
           >
             {playing ? "PAUSE" : "PLAY"}
           </button>
         )}
 
-        {/* クライアントロゴ。映像の上に重ねるので白抜きにして流す。
-            2セット並べて半分ぶん動かすことで継ぎ目が出ない。
-            パネル（z-7）より下に置くので、開くと右側は隠れる。 */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-20 z-[2] overflow-hidden md:bottom-24">
-          <div className="ap-marquee flex w-max items-center gap-12 md:gap-16">
+        {/* クライアントロゴ。ロゴの色は改変しない（利用規定に触れるため）。
+            そのぶん暗い映像の上では濃色のロゴが沈むので、淡霧の帯を
+            敷いてその上に置く。2セット並べて半分ぶん動かし継ぎ目を消す。
+            パネル（z-7）より下の z-2 なので、開くと右側は隠れる。 */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] overflow-hidden bg-pale/88 py-4">
+          <div className="ap-marquee flex w-max items-center gap-14 md:gap-20">
             {[...clients, ...clients].map((c, i) => (
               <Image
                 key={`${c.logo}-${i}`}
@@ -267,13 +271,13 @@ export default function HomeExperience({ works }: { works: Work[] }) {
                 aria-hidden={i >= clients.length}
                 width={260}
                 height={76}
-                className="h-6 w-auto opacity-65 [filter:brightness(0)_invert(1)] md:h-7"
+                className="h-8 w-auto md:h-10"
               />
             ))}
           </div>
         </div>
 
-        <div className="ap-on-media absolute right-5 bottom-9 flex gap-9 font-label text-[11px] tracking-[0.12em] md:right-16 md:bottom-11">
+        <div className="ap-on-media absolute right-5 bottom-24 flex gap-9 font-label text-[11px] tracking-[0.12em] md:right-16 md:bottom-28">
           <Link href="/works" className="border-b border-pale/50 pb-1 text-pale">
             実績を見る
           </Link>
