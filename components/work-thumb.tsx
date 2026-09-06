@@ -27,8 +27,8 @@ export default function WorkThumb({ work, aspect, sizes }: Props) {
 
   function start() {
     if (!embed || playing) return;
-    // 動きを減らす設定の人には出さない
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // prefers-reduced-motion では止めない。自動再生と違い、ホバーは
+    // 本人が意図して起こす操作なので、ここで殺すと単に壊れて見える。
     timer.current = setTimeout(() => setPlaying(true), DELAY);
   }
 
