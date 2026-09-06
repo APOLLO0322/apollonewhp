@@ -72,7 +72,7 @@ export default function WorksGrid({ works }: { works: Work[] }) {
               className={`border-b pb-1.5 font-label text-[11px] tracking-[0.14em] transition-colors ${
                 filter === f
                   ? "border-ink text-ink"
-                  : "border-transparent text-mist hover:text-ink"
+                  : "border-transparent text-mist hover:text-logo-blue"
               }`}
             >
               {f}
@@ -90,7 +90,7 @@ export default function WorksGrid({ works }: { works: Work[] }) {
               className={`border-b pb-1.5 font-label text-xs tracking-[0.06em] transition-colors duration-200 ${
                 tag === t
                   ? "border-logo-blue text-ink"
-                  : "border-transparent text-mist hover:text-ink"
+                  : "border-transparent text-mist hover:text-logo-blue"
               }`}
             >
               {t}
