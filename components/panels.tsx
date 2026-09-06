@@ -87,7 +87,7 @@ export function ServicePanel() {
               {s.num}
             </span>
             <div className="relative">
-              <h3 className="font-display text-2xl font-medium tracking-[0.06em]">{s.name}</h3>
+              <h3 className="font-display text-2xl font-medium tracking-[0.03em]">{s.name}</h3>
               <p className="mt-3.5 max-w-[440px] text-sm leading-[1.9] text-mist">{s.desc}</p>
               <ul className="mt-5 flex list-none flex-wrap gap-2 p-0">
                 {s.menuItems.map((m) => (

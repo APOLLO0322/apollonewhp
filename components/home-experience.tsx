@@ -320,7 +320,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
                   </nav>
                 ) : (
                   <>
-                    <h2 className="ap-fade-q font-display text-[26px] leading-[1.5] font-medium tracking-[0.08em] whitespace-pre-line md:text-[34px]">
+                    <h2 className="ap-fade-q font-display text-[26px] leading-[1.5] font-medium tracking-[0.04em] whitespace-pre-line md:text-[34px]">
                       {meta?.title}
                     </h2>
 

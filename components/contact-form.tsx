@@ -29,7 +29,7 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-[11px] tracking-[0.06em] text-mist">
+      <span className="mb-1.5 block font-label text-[11px] tracking-[0.06em] text-mist">
         {label}
         {required && <span className="text-blue"> *</span>}
       </span>
@@ -49,7 +49,7 @@ export function ContactSent({ variant }: { variant: Variant }) {
       <div className="font-label text-[11px] tracking-[0.16em] text-green">
         SENT — ありがとうございます
       </div>
-      <div className="mt-[18px] font-display text-2xl leading-[1.7] font-medium tracking-[0.06em]">
+      <div className="mt-[18px] font-display text-2xl leading-[1.7] font-medium tracking-[0.03em]">
         お問合せを受け付けました。
       </div>
       <div className="mt-4 max-w-[420px] text-sm leading-[2] text-mist">
@@ -171,7 +171,7 @@ export default function ContactForm({ variant = "panel" }: { variant?: Variant }
       </div>
 
       <fieldset className={`mt-8 border-none p-0 ${gridMax}`}>
-        <legend className="mb-2.5 p-0 text-[11px] tracking-[0.06em] text-mist">
+        <legend className="mb-2.5 p-0 font-label text-[11px] tracking-[0.06em] text-mist">
           ご相談内容 <span className="text-blue">*</span>
         </legend>
         <div className="flex flex-wrap gap-2.5">
@@ -243,7 +243,7 @@ export default function ContactForm({ variant = "panel" }: { variant?: Variant }
         >
           {status === "sending" ? "送信中…" : "送信する →"}
         </button>
-        <p className="text-[11px] leading-[1.8] text-mist">
+        <p className="font-label text-[11px] leading-[1.8] text-mist">
           送信をもって
           <a
             href={company.privacyUrl}

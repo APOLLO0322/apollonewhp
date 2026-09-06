@@ -10,12 +10,12 @@
   --color-green: #4fd3a4; /* 若葉 — 送信完了メッセージのみ */
   --color-body: #3a3a38;
 
-  /* 書体は IBM Plex Sans JP の1書体に統一。終筆が丸まらず直線的で、
-     和文はIwata、欧文は企業書体として設計されているため、11pxを広い
-     字間で組んでも緩まない。役割の差はウェイトと字間だけでつける。
-     display / body / label は将来の差し替え余地として名前だけ分けてある。 */
-  --font-display: "IBM Plex Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
-  --font-body: "IBM Plex Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
+  /* 和文は Noto Serif JP（明朝）、欧文ラベルと入力欄などのUIは
+     IBM Plex Sans JP。明朝は仮想ボディに対する字面が小さめで、
+     ふところが広く画数の多い漢字も潰れない＝詰まって見えない。
+     見出しも本文も同じ明朝で通し、役割の差はウェイトとサイズでつける。 */
+  --font-display: "Noto Serif JP", "Hiragino Mincho ProN", "YuMincho", serif;
+  --font-body: "Noto Serif JP", "Hiragino Mincho ProN", "YuMincho", serif;
   --font-label: "IBM Plex Sans JP", "Helvetica Neue", Arial, sans-serif;
 
   --ease-panel: cubic-bezier(0.65, 0, 0.35, 1);
@@ -82,7 +82,7 @@
   border-bottom: 1px solid var(--color-fog);
   background: transparent;
   padding: 10px 2px;
-  font-family: var(--font-body);
+  font-family: var(--font-label);
   font-size: 16px; /* iOSのズーム回避のため16px未満にしない */
   color: var(--color-ink);
   outline: none;
@@ -95,7 +95,7 @@ textarea.ap-field { resize: none; line-height: 1.9; }
 
 /* チップ（角丸なし） */
 .ap-chip {
-  font-family: var(--font-body);
+  font-family: var(--font-label);
   font-size: 13px;
   padding: 10px 20px;
   border: 1px solid var(--color-fog);

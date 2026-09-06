@@ -62,7 +62,7 @@ export default async function WorkDetailPage({ params }: Params) {
           <div className="font-label text-[11px] tracking-[0.24em] text-blue">
             {workMeta(work)}
           </div>
-          <h1 className="mt-5 font-display text-[30px] leading-[1.5] font-medium tracking-[0.06em] md:text-[44px]">
+          <h1 className="mt-5 font-display text-[30px] leading-[1.5] font-medium tracking-[0.04em] md:text-[44px]">
             {work.title}
           </h1>
           {work.lead && (
