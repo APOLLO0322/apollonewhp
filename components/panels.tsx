@@ -91,15 +91,15 @@ export function ServicePanel() {
             {/* メニューは実績のタグ。押すと該当する実績だけを一覧で見せる。
                 押せることが見た目で分かるよう、罫線は墨、矢印つき、
                 ホバーで塗り（正典の「ボタンは塗りか下線」に沿う）。 */}
-            <ul className="mt-5 flex list-none flex-wrap gap-2 p-0">
+            <ul className="mt-5 flex list-none flex-wrap gap-x-3 gap-y-2.5 p-0">
               {s.menuItems.map((m) => (
                 <li key={m}>
                   <Link
                     href={`/works?tag=${encodeURIComponent(m)}`}
-                    className="flex items-center gap-2 border border-ink px-4 py-2.5 text-[13px] tracking-[0.04em] text-ink transition-colors duration-200 hover:bg-ink hover:text-pale"
+                    className="flex items-center gap-1.5 border border-ink/45 bg-pale/80 px-3.5 py-2 text-xs tracking-[0.04em] text-ink transition-colors duration-200 hover:border-ink hover:bg-ink hover:text-pale"
                   >
                     {m}
-                    <span aria-hidden className="font-label text-[11px]">
+                    <span aria-hidden className="font-label text-[10px]">
                       →
                     </span>
                   </Link>
