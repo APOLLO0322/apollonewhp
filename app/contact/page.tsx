@@ -23,9 +23,6 @@ export default function ContactPage() {
               <div className="font-label text-[11px] tracking-[0.24em] text-blue">
                 {contactCopy.label}
               </div>
-              <h1 className="mt-6 whitespace-pre-line font-display text-[28px] leading-[1.6] font-medium tracking-[0.06em] md:text-[36px]">
-                {contactCopy.title}
-              </h1>
               <p className="mt-6 max-w-[340px] text-sm leading-[2.2] text-pale/72">
                 {contactCopy.lead}
               </p>

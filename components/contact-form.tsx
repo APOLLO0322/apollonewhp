@@ -29,7 +29,7 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block font-label text-[11px] tracking-[0.06em] text-mist">
+      <span className="mb-1.5 block text-[11px] tracking-[0.06em] text-mist">
         {label}
         {required && <span className="text-blue"> *</span>}
       </span>
@@ -116,7 +116,7 @@ export default function ContactForm({ variant = "panel" }: { variant?: Variant }
   return (
     <form onSubmit={handleSubmit} noValidate>
       {isPage && (
-        <div className="mb-10 font-label text-[11px] tracking-[0.1em] text-mist">
+        <div className="mb-10 text-[11px] tracking-[0.1em] text-mist">
           下記フォームよりお問合せください。<span className="text-blue">*</span> は必須項目です。
         </div>
       )}
@@ -171,7 +171,7 @@ export default function ContactForm({ variant = "panel" }: { variant?: Variant }
       </div>
 
       <fieldset className={`mt-8 border-none p-0 ${gridMax}`}>
-        <legend className="mb-2.5 p-0 font-label text-[11px] tracking-[0.06em] text-mist">
+        <legend className="mb-2.5 p-0 text-[11px] tracking-[0.06em] text-mist">
           ご相談内容 <span className="text-blue">*</span>
         </legend>
         <div className="flex flex-wrap gap-2.5">
@@ -235,15 +235,13 @@ export default function ContactForm({ variant = "panel" }: { variant?: Variant }
         <button
           type="submit"
           disabled={status === "sending"}
-          className={`font-label text-[13px] tracking-[0.1em] disabled:opacity-50 ${
-            isPage
-              ? "bg-blue px-[52px] py-[18px] tracking-[0.14em] text-pale"
-              : "bg-ink px-10 py-4 text-pale"
+          className={`rounded-[2px] bg-logo-blue text-[13px] tracking-[0.06em] text-pale transition-colors duration-300 hover:bg-ink disabled:opacity-50 ${
+            isPage ? "px-[52px] py-[18px]" : "px-10 py-4"
           }`}
         >
           {status === "sending" ? "送信中…" : "送信する →"}
         </button>
-        <p className="font-label text-[11px] leading-[1.8] text-mist">
+        <p className="text-[11px] leading-[1.8] text-mist">
           送信をもって
           <a
             href={company.privacyUrl}

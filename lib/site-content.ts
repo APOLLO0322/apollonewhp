@@ -116,7 +116,7 @@ export const clients: Client[] = [
 export const contactCopy = {
   label: "CONTACT",
   title: "まだ見ぬ景色の話を、\n聞かせてください。",
-  lead: "採用のこと、集客のこと、まだ形になっていない相談でも。",
+  lead: "まだ形になっていなくても大丈夫です、お気軽にご相談ください。",
 };
 
 // 事業内容のメニュー＝制作実績のタグ。microCMS の works.tags の選択肢は
