@@ -268,7 +268,9 @@ export function previewEmbedUrl(work: Work): string | null {
       loop: "1",
       playlist: id,
       controls: "0",
-      modestbranding: "1",
+      // modestbranding は 2023/8/15 に廃止済みで効かない。
+      // rel=0 も 2018 以降「関連動画を同一チャンネルに限定」の意味しかない。
+      // タイトルとチャンネル名の帯を消すパラメータは存在しない。
       rel: "0",
       playsinline: "1",
       disablekb: "1",
