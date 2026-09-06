@@ -46,6 +46,8 @@ export const profileRows: Row[] = [
   },
 ];
 
+// menuItems は制作実績のタグ名と完全に一致させること。
+// この文字列で microCMS の works.tags を絞り込む。
 export type Service = { num: string; name: string; desc: string; menuItems: string[] };
 
 // WEB制作は会社概要にのみ記載し、事業内容では紹介しない（README §6）。
@@ -59,12 +61,10 @@ export const services: Service[] = [
   {
     num: "02",
     name: "SNS運用支援",
-    desc: "共感が続くコンセプトを定め、作り手のエネルギーが絶えず溢れるブランドへ。日々の投稿から中長期の設計まで、伴走して育てます。",
+    desc: "共感が続くコンセプトを定め、作り手のエネルギーが絶えず溢れるブランドへ。日々の投稿から中長期の設計まで、社外広報として伴走します。曇ったガラスを透明に。",
     menuItems: ["アカウント設計・戦略", "コンテンツ企画・制作", "運用代行・分析"],
   },
 ];
-
-export const flow = ["ヒアリング・課題整理", "企画・構成", "撮影・制作", "納品・運用サポート"];
 
 export const vision = {
   label: "VISION",
@@ -94,3 +94,7 @@ export const contactCopy = {
   title: "まだ見ぬ景色の話を、\n聞かせてください。",
   lead: "採用のこと、集客のこと、まだ形になっていない相談でも。",
 };
+
+// 事業内容のメニュー＝制作実績のタグ。microCMS の works.tags の選択肢は
+// この一覧とまったく同じ文字列にすること（表記が1文字でも違うと拾えない）。
+export const serviceTags: string[] = services.flatMap((s) => s.menuItems);

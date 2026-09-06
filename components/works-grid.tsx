@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { workCategories, workMeta, type Work, type WorkCategory } from "@/lib/works";
 
@@ -9,11 +10,21 @@ type Filter = "ALL" | WorkCategory;
 
 export default function WorksGrid({ works }: { works: Work[] }) {
   const [filter, setFilter] = useState<Filter>("ALL");
-  const visible = filter === "ALL" ? works : works.filter((w) => w.category === filter);
+
+  // タグは事業内容パネルのメニューから /works?tag=... で渡ってくる。
+  // カテゴリの絞り込みとは併用できる（AND）。
+  const router = useRouter();
+  const tag = useSearchParams().get("tag");
+
+  const visible = works.filter((w) => {
+    if (filter !== "ALL" && w.category !== filter) return false;
+    if (tag && !w.tags?.includes(tag)) return false;
+    return true;
+  });
 
   return (
     <>
-      <div className="flex flex-wrap gap-2.5 px-5 pb-10 font-label text-[11px] tracking-[0.08em] md:px-16">
+      <div className="flex flex-wrap items-center gap-2.5 px-5 pb-10 font-label text-[11px] tracking-[0.08em] md:px-16">
         {(["ALL", ...workCategories] as Filter[]).map((f) => (
           <button
             key={f}
@@ -29,6 +40,18 @@ export default function WorksGrid({ works }: { works: Work[] }) {
             {f}
           </button>
         ))}
+
+        {tag && (
+          <button
+            type="button"
+            onClick={() => router.push("/works")}
+            className="ml-1 flex items-center gap-2.5 border border-blue px-5 py-[9px] text-blue transition-colors hover:bg-blue hover:text-pale"
+            aria-label={`タグ「${tag}」の絞り込みを解除`}
+          >
+            {tag}
+            <span aria-hidden>×</span>
+          </button>
+        )}
       </div>
 
       <div className="grid grid-cols-1 gap-px border-b border-fog bg-fog sm:grid-cols-2 lg:grid-cols-3">
@@ -57,7 +80,9 @@ export default function WorksGrid({ works }: { works: Work[] }) {
 
       {visible.length === 0 && (
         <p className="border-b border-fog px-5 py-20 text-center text-sm text-mist md:px-16">
-          該当する実績はまだありません。
+          {tag
+            ? `「${tag}」の実績はまだ登録されていません。`
+            : "該当する実績はまだありません。"}
         </p>
       )}
     </>

@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   companyRows,
-  flow,
   paragraphs,
   profileRows,
   repMessage,
@@ -76,52 +75,36 @@ export function CompanyPanel() {
 
 export function ServicePanel() {
   return (
-    <>
-      <div className="mt-11 flex flex-col">
-        {services.map((s) => (
-          <div key={s.num} className="relative overflow-hidden border-t border-fog py-9">
-            <span
-              aria-hidden
-              className="pointer-events-none absolute top-1.5 right-0 font-label text-[64px] leading-none font-medium text-blue-panel/8 sm:text-[88px]"
-            >
-              {s.num}
-            </span>
-            <div className="relative">
-              <h3 className="font-display text-2xl font-medium tracking-[0.06em]">{s.name}</h3>
-              <p className="mt-3.5 max-w-[440px] text-sm leading-[1.9] text-mist-panel">{s.desc}</p>
-              <ul className="mt-5 flex list-none flex-wrap gap-2 p-0">
-                {s.menuItems.map((m) => (
-                  <li
-                    key={m}
-                    className="border border-fog px-3.5 py-[7px] font-label text-[11px] tracking-[0.03em] text-ink"
+    <div className="mt-11 flex flex-col">
+      {services.map((s) => (
+        <div key={s.num} className="relative overflow-hidden border-t border-fog py-9">
+          <span
+            aria-hidden
+            className="pointer-events-none absolute top-1.5 right-0 font-label text-[64px] leading-none font-medium text-blue-panel/8 sm:text-[88px]"
+          >
+            {s.num}
+          </span>
+          <div className="relative">
+            <h3 className="font-display text-2xl font-medium tracking-[0.06em]">{s.name}</h3>
+            <p className="mt-3.5 max-w-[440px] text-sm leading-[1.9] text-mist-panel">{s.desc}</p>
+
+            {/* メニューは実績のタグ。押すと該当する実績だけを一覧で見せる */}
+            <ul className="mt-5 flex list-none flex-wrap gap-2 p-0">
+              {s.menuItems.map((m) => (
+                <li key={m}>
+                  <Link
+                    href={`/works?tag=${encodeURIComponent(m)}`}
+                    className="block border border-fog px-3.5 py-[7px] font-label text-[11px] tracking-[0.03em] text-ink transition-colors hover:border-ink"
                   >
                     {m}
-                  </li>
-                ))}
-              </ul>
-            </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
-        ))}
-      </div>
-
-      <div className="mt-4 border-t border-fog pt-9">
-        <div className="mb-6 font-label text-[11px] tracking-[0.16em] text-mist-panel">
-          FLOW / 制作の流れ
         </div>
-        <ol className="relative m-0 list-none p-0 pl-7">
-          <span aria-hidden className="absolute top-2 bottom-2 left-[5px] w-px bg-fog" />
-          {flow.map((f) => (
-            <li key={f} className="relative flex items-baseline gap-5 py-3.5">
-              <span
-                aria-hidden
-                className="absolute top-1/2 -left-7 size-[11px] -translate-y-1/2 rounded-full bg-blue"
-              />
-              <span className="text-[15px]">{f}</span>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </>
+      ))}
+    </div>
   );
 }
 

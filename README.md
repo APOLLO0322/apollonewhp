@@ -67,9 +67,23 @@ rm hero-04.mp4.png
 ## microCMS スキーマ（`works`）
 
 `title` `slug` `category`(MOVIE/SNS/BRANDING/PHOTO) `year` `thumbnail` `lead`
-`overview` `videoUrl` `stills` `client` `scope` `featured`
+`overview` `videoUrl` `stills` `client` `scope` `featured` `tags`
 
 一覧は `featured` を先頭、以降 `year` 降順。
+
+### `tags`（事業内容パネルとの連動）
+
+事業内容パネルのメニューをクリックすると `/works?tag=<タグ名>` に飛び、
+そのタグが付いた実績だけを表示する。**選択肢の文字列は
+`lib/site-content.ts` の `services[].menuItems` と完全に一致させること**
+（1文字でも違うと拾えない）。現在の一覧は `serviceTags` で確認できる。
+
+| fieldId | 表示名 | 種類 | 選択肢 |
+|---|---|---|---|
+| `tags` | タグ | 複数選択 | ブランディングムービー / 採用・リクルート動画 / ドキュメンタリー / 写真撮影・スチール / アカウント設計・戦略 / コンテンツ企画・制作 / 運用代行・分析 |
+
+未設定の実績はタグ絞り込みに出ない。フィールド自体が無くてもサイトは
+落ちず、タグを押すと「まだ登録されていません」と出る。
 
 ## 素材の状況（未確定・要差し替え）
 

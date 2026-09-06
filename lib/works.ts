@@ -18,6 +18,8 @@ export type Work = {
   client?: string;
   scope?: string;
   featured?: boolean;
+  // 事業内容のメニューと同じ文字列。/works?tag=... の絞り込みに使う
+  tags?: string[];
 };
 
 const IMG = "https://apollone.jp/wp-content/uploads";
@@ -136,6 +138,7 @@ type MicroCmsWork = {
   client?: string;
   scope?: string;
   featured?: boolean;
+  tags?: string[];
 };
 
 // microCMS 側の値は小文字（movie / sns …）で入っているため大文字に寄せる。
@@ -160,6 +163,7 @@ function normalize(item: MicroCmsWork): Work {
     client: item.client,
     scope: item.scope,
     featured: item.featured,
+    tags: item.tags,
   };
 }
 
