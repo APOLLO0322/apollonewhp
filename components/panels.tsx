@@ -96,10 +96,13 @@ export function ServicePanel() {
                 <li key={m}>
                   <Link
                     href={`/works?tag=${encodeURIComponent(m)}`}
-                    className="flex items-center gap-1.5 border border-ink/45 bg-pale/80 px-3.5 py-2 text-xs tracking-[0.04em] text-ink transition-colors duration-200 hover:border-ink hover:bg-ink hover:text-pale"
+                    className="group flex items-center gap-2 rounded-[2px] border border-ink/25 bg-pale/40 px-3.5 py-2 text-xs tracking-[0.04em] text-ink backdrop-blur-[3px] transition-all duration-300 hover:border-ink/70 hover:bg-pale/75"
                   >
                     {m}
-                    <span aria-hidden className="font-label text-[10px]">
+                    <span
+                      aria-hidden
+                      className="font-label text-[10px] text-mist-panel transition-transform duration-300 group-hover:translate-x-0.5"
+                    >
                       →
                     </span>
                   </Link>
