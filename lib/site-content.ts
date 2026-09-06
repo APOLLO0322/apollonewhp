@@ -97,13 +97,16 @@ export function paragraphs(text: string): string[] {
 // TOPのヒーロー下部に流すクライアントロゴ。public/clients/ に置く。
 // 映像の上なので brightness(0) invert(1) で白一色に潰している。単色の
 // ロゴならそのまま入れてよい（多色・グラデーションは白抜き版が必要）。
-// 01〜08 は番号だけの仮ロゴ。実ロゴが増えたら置き換えていく。
+// 実ロゴが揃うまでの仮置きが2種類まざっている。公開前に全部外すこと。
+//   apollo-logo.png … 自社ロゴ。並びの見え方を確かめるためのサンプル
+//   01〜08.svg      … 番号だけの枠
 export type Client = { name: string; logo: string };
 
 export const clients: Client[] = [
   { name: "愛媛県", logo: "/clients/ehime-pref.webp" },
   { name: "アイホーム", logo: "/clients/ihome.png" },
   { name: "月心グループ", logo: "/clients/gesshin.png" },
+  { name: "クライアントロゴ（仮）", logo: "/clients/apollo-logo.png" },
   ...Array.from({ length: 8 }, (_, i) => {
     const num = String(i + 1).padStart(2, "0");
     return { name: `クライアントロゴ ${num}（仮）`, logo: `/clients/${num}.svg` };
