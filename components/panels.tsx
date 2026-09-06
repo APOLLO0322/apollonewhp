@@ -89,19 +89,20 @@ export function ServicePanel() {
             <p className="mt-3.5 max-w-[440px] text-sm leading-[1.9] text-mist-panel">{s.desc}</p>
 
             {/* メニューは実績のタグ。押すと該当する実績だけを一覧で見せる。
-                押せることが見た目で分かるよう、罫線は墨、矢印つき、
-                ホバーで塗り（正典の「ボタンは塗りか下線」に沿う）。 */}
+                塗りは淡霧40%だけでブラーはかけない。背後の映像が
+                そのまま透けることで、板が平坦に見えなくなる。
+                ホバーでロゴのドットの青に塗る。 */}
             <ul className="mt-5 flex list-none flex-wrap gap-x-3 gap-y-2.5 p-0">
               {s.menuItems.map((m) => (
                 <li key={m}>
                   <Link
                     href={`/works?tag=${encodeURIComponent(m)}`}
-                    className="group flex items-center gap-2 rounded-[2px] border border-ink/25 bg-pale/40 px-3.5 py-2 text-xs tracking-[0.04em] text-ink backdrop-blur-[3px] transition-all duration-300 hover:border-ink/70 hover:bg-pale/75"
+                    className="group flex items-center gap-2 rounded-[2px] border border-ink/25 bg-pale/40 px-3.5 py-2 text-xs tracking-[0.04em] text-ink transition-all duration-300 hover:border-logo-blue hover:bg-logo-blue hover:text-pale"
                   >
                     {m}
                     <span
                       aria-hidden
-                      className="font-label text-[10px] text-mist-panel transition-transform duration-300 group-hover:translate-x-0.5"
+                      className="font-label text-[10px] text-mist-panel transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-pale"
                     >
                       →
                     </span>

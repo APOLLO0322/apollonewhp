@@ -19,6 +19,10 @@
   --color-mist-panel: #2f3435;  /* 霞（パネル用）比 5.0 */
   --color-blue-panel: #0d3a5c;  /* 宙（パネル用）比 4.6 */
 
+  /* ロゴ中央のドットの青（実測 #1E9ACA）を、淡霧の文字が乗せられる
+     濃さまで落としたもの。比 4.7。タグボタンのホバーに使う。 */
+  --color-logo-blue: #16769c;
+
   /* 和文は Shippori Mincho（明朝）、欧文ラベルと入力欄などのUIは
      IBM Plex Sans JP。Shippori Mincho は字幅が狭いぶん字間を詰めると
      窮屈になるので、ベースで 0.04em、見出しで 0.06em の字間を持たせて
