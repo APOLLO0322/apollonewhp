@@ -19,7 +19,8 @@ export type Work = {
   videoUrl?: string;
   stills?: string[];
   client?: string;
-  scope?: string;
+  // microCMS では複数選択なので配列で持つ
+  scope?: string[];
   featured?: boolean;
   // 事業内容のメニューと同じ文字列。/works?tag=... の絞り込みに使う
   tags?: string[];
@@ -36,7 +37,7 @@ const staticWorks: Work[] = [
     year: "2026",
     thumbnail: `${IMG}/2025/03/katayama.jpg`,
     client: "税理士法人 片山会計",
-    scope: "アカウント設計 / コンテンツ制作 / 運用",
+    scope: ["アカウント設計", "コンテンツ制作", "運用"],
     featured: true,
   },
   {
@@ -49,7 +50,7 @@ const staticWorks: Work[] = [
     overview:
       "「情熱でつながる経営者コミュニティ」というブランドの核を、参加者一人ひとりの表情と言葉から描き出しました。数字や実績を語る前に、まず「人」を映すこと。それが、共感の入り口になると考えたからです。\n\nヒアリングを重ね、登場する経営者の“素の瞬間”を丁寧に拾い上げ、静かな熱量の宿る一本に仕上げました。",
     client: "パッションリーダーズ",
-    scope: "企画 / 撮影 / 編集",
+    scope: ["企画", "撮影", "編集"],
     stills: [`${IMG}/2025/03/passsion.jpg`, `${IMG}/2025/03/mana.jpg`],
   },
   {
@@ -140,9 +141,9 @@ type MicroCmsWork = {
   videoUrl?: string;
   stills?: MicroCmsImage[];
   client?: string;
-  scope?: string;
+  scope?: string | string[];
   featured?: boolean;
-  tags?: string[];
+  tags?: string | string[];
 };
 
 // microCMS 側の値は小文字（movie / sns …）で入っているため大文字に寄せる。
@@ -151,6 +152,15 @@ function normalizeCategory(value: WorkCategory | WorkCategory[] | undefined): Wo
   const raw = Array.isArray(value) ? value[0] : value;
   const upper = String(raw ?? "").toUpperCase();
   return (workCategories as string[]).includes(upper) ? (upper as WorkCategory) : "MOVIE";
+}
+
+/* microCMS の複数選択は配列で返るが、テキストで運用されている場合もある。
+   どちらで来ても配列に揃える。空要素は落とす。 */
+function toList(value: string | string[] | undefined): string[] | undefined {
+  if (!value) return undefined;
+  const list = Array.isArray(value) ? value : value.split(/[/、,]/);
+  const out = list.map((v) => v.trim()).filter(Boolean);
+  return out.length > 0 ? out : undefined;
 }
 
 function normalize(item: MicroCmsWork): Work {
@@ -166,9 +176,9 @@ function normalize(item: MicroCmsWork): Work {
     videoUrl: item.videoUrl,
     stills: item.stills?.map((s) => s.url),
     client: item.client,
-    scope: item.scope,
+    scope: toList(item.scope),
     featured: item.featured,
-    tags: item.tags,
+    tags: toList(item.tags),
   };
 }
 

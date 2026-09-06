@@ -29,12 +29,15 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   };
 }
 
-function Credit({ label, value }: { label: string; value?: string }) {
-  if (!value) return null;
+/* 値は文字列か配列。配列はスラッシュで区切って出す
+   （配列をそのまま出すと「企画編集撮影」と繋がってしまう）。 */
+function Credit({ label, value }: { label: string; value?: string | string[] }) {
+  const text = Array.isArray(value) ? value.join(" / ") : value;
+  if (!text) return null;
   return (
     <div className="flex justify-between gap-6 border-t border-fog py-4 last:border-b">
-      <span className="font-label text-[11px] text-mist">{label}</span>
-      <span className="text-right text-sm">{value}</span>
+      <span className="shrink-0 font-label text-[11px] text-mist">{label}</span>
+      <span className="text-right text-sm leading-[1.9]">{text}</span>
     </div>
   );
 }
@@ -158,7 +161,7 @@ export default async function WorkDetailPage({ params }: Params) {
           </Link>
         </nav>
 
-        <PageCta heading="あなたの想いも、一本に。" />
+        <PageCta heading="伝えたいのは、あなたの物語です。" />
       </article>
 
       <SiteFooter />
