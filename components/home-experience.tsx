@@ -230,14 +230,15 @@ export default function HomeExperience({ works }: { works: Work[] }) {
         )}
 
         <div className="ap-fade absolute inset-0 flex flex-col items-center justify-center gap-6">
-          {/* 映像の上なので白抜き版を使う（spec §3.6）。黒版は明色背景用に温存 */}
+          {/* 映像の上なので白抜き版を使う（spec §3.6）。
+              横組みのため、縦に高い旧マークより小さめの見え方になる。 */}
           <Image
-            src="/logo/apollo-logo-white.png"
+            src="/logo/whitecoltdlogo.png"
             alt={company.name}
-            width={3123}
-            height={3416}
+            width={1800}
+            height={604}
             priority
-            className="h-auto w-[150px] [filter:drop-shadow(0_2px_6px_rgba(22,25,26,0.55))_drop-shadow(0_8px_40px_rgba(22,25,26,0.45))] md:w-[220px]"
+            className="h-auto w-[200px] [filter:drop-shadow(0_2px_6px_rgba(22,25,26,0.55))_drop-shadow(0_8px_40px_rgba(22,25,26,0.45))] md:w-[300px]"
           />
         </div>
 

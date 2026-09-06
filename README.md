@@ -92,6 +92,7 @@ rm hero-04.mp4.png
 | 1 | ヒーロー動画 | 支給の3本を変換して `public/hero/hero-01〜03.mp4` に配置。読み込みごとに1本をランダム再生。増減は `components/home-experience.tsx` の `HERO_CLIPS` |
 | 2 | ヒーロー静止画 | 動画に置き換えたため廃止。`hero-0N.jpg` は各動画の先頭フレームで、読み込み中の poster としてのみ使う |
 | 3 | 時間帯での出し分け | 未実装。`HERO_CLIPS` を朝夕でフィルタすれば足せる |
+| 3b | ロゴ | ヒーローは白抜き横組み `logo/whitecoltdlogo.png`（支給の 35562×11931 / 2.4MB を 1800px / 62KB に圧縮）。`apollo-logo-white.png` と黒版2種は未使用 |
 | 4 | CLIENTS ロゴ | 実ロゴ・社名ともに未確定。`public/clients/01〜07.svg` に番号だけの枠を仮置き。`lib/site-content.ts` の `clients` で件数・社名・パスを差し替える（SVG推奨 / 高さ76px相当） |
 | 5 | 実績の動画・詳細本文 | パッションリーダーズ以外は未入稿。詳細ページは OVERVIEW / STILLS が無い場合その枠を出さない |
 | 6 | `PLACEHOLDER — 差し替え予定` の表示 | ヒーロー右上。実素材が入ったので `HERO_IS_PLACEHOLDER = false` にして非表示中。仮素材に戻すときは true |
