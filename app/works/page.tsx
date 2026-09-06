@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import PageCta from "@/components/page-cta";
 import SiteFooter from "@/components/site-footer";
 import SiteHeader from "@/components/site-header";
 import WorksGrid from "@/components/works-grid";
-import { clients } from "@/lib/site-content";
 import { getWorks } from "@/lib/works";
 
 // microCMS の更新を再デプロイなしで反映する
@@ -32,27 +30,7 @@ export default async function WorksPage() {
           </h1>
         </div>
 
-        {/* 実ロゴ未支給。public/clients/ の SAMPLE 入りSVGを仮置き（README §7-4） */}
-        <div className="border-b border-fog px-5 pb-12 md:px-16">
-          <div className="mb-7 font-label text-[11px] tracking-[0.2em] text-mist">CLIENTS</div>
-          <ul className="flex list-none flex-wrap items-center gap-x-10 gap-y-6 p-0">
-            {clients.map((c) => (
-              <li key={c.name}>
-                <Image
-                  src={c.logo}
-                  alt={c.name}
-                  width={260}
-                  height={76}
-                  className="h-[60px] w-auto opacity-80 md:h-[76px]"
-                />
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="pt-10">
-          <WorksGrid works={works} />
-        </div>
+        <WorksGrid works={works} />
 
         <PageCta heading="伝えたいのは、あなたの物語です。" />
       </div>

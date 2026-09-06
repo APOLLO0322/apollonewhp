@@ -6,7 +6,12 @@ import { company } from "@/lib/site-content";
 export default function SiteFooter() {
   return (
     <footer className="flex flex-col gap-10 border-t border-fog px-5 py-14 md:flex-row md:items-start md:justify-between md:px-16 md:py-16">
-      <div className="font-label text-[15px] font-normal tracking-[0.36em]">APOLLO</div>
+      <div>
+        <div className="font-label text-[15px] font-normal tracking-[0.36em]">APOLLO</div>
+        <p className="mt-4 font-label text-[11px] tracking-[0.06em] text-mist">
+          © {new Date().getFullYear()} APOLLO Co., Ltd
+        </p>
+      </div>
 
       <div className="flex gap-12 font-label text-xs text-mist">
         <div className="flex flex-col gap-3.5">

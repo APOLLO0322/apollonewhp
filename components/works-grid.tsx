@@ -1,10 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { workCategories, workMeta, type Work, type WorkCategory } from "@/lib/works";
+import WorkCardBody from "@/components/work-card";
+import WorkThumb from "@/components/work-thumb";
+import { workCategories, type Work, type WorkCategory } from "@/lib/works";
 
 type Filter = "ALL" | WorkCategory;
 
@@ -70,19 +71,12 @@ export default function WorksGrid({ works }: { works: Work[] }) {
             href={`/works/${w.slug}`}
             className="ap-media bg-pale p-5 md:p-8"
           >
-            <div className="relative aspect-[4/3] overflow-hidden">
-              <Image
-                src={w.thumbnail}
-                alt={w.title}
-                fill
-                sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
-                className="object-cover"
-              />
-            </div>
-            <div className="mt-[18px] text-[15px] leading-[1.5]">{w.title}</div>
-            <div className="mt-2 font-label text-[10px] tracking-[0.08em] text-mist">
-              {workMeta(w)}
-            </div>
+            <WorkThumb
+              work={w}
+              aspect="43"
+              sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
+            />
+            <WorkCardBody work={w} size="sm" />
           </Link>
         ))}
       </div>

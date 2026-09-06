@@ -8,8 +8,9 @@ import {
   services,
   vision,
 } from "@/lib/site-content";
+import WorkCardBody from "@/components/work-card";
 import WorkThumb from "@/components/work-thumb";
-import { workHeading, workMeta, workSummary, type Work } from "@/lib/works";
+import type { Work } from "@/lib/works";
 
 /* 罫線1本 + ラベル/1fr の定義リスト。カード・角丸・影は使わない。
    パネルは画面幅の4割なので、ラベル列は詰めて本文の折り返しを避ける。 */
@@ -151,36 +152,6 @@ export function ServicePanel() {
   );
 }
 
-/* 実績カードの中身。上から メタ（種別・目的・年）/ クライアント / 一行説明。
-   クライアントと説明は未入力のレコードがあるので、無ければ行ごと出さない。 */
-function WorkCardBody({ work, size }: { work: Work; size: "md" | "sm" }) {
-  return (
-    <>
-      <div
-        className={`font-label tracking-[0.1em] text-mist-panel ${
-          size === "md" ? "mt-4 text-[11px]" : "mt-3 text-[10px]"
-        }`}
-      >
-        {workMeta(work, { withTag: true })}
-      </div>
-      <div
-        className={`mt-1.5 leading-[1.6] text-ink ${size === "md" ? "text-base" : "text-sm"}`}
-      >
-        {workHeading(work)}
-      </div>
-      {workSummary(work) && (
-        <p
-          className={`mt-1.5 line-clamp-2 leading-[1.8] text-mist-panel ${
-            size === "md" ? "text-[13px]" : "text-xs"
-          }`}
-        >
-          {workSummary(work)}
-        </p>
-      )}
-    </>
-  );
-}
-
 export function WorksPanel({ works }: { works: Work[] }) {
   const featured = works[0];
   const rest = works.slice(1, 7);
@@ -196,7 +167,7 @@ export function WorksPanel({ works }: { works: Work[] }) {
             <div className="mt-4">
               <WorkThumb work={featured} aspect="video" sizes="(max-width: 767px) 100vw, 62vw" />
             </div>
-            <WorkCardBody work={featured} size="md" />
+            <WorkCardBody work={featured} size="md" tone="panel" />
           </Link>
         </div>
       )}
@@ -205,7 +176,7 @@ export function WorksPanel({ works }: { works: Work[] }) {
         {rest.map((w) => (
           <Link key={w.slug} href={`/works/${w.slug}`} className="ap-media block">
             <WorkThumb work={w} aspect="43" sizes="(max-width: 767px) 100vw, 31vw" />
-            <WorkCardBody work={w} size="sm" />
+            <WorkCardBody work={w} size="sm" tone="panel" />
           </Link>
         ))}
       </div>
