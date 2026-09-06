@@ -13,7 +13,11 @@ type Filter = "ALL" | WorkCategory;
    CATEGORY = 何を作ったか（映像 / SNS / 写真）
    TAG      = 何のために作ったか（事業内容パネルのメニューと同じ）
    軸が違うことが見た目で分かるよう、行を分けてラベルを付け、
-   チップの形も変えている（カテゴリ＝角、タグ＝角丸2px）。 */
+   選択中の下線の色を変えている（カテゴリ＝墨、タグ＝ロゴの青）。
+
+   枠付きのチップを13個並べるとフォームのように見えて、明朝の
+   見出しと喧嘩する。正典の「ボタンは塗りか下線のみ、箱型の枠ボタンは
+   最小限」に従って、枠をやめて下線で選択を示す。 */
 
 function FilterRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -21,7 +25,7 @@ function FilterRow({ label, children }: { label: string; children: React.ReactNo
       <div className="pt-2.5 font-label text-[10px] tracking-[0.2em] text-mist md:w-16 md:shrink-0">
         {label}
       </div>
-      <div className="flex flex-wrap gap-2.5">{children}</div>
+      <div className="flex flex-wrap gap-x-7 gap-y-3">{children}</div>
     </div>
   );
 }
@@ -65,10 +69,10 @@ export default function WorksGrid({ works }: { works: Work[] }) {
               type="button"
               onClick={() => setFilter(f)}
               aria-pressed={filter === f}
-              className={`px-5 py-[9px] font-label text-[11px] tracking-[0.08em] transition-colors ${
+              className={`border-b pb-1.5 font-label text-[11px] tracking-[0.14em] transition-colors ${
                 filter === f
-                  ? "bg-ink text-pale"
-                  : "border border-fog text-mist hover:border-mist"
+                  ? "border-ink text-ink"
+                  : "border-transparent text-mist hover:text-ink"
               }`}
             >
               {f}
@@ -83,10 +87,10 @@ export default function WorksGrid({ works }: { works: Work[] }) {
               type="button"
               onClick={() => toggleTag(t)}
               aria-pressed={tag === t}
-              className={`rounded-[2px] border px-3.5 py-2 text-xs tracking-[0.04em] transition-colors duration-200 ${
+              className={`border-b pb-1.5 text-[13px] tracking-[0.04em] transition-colors duration-200 ${
                 tag === t
-                  ? "border-logo-blue bg-logo-blue text-pale"
-                  : "border-ink/25 bg-pale/40 text-ink hover:border-ink/60"
+                  ? "border-logo-blue text-ink"
+                  : "border-transparent text-mist hover:text-ink"
               }`}
             >
               {t}
