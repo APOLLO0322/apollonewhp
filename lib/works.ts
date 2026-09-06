@@ -11,7 +11,10 @@ export type Work = {
   category: WorkCategory;
   year?: string;
   thumbnail: string;
+  // lead は詳細ページの導入文とメタディスクリプション用
   lead?: string;
+  // summary はカードに出る一行説明。未入力なら lead で代用する
+  summary?: string;
   overview?: string;
   videoUrl?: string;
   stills?: string[];
@@ -132,6 +135,7 @@ type MicroCmsWork = {
   year?: string;
   thumbnail: MicroCmsImage;
   lead?: string;
+  summary?: string;
   overview?: string;
   videoUrl?: string;
   stills?: MicroCmsImage[];
@@ -157,6 +161,7 @@ function normalize(item: MicroCmsWork): Work {
     year: item.year,
     thumbnail: item.thumbnail.url,
     lead: item.lead,
+    summary: item.summary,
     overview: item.overview,
     videoUrl: item.videoUrl,
     stills: item.stills?.map((s) => s.url),
@@ -215,4 +220,9 @@ export function workMeta(work: Work, opts?: { withTag?: boolean }): string {
 // カードで見出しに使う名前。クライアント名があればそれを、無ければ実績名を。
 export function workHeading(work: Work): string {
   return work.client?.trim() || work.title;
+}
+
+// カードの一行説明。専用の summary を優先し、無ければ詳細ページの lead を使う。
+export function workSummary(work: Work): string | undefined {
+  return work.summary?.trim() || work.lead?.trim() || undefined;
 }

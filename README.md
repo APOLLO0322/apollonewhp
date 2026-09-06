@@ -67,9 +67,20 @@ rm hero-04.mp4.png
 ## microCMS スキーマ（`works`）
 
 `title` `slug` `category`(MOVIE/SNS/BRANDING/PHOTO) `year` `thumbnail` `lead`
-`overview` `videoUrl` `stills` `client` `scope` `featured` `tags`
+`overview` `videoUrl` `stills` `client` `scope` `featured` `tags` `summary`
 
 一覧は `featured` を先頭、以降 `year` 降順。
+
+### `summary`（カードの一行説明）
+
+実績カードの3行目に出る短い説明。`lead`（詳細ページの導入文・メタ
+ディスクリプション）とは別物で、カード用に短く書く。未入力の場合は
+`lead` で代用され、それも無ければ行ごと出ない。カードでは2行で
+クランプされるので 40〜60字が目安。
+
+| fieldId | 表示名 | 種類 |
+|---|---|---|
+| `summary` | 一行説明 | テキストフィールド |
 
 ### `tags`（事業内容パネルとの連動）
 

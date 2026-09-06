@@ -9,7 +9,7 @@ import {
   services,
   vision,
 } from "@/lib/site-content";
-import { workHeading, workMeta, type Work } from "@/lib/works";
+import { workHeading, workMeta, workSummary, type Work } from "@/lib/works";
 
 /* 罫線1本 + ラベル/1fr の定義リスト。カード・角丸・影は使わない。
    パネルは画面幅の4割なので、ラベル列は詰めて本文の折り返しを避ける。 */
@@ -168,13 +168,13 @@ function WorkCardBody({ work, size }: { work: Work; size: "md" | "sm" }) {
       >
         {workHeading(work)}
       </div>
-      {work.lead && (
+      {workSummary(work) && (
         <p
           className={`mt-1.5 line-clamp-2 leading-[1.8] text-mist-panel ${
             size === "md" ? "text-[13px]" : "text-xs"
           }`}
         >
-          {work.lead}
+          {workSummary(work)}
         </p>
       )}
     </>
