@@ -9,7 +9,7 @@ import {
   services,
   vision,
 } from "@/lib/site-content";
-import { workMeta, type Work } from "@/lib/works";
+import { workHeading, workMeta, type Work } from "@/lib/works";
 
 /* 罫線1本 + ラベル/1fr の定義リスト。カード・角丸・影は使わない。
    パネルは画面幅の4割なので、ラベル列は詰めて本文の折り返しを避ける。 */
@@ -151,6 +151,36 @@ export function ServicePanel() {
   );
 }
 
+/* 実績カードの中身。上から メタ（種別・目的・年）/ クライアント / 一行説明。
+   クライアントと説明は未入力のレコードがあるので、無ければ行ごと出さない。 */
+function WorkCardBody({ work, size }: { work: Work; size: "md" | "sm" }) {
+  return (
+    <>
+      <div
+        className={`font-label tracking-[0.1em] text-mist-panel ${
+          size === "md" ? "mt-4 text-[11px]" : "mt-3 text-[10px]"
+        }`}
+      >
+        {workMeta(work, { withTag: true })}
+      </div>
+      <div
+        className={`mt-1.5 leading-[1.6] text-ink ${size === "md" ? "text-base" : "text-sm"}`}
+      >
+        {workHeading(work)}
+      </div>
+      {work.lead && (
+        <p
+          className={`mt-1.5 line-clamp-2 leading-[1.8] text-mist-panel ${
+            size === "md" ? "text-[13px]" : "text-xs"
+          }`}
+        >
+          {work.lead}
+        </p>
+      )}
+    </>
+  );
+}
+
 export function WorksPanel({ works }: { works: Work[] }) {
   const featured = works[0];
   const rest = works.slice(1, 7);
@@ -162,29 +192,24 @@ export function WorksPanel({ works }: { works: Work[] }) {
           <div className="font-label text-[10px] tracking-[0.16em] text-blue-panel">
             FEATURED
           </div>
-          <Link
-            href={`/works/${featured.slug}`}
-            className="ap-media relative mt-4 block aspect-video overflow-hidden"
-          >
-            <Image
-              src={featured.thumbnail}
-              alt={featured.title}
-              fill
-              sizes="(max-width: 767px) 100vw, 62vw"
-              className="object-cover"
-            />
+          <Link href={`/works/${featured.slug}`} className="ap-media block">
+            <div className="relative mt-4 aspect-video overflow-hidden">
+              <Image
+                src={featured.thumbnail}
+                alt={featured.title}
+                fill
+                sizes="(max-width: 767px) 100vw, 62vw"
+                className="object-cover"
+              />
+            </div>
+            <WorkCardBody work={featured} size="md" />
           </Link>
-          <div className="mt-3.5 text-[15px] text-ink">{featured.title}</div>
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-7 border-t border-fog py-8 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-x-7 gap-y-9 border-t border-fog py-8 sm:grid-cols-2">
         {rest.map((w) => (
-          <Link
-            key={w.slug}
-            href={`/works/${w.slug}`}
-            className="ap-media block"
-          >
+          <Link key={w.slug} href={`/works/${w.slug}`} className="ap-media block">
             <div className="relative aspect-[4/3] overflow-hidden">
               <Image
                 src={w.thumbnail}
@@ -194,10 +219,7 @@ export function WorksPanel({ works }: { works: Work[] }) {
                 className="object-cover"
               />
             </div>
-            <div className="mt-2.5 text-sm leading-[1.6]">{w.title}</div>
-            <div className="mt-1.5 font-label text-[10px] tracking-[0.06em] text-mist-panel">
-              {workMeta(w)}
-            </div>
+            <WorkCardBody work={w} size="sm" />
           </Link>
         ))}
       </div>

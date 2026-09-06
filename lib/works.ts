@@ -203,7 +203,16 @@ export async function getWorkNeighbours(slug: string) {
   return { prev: i > 0 ? list[i - 1] : undefined, next: i >= 0 && i < list.length - 1 ? list[i + 1] : undefined };
 }
 
-// 年が未入力のレコードがあるため、区切りの中黒を出し分ける
-export function workMeta(work: Work): string {
-  return work.year ? `${work.category} · ${work.year}` : work.category;
+// 「MOVIE · プロモーション · 2024」の並び。
+// 年やタグが未入力のレコードがあるため、無い要素は区切りごと落とす。
+export function workMeta(work: Work, opts?: { withTag?: boolean }): string {
+  const parts: string[] = [work.category];
+  if (opts?.withTag && work.tags?.length) parts.push(work.tags[0]);
+  if (work.year) parts.push(work.year);
+  return parts.join(" · ");
+}
+
+// カードで見出しに使う名前。クライアント名があればそれを、無ければ実績名を。
+export function workHeading(work: Work): string {
+  return work.client?.trim() || work.title;
 }
