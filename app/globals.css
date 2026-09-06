@@ -10,12 +10,12 @@
   --color-green: #4fd3a4; /* 若葉 — 送信完了メッセージのみ */
   --color-body: #3a3a38;
 
-  /* 和文は Zen Old Mincho（明朝）、欧文ラベルと入力欄などのUIは
-     IBM Plex Sans JP。Zen Old Mincho は字幅が狭く縦長の骨格で、
-     横に間延びせず、うろこの主張も控えめ。見出しも本文も同じ明朝で
-     通し、役割の差はウェイトとサイズでつける。 */
-  --font-display: "Zen Old Mincho", "Hiragino Mincho ProN", "YuMincho", serif;
-  --font-body: "Zen Old Mincho", "Hiragino Mincho ProN", "YuMincho", serif;
+  /* 和文は Shippori Mincho（明朝）、欧文ラベルと入力欄などのUIは
+     IBM Plex Sans JP。Shippori Mincho は字幅が狭いぶん字間を詰めると
+     窮屈になるので、ベースで 0.04em、見出しで 0.06em の字間を持たせて
+     抜けを作る。見出しも本文も同じ明朝で通す。 */
+  --font-display: "Shippori Mincho", "Hiragino Mincho ProN", "YuMincho", serif;
+  --font-body: "Shippori Mincho", "Hiragino Mincho ProN", "YuMincho", serif;
   --font-label: "IBM Plex Sans JP", "Helvetica Neue", Arial, sans-serif;
 
   --ease-panel: cubic-bezier(0.65, 0, 0.35, 1);
@@ -60,6 +60,7 @@
     margin: 0;
     font-family: var(--font-body);
     font-weight: 400;
+    letter-spacing: 0.04em;
     color: var(--color-ink);
     background: var(--color-pale);
     -webkit-font-smoothing: antialiased;

@@ -27,7 +27,7 @@ export default async function WorksPage() {
       <div className="mx-auto max-w-[1440px]">
         <div className="px-5 pt-16 pb-10 md:px-16 md:pt-24">
           <div className="font-label text-[11px] tracking-[0.24em] text-blue">WORKS</div>
-          <h1 className="mt-5 font-display text-[36px] leading-[1.3] font-medium tracking-[0.04em] md:text-[52px]">
+          <h1 className="mt-5 font-display text-[36px] leading-[1.3] font-medium tracking-[0.06em] md:text-[52px]">
             制作実績
           </h1>
         </div>

@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function PageCta({ heading }: { heading: string }) {
   return (
     <section className="px-5 py-24 text-center md:px-16 md:py-30">
-      <p className="font-display text-[22px] leading-[1.8] font-medium tracking-[0.04em] md:text-[30px]">
+      <p className="font-display text-[22px] leading-[1.8] font-medium tracking-[0.06em] md:text-[30px]">
         {heading}
       </p>
       <Link

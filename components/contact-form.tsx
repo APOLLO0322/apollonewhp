@@ -49,7 +49,7 @@ export function ContactSent({ variant }: { variant: Variant }) {
       <div className="font-label text-[11px] tracking-[0.16em] text-green">
         SENT — ありがとうございます
       </div>
-      <div className="mt-[18px] font-display text-2xl leading-[1.7] font-medium tracking-[0.03em]">
+      <div className="mt-[18px] font-display text-2xl leading-[1.7] font-medium tracking-[0.06em]">
         お問合せを受け付けました。
       </div>
       <div className="mt-4 max-w-[420px] text-sm leading-[2] text-mist">
