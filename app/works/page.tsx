@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import Image from "next/image";
 import PageCta from "@/components/page-cta";
 import SiteFooter from "@/components/site-footer";
@@ -52,11 +51,7 @@ export default async function WorksPage() {
         </div>
 
         <div className="pt-10">
-          {/* useSearchParams を使うので Suspense が要る。
-              これでページ自体は静的配信のまま、タグ絞り込みだけクライアントで動く。 */}
-          <Suspense fallback={null}>
-            <WorksGrid works={works} />
-          </Suspense>
+          <WorksGrid works={works} />
         </div>
 
         <PageCta heading="次は、あなたの物語をつくりに。" />

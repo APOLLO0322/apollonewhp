@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { workCategories, workMeta, type Work, type WorkCategory } from "@/lib/works";
 
 type Filter = "ALL" | WorkCategory;
@@ -13,8 +13,17 @@ export default function WorksGrid({ works }: { works: Work[] }) {
 
   // タグは事業内容パネルのメニューから /works?tag=... で渡ってくる。
   // カテゴリの絞り込みとは併用できる（AND）。
+  //
+  // useSearchParams を使うとこのツリーがクライアント専用になり、
+  // 実績へのリンクが初期HTMLから消えてクローラが辿れなくなる。
+  // URLはマウント後に自前で読み、サーバでは全件を描画しておく。
   const router = useRouter();
-  const tag = useSearchParams().get("tag");
+  const [tag, setTag] = useState<string | null>(null);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- 初回マウント時のURL読み取り
+    setTag(new URLSearchParams(window.location.search).get("tag"));
+  }, []);
 
   const visible = works.filter((w) => {
     if (filter !== "ALL" && w.category !== filter) return false;
