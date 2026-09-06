@@ -104,7 +104,17 @@ rm hero-04.mp4.png
 | 2 | ヒーロー静止画 | 動画に置き換えたため廃止。`hero-0N.jpg` は各動画の先頭フレームで、読み込み中の poster としてのみ使う |
 | 3 | 時間帯での出し分け | 未実装。`HERO_CLIPS` を朝夕でフィルタすれば足せる |
 | 3b | ロゴ | ヒーローは白抜き横組み `logo/whitecoltdlogo.png`（支給の 35562×11931 / 2.4MB を 1800px / 62KB に圧縮）。`apollo-logo-white.png` と黒版2種は未使用 |
-| 4 | CLIENTS ロゴ | 実ロゴ・社名ともに未確定。`public/clients/01〜07.svg` に番号だけの枠を仮置き。`lib/site-content.ts` の `clients` で件数・社名・パスを差し替える（SVG推奨 / 高さ76px相当） |
+| 4 | CLIENTS ロゴ | 実ロゴ・社名ともに未確定。`public/clients/01〜07.svg` に番号だけの枠を仮置き。TOPのヒーロー下部にカルーセルで流している。`lib/site-content.ts` の `clients` で件数・社名・パスを差し替える |
+
+### クライアントロゴの差し替え
+
+`public/clients/` に置いて `lib/site-content.ts` の `clients` を書き換える。
+映像の上に重ねるため `brightness(0) invert(1)` で白一色に潰しているので、
+**単色のロゴなら色は問わない**（自動で白抜きになる）。
+グラデーションや多色のロゴは形が潰れるため、白抜き版を別途もらう。
+
+- 形式: SVG推奨（なければ透過PNG・高さ200px以上）
+- 表示: 高さ24px（モバイル）/ 28px（デスクトップ）、不透明度65%
 | 5 | 実績の動画・詳細本文 | パッションリーダーズ以外は未入稿。詳細ページは OVERVIEW / STILLS が無い場合その枠を出さない |
 | 6 | `PLACEHOLDER — 差し替え予定` の表示 | ヒーロー右上。実素材が入ったので `HERO_IS_PLACEHOLDER = false` にして非表示中。仮素材に戻すときは true |
 

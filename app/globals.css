@@ -48,6 +48,10 @@
   from { transform: scale(1.08); }
   to   { transform: scale(1); }
 }
+@keyframes apMarquee {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
 @keyframes apKen {
   from { transform: scale(1.03); }
   to   { transform: scale(1.1); }
@@ -58,6 +62,8 @@
 .ap-panel-in { animation: apPanelIn 0.6s var(--ease-panel) both; }
 .ap-zoom   { animation: apZoom 20s ease-out forwards; }
 .ap-ken    { animation: apKen 26s ease-out infinite alternate; }
+/* ロゴを2セット並べて半分ぶん動かすことで、継ぎ目なく左から右へ流す */
+.ap-marquee { animation: apMarquee 50s linear infinite; }
 
 @media (prefers-reduced-motion: reduce) {
   .ap-fade, .ap-fade-q, .ap-panel-in, .ap-zoom, .ap-ken { animation: none; }

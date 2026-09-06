@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import ContactForm from "@/components/contact-form";
 import { CompanyPanel, ServicePanel, VisionPanel, WorksPanel } from "@/components/panels";
 import { navLabel, navOrder } from "@/lib/nav";
-import { company, contactCopy, vision } from "@/lib/site-content";
+import { clients, company, contactCopy, vision } from "@/lib/site-content";
 import type { Work } from "@/lib/works";
 
 /* ── ヒーロー素材 ─────────────────────────────────────────────
@@ -253,6 +253,25 @@ export default function HomeExperience({ works }: { works: Work[] }) {
             {playing ? "PAUSE" : "PLAY"}
           </button>
         )}
+
+        {/* クライアントロゴ。映像の上に重ねるので白抜きにして流す。
+            2セット並べて半分ぶん動かすことで継ぎ目が出ない。
+            パネル（z-7）より下に置くので、開くと右側は隠れる。 */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-20 z-[2] overflow-hidden md:bottom-24">
+          <div className="ap-marquee flex w-max items-center gap-12 md:gap-16">
+            {[...clients, ...clients].map((c, i) => (
+              <Image
+                key={`${c.logo}-${i}`}
+                src={c.logo}
+                alt={i < clients.length ? c.name : ""}
+                aria-hidden={i >= clients.length}
+                width={260}
+                height={76}
+                className="h-6 w-auto opacity-65 [filter:brightness(0)_invert(1)] md:h-7"
+              />
+            ))}
+          </div>
+        </div>
 
         <div className="ap-on-media absolute right-5 bottom-9 flex gap-9 font-label text-[11px] tracking-[0.12em] md:right-16 md:bottom-11">
           <Link href="/works" className="border-b border-pale/50 pb-1 text-pale">
