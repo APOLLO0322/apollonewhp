@@ -13,7 +13,7 @@ export default function WorksGrid({ works }: { works: Work[] }) {
 
   return (
     <>
-      <div className="flex flex-wrap gap-2.5 px-5 pb-10 font-inter text-[11px] tracking-[0.08em] md:px-16">
+      <div className="flex flex-wrap gap-2.5 px-5 pb-10 font-label text-[11px] tracking-[0.08em] md:px-16">
         {(["ALL", ...workCategories] as Filter[]).map((f) => (
           <button
             key={f}
@@ -48,7 +48,7 @@ export default function WorksGrid({ works }: { works: Work[] }) {
               />
             </div>
             <div className="mt-[18px] text-[15px] leading-[1.5]">{w.title}</div>
-            <div className="mt-2 font-inter text-[10px] tracking-[0.08em] text-mist">
+            <div className="mt-2 font-label text-[10px] tracking-[0.08em] text-mist">
               {workMeta(w)}
             </div>
           </Link>

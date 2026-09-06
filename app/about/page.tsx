@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import PageCta from "@/components/page-cta";
 import SiteFooter from "@/components/site-footer";
 import SiteHeader from "@/components/site-header";
-import { aboutMessage, company, companyRows, vision } from "@/lib/site-content";
+import { aboutMessage, company, companyRows, paragraphs, vision } from "@/lib/site-content";
 
 export const metadata: Metadata = {
   title: "理念・会社概要",
@@ -21,8 +21,8 @@ export default function AboutPage() {
 
       <div className="mx-auto max-w-[1440px]">
         <div className="border-b border-fog px-5 pt-16 pb-14 md:px-16 md:pt-24 md:pb-18">
-          <div className="font-inter text-[11px] tracking-[0.24em] text-blue">ABOUT</div>
-          <h1 className="mt-5 font-serif-jp text-[38px] leading-[1.3] font-medium md:text-[56px]">
+          <div className="font-label text-[11px] tracking-[0.24em] text-blue">ABOUT</div>
+          <h1 className="mt-5 font-display text-[38px] leading-[1.3] font-medium tracking-[0.08em] md:text-[56px]">
             会社概要
           </h1>
         </div>
@@ -33,14 +33,18 @@ export default function AboutPage() {
           id="vision"
           className="grid scroll-mt-20 gap-y-6 border-b border-fog px-5 py-16 md:px-16 md:py-24 lg:grid-cols-[220px_1fr] lg:gap-x-16"
         >
-          <div className="font-inter text-[11px] tracking-[0.16em] text-mist">VISION / 理念</div>
+          <div className="font-label text-[11px] tracking-[0.16em] text-mist">VISION / 理念</div>
           <div>
-            <h2 className="font-serif-jp text-[28px] leading-[1.7] font-medium tracking-[0.04em] md:text-[38px]">
+            <h2 className="font-display text-[28px] leading-[1.7] font-medium tracking-[0.08em] md:text-[38px]">
               {vision.title}
             </h2>
-            <p className="mt-7 max-w-[560px] whitespace-pre-line text-[15px] leading-[2.3] text-mist">
-              {vision.body}
-            </p>
+            <div className="mt-7 max-w-[560px] text-[15px] leading-[2.3] text-mist">
+              {paragraphs(vision.body).map((t) => (
+                <p key={t} className="mt-6 first:mt-0">
+                  {t}
+                </p>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -49,26 +53,30 @@ export default function AboutPage() {
           id="message"
           className="grid scroll-mt-20 gap-y-6 border-b border-fog px-5 py-16 md:px-16 md:py-24 lg:grid-cols-[220px_1fr] lg:gap-x-16"
         >
-          <div className="font-inter text-[11px] tracking-[0.16em] text-blue">
+          <div className="font-label text-[11px] tracking-[0.16em] text-blue">
             MESSAGE / 代表メッセージ
           </div>
           <div>
-            <h2 className="whitespace-pre-line font-serif-jp text-[21px] leading-[1.9] font-medium tracking-[0.04em] md:text-[26px]">
+            <h2 className="whitespace-pre-line font-display text-[21px] leading-[1.9] font-medium tracking-[0.06em] md:text-[26px]">
               {aboutMessage.heading}
             </h2>
-            <p className="mt-7 max-w-[620px] whitespace-pre-line text-[15px] leading-[2.4] tracking-[0.02em] text-body">
-              {aboutMessage.body}
-            </p>
+            <div className="mt-7 max-w-[620px] text-[15px] leading-[2.4] tracking-[0.02em] text-body">
+              {paragraphs(aboutMessage.body).map((t) => (
+                <p key={t} className="mt-6 first:mt-0">
+                  {t}
+                </p>
+              ))}
+            </div>
             <div className="mt-9 flex items-baseline gap-4">
-              <span className="font-inter text-[11px] tracking-[0.1em] text-mist">代表取締役</span>
-              <span className="font-serif-jp text-xl tracking-[0.1em]">池口祐太</span>
+              <span className="font-label text-[11px] tracking-[0.1em] text-mist">代表取締役</span>
+              <span className="font-display text-xl tracking-[0.1em]">池口祐太</span>
             </div>
           </div>
         </section>
 
         {/* 会社概要 */}
         <section className="grid gap-y-6 border-b border-fog px-5 py-16 md:px-16 md:py-24 lg:grid-cols-[220px_1fr] lg:gap-x-16">
-          <div className="font-inter text-[11px] tracking-[0.16em] text-mist">
+          <div className="font-label text-[11px] tracking-[0.16em] text-mist">
             COMPANY / 会社概要
           </div>
           <dl className="flex max-w-[680px] flex-col">

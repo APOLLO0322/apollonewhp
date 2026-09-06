@@ -7,13 +7,13 @@ export default function SiteFooter() {
   return (
     <footer className="flex flex-col gap-10 border-t border-fog px-5 py-14 md:flex-row md:items-start md:justify-between md:px-16 md:py-16">
       <div>
-        <div className="font-inter text-[15px] font-normal tracking-[0.36em]">APOLLO</div>
+        <div className="font-label text-[15px] font-normal tracking-[0.36em]">APOLLO</div>
         <p className="mt-[18px] text-[13px] leading-[1.9] text-mist">
           {company.tagline}
           <br />© {company.name} — {company.location}
         </p>
       </div>
-      <div className="flex gap-12 font-inter text-xs text-mist">
+      <div className="flex gap-12 font-label text-xs text-mist">
         <div className="flex flex-col gap-3.5">
           <Link href={navHref.vision}>{navLabel.vision}</Link>
           <Link href={navHref.works}>{navLabel.works}</Link>

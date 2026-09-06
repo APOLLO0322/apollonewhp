@@ -156,12 +156,12 @@ export default function HomeExperience({ works }: { works: Work[] }) {
           type="button"
           onClick={close}
           aria-label="ホームへ"
-          className={`font-inter text-[13px] font-normal tracking-[0.36em] transition-colors duration-500 md:text-[15px] ${logoColor} ${onMedia}`}
+          className={`font-label text-[13px] font-normal tracking-[0.36em] transition-colors duration-500 md:text-[15px] ${logoColor} ${onMedia}`}
         >
           APOLLO
         </button>
 
-        <nav className={`hidden items-center gap-7 font-inter text-[11px] tracking-[0.18em] md:flex ${onMedia}`}>
+        <nav className={`hidden items-center gap-7 font-label text-[11px] tracking-[0.18em] md:flex ${onMedia}`}>
           {navItems.map((key) => (
             <button
               key={key}
@@ -187,7 +187,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
           <button
             type="button"
             onClick={() => setOpen("menu")}
-            className="ap-on-media font-inter text-[11px] tracking-[0.24em] text-pale md:hidden"
+            className="ap-on-media font-label text-[11px] tracking-[0.24em] text-pale md:hidden"
           >
             MENU
           </button>
@@ -226,7 +226,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
         />
 
         {HERO_IS_PLACEHOLDER && (
-          <div className="absolute top-24 right-6 z-[2] font-inter text-[9px] tracking-[0.1em] text-pale/60">
+          <div className="absolute top-24 right-6 z-[2] font-label text-[9px] tracking-[0.1em] text-pale/60">
             PLACEHOLDER — 差し替え予定
           </div>
         )}
@@ -249,13 +249,13 @@ export default function HomeExperience({ works }: { works: Work[] }) {
           <button
             type="button"
             onClick={togglePlay}
-            className="ap-on-media absolute bottom-9 left-5 font-inter text-[11px] tracking-[0.24em] text-pale/85 transition-colors hover:text-pale md:bottom-11 md:left-16"
+            className="ap-on-media absolute bottom-9 left-5 font-label text-[11px] tracking-[0.24em] text-pale/85 transition-colors hover:text-pale md:bottom-11 md:left-16"
           >
             {playing ? "PAUSE" : "PLAY"}
           </button>
         )}
 
-        <div className="ap-on-media absolute right-5 bottom-9 flex gap-9 font-inter text-[11px] tracking-[0.12em] md:right-16 md:bottom-11">
+        <div className="ap-on-media absolute right-5 bottom-9 flex gap-9 font-label text-[11px] tracking-[0.12em] md:right-16 md:bottom-11">
           <Link href="/works" className="border-b border-pale/50 pb-1 text-pale">
             実績を見る
           </Link>
@@ -276,7 +276,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
               className="ap-panel-in ap-scroll absolute inset-y-0 right-0 z-[7] w-full overflow-y-auto bg-pale/55 text-ink backdrop-blur-[8px] backdrop-saturate-[1.3] md:w-[clamp(520px,40vw,720px)]"
             >
               <div className="flex items-center justify-between px-5 pt-28 md:px-12 md:pt-33">
-                <div className="font-inter text-[11px] tracking-[0.28em] text-blue">
+                <div className="font-label text-[11px] tracking-[0.28em] text-blue">
                   {meta ? meta.label : "MENU"}
                 </div>
                 <div className="flex items-center gap-5">
@@ -284,7 +284,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
                     <Link
                       href={fullPageHref}
                       title="フルページで見る"
-                      className="flex shrink-0 items-center gap-1.5 border-b border-mist pb-[3px] font-inter text-[11px] tracking-[0.1em] whitespace-nowrap text-mist"
+                      className="flex shrink-0 items-center gap-1.5 border-b border-mist pb-[3px] font-label text-[11px] tracking-[0.1em] whitespace-nowrap text-mist"
                     >
                       ↗ フルページ
                     </Link>
@@ -292,7 +292,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
                   <button
                     type="button"
                     onClick={close}
-                    className="border-b border-mist pb-[3px] font-inter text-[11px] tracking-[0.1em] text-mist"
+                    className="border-b border-mist pb-[3px] font-label text-[11px] tracking-[0.1em] text-mist"
                   >
                     CLOSE
                   </button>
@@ -307,7 +307,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
                         key={key}
                         type="button"
                         onClick={() => setOpen(key)}
-                        className="border-t border-fog py-6 text-left font-inter text-[22px] font-normal tracking-[0.2em]"
+                        className="border-t border-fog py-6 text-left font-label text-[22px] font-normal tracking-[0.2em]"
                       >
                         {navLabel[key]}
                       </button>
@@ -315,14 +315,14 @@ export default function HomeExperience({ works }: { works: Work[] }) {
                     <button
                       type="button"
                       onClick={() => setOpen("contact")}
-                      className="border-t border-b border-fog py-6 text-left font-inter text-[22px] font-normal tracking-[0.2em] text-blue"
+                      className="border-t border-b border-fog py-6 text-left font-label text-[22px] font-normal tracking-[0.2em] text-blue"
                     >
                       {navLabel.contact}
                     </button>
                   </nav>
                 ) : (
                   <>
-                    <h2 className="ap-fade-q font-serif-jp text-[26px] leading-[1.5] font-medium tracking-[0.03em] whitespace-pre-line md:text-[34px]">
+                    <h2 className="ap-fade-q font-display text-[26px] leading-[1.5] font-medium tracking-[0.08em] whitespace-pre-line md:text-[34px]">
                       {meta?.title}
                     </h2>
 

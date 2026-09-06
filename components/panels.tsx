@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   companyRows,
   flow,
+  paragraphs,
   profileRows,
   repMessage,
   services,
@@ -34,12 +35,6 @@ function TableRows({ rows, size }: { rows: { k: string; v: string }[]; size: "md
   );
 }
 
-// 原稿の改行は幅の広いパネルを前提にした行組みなので、4割幅では
-// 行末が孤立する。空行だけを段落の区切りとして扱い、あとは自然に流す。
-function paragraphs(text: string): string[] {
-  return text.split(/\n{2,}/).map((block) => block.split("\n").join(""));
-}
-
 export function VisionPanel() {
   return (
     <>
@@ -50,7 +45,7 @@ export function VisionPanel() {
           </p>
         ))}
       </div>
-      <div className="mt-12 max-w-[520px] border-t border-fog pt-8 font-serif-jp text-lg leading-[2.1] text-ink">
+      <div className="mt-12 max-w-[520px] border-t border-fog pt-8 font-display text-lg leading-[2.1] tracking-[0.04em] text-ink">
         {paragraphs(repMessage).map((p) => (
           <p key={p} className="mt-6 first:mt-0">
             {p}
@@ -69,12 +64,12 @@ export function CompanyPanel() {
       </div>
 
       <div className="mt-14 border-t border-fog pt-9">
-        <div className="font-inter text-[11px] tracking-[0.16em] text-blue">
+        <div className="font-label text-[11px] tracking-[0.16em] text-blue">
           PROFILE / 代表プロフィール
         </div>
         <div className="mt-5 flex flex-wrap items-baseline gap-4">
-          <span className="font-serif-jp text-2xl tracking-[0.08em]">池口祐太</span>
-          <span className="font-inter text-[11px] tracking-[0.1em] text-mist">YUTA IKEGUCHI</span>
+          <span className="font-display text-2xl tracking-[0.08em]">池口祐太</span>
+          <span className="font-label text-[11px] tracking-[0.1em] text-mist">YUTA IKEGUCHI</span>
         </div>
         <div className="mt-6">
           <TableRows rows={profileRows} size="sm" />
@@ -92,18 +87,18 @@ export function ServicePanel() {
           <div key={s.num} className="relative overflow-hidden border-t border-fog py-9">
             <span
               aria-hidden
-              className="pointer-events-none absolute top-1.5 right-0 font-inter text-[64px] leading-none font-medium text-blue/8 sm:text-[88px]"
+              className="pointer-events-none absolute top-1.5 right-0 font-label text-[64px] leading-none font-medium text-blue/8 sm:text-[88px]"
             >
               {s.num}
             </span>
             <div className="relative">
-              <h3 className="font-serif-jp text-2xl font-medium tracking-[0.03em]">{s.name}</h3>
+              <h3 className="font-display text-2xl font-medium tracking-[0.06em]">{s.name}</h3>
               <p className="mt-3.5 max-w-[440px] text-sm leading-[1.9] text-mist">{s.desc}</p>
               <ul className="mt-5 flex list-none flex-wrap gap-2 p-0">
                 {s.menuItems.map((m) => (
                   <li
                     key={m}
-                    className="border border-fog px-3.5 py-[7px] font-inter text-[11px] tracking-[0.03em] text-ink"
+                    className="border border-fog px-3.5 py-[7px] font-label text-[11px] tracking-[0.03em] text-ink"
                   >
                     {m}
                   </li>
@@ -115,7 +110,7 @@ export function ServicePanel() {
       </div>
 
       <div className="mt-4 border-t border-fog pt-9">
-        <div className="mb-6 font-inter text-[11px] tracking-[0.16em] text-mist">
+        <div className="mb-6 font-label text-[11px] tracking-[0.16em] text-mist">
           FLOW / 制作の流れ
         </div>
         <ol className="relative m-0 list-none p-0 pl-7">
@@ -143,7 +138,7 @@ export function WorksPanel({ works }: { works: Work[] }) {
     <>
       {featured && (
         <div className="mt-8 border-t border-fog py-8">
-          <div className="font-inter text-[10px] tracking-[0.16em] text-blue">FEATURED</div>
+          <div className="font-label text-[10px] tracking-[0.16em] text-blue">FEATURED</div>
           <Link
             href={`/works/${featured.slug}`}
             className="ap-media relative mt-4 block aspect-video overflow-hidden"
@@ -173,7 +168,7 @@ export function WorksPanel({ works }: { works: Work[] }) {
               />
             </div>
             <div className="mt-2.5 text-sm leading-[1.6]">{w.title}</div>
-            <div className="mt-1.5 font-inter text-[10px] tracking-[0.06em] text-mist">
+            <div className="mt-1.5 font-label text-[10px] tracking-[0.06em] text-mist">
               {workMeta(w)}
             </div>
           </Link>

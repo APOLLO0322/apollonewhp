@@ -46,10 +46,10 @@ export function ContactSent({ variant }: { variant: Variant }) {
         centred ? "items-center text-center" : "items-start"
       }`}
     >
-      <div className="font-inter text-[11px] tracking-[0.16em] text-green">
+      <div className="font-label text-[11px] tracking-[0.16em] text-green">
         SENT — ありがとうございます
       </div>
-      <div className="mt-[18px] font-serif-jp text-2xl leading-[1.7] font-medium">
+      <div className="mt-[18px] font-display text-2xl leading-[1.7] font-medium tracking-[0.06em]">
         お問合せを受け付けました。
       </div>
       <div className="mt-4 max-w-[420px] text-sm leading-[2] text-mist">
@@ -116,7 +116,7 @@ export default function ContactForm({ variant = "panel" }: { variant?: Variant }
   return (
     <form onSubmit={handleSubmit} noValidate>
       {isPage && (
-        <div className="mb-10 font-inter text-[11px] tracking-[0.1em] text-mist">
+        <div className="mb-10 font-label text-[11px] tracking-[0.1em] text-mist">
           下記フォームよりお問合せください。<span className="text-blue">*</span> は必須項目です。
         </div>
       )}
@@ -235,7 +235,7 @@ export default function ContactForm({ variant = "panel" }: { variant?: Variant }
         <button
           type="submit"
           disabled={status === "sending"}
-          className={`font-inter text-[13px] tracking-[0.1em] disabled:opacity-50 ${
+          className={`font-label text-[13px] tracking-[0.1em] disabled:opacity-50 ${
             isPage
               ? "bg-blue px-[52px] py-[18px] tracking-[0.14em] text-pale"
               : "bg-ink px-10 py-4 text-pale"

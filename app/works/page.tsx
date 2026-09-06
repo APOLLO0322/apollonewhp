@@ -26,15 +26,15 @@ export default async function WorksPage() {
 
       <div className="mx-auto max-w-[1440px]">
         <div className="px-5 pt-16 pb-10 md:px-16 md:pt-24">
-          <div className="font-inter text-[11px] tracking-[0.24em] text-blue">WORKS</div>
-          <h1 className="mt-5 font-serif-jp text-[36px] leading-[1.3] font-medium md:text-[52px]">
+          <div className="font-label text-[11px] tracking-[0.24em] text-blue">WORKS</div>
+          <h1 className="mt-5 font-display text-[36px] leading-[1.3] font-medium tracking-[0.08em] md:text-[52px]">
             制作実績
           </h1>
         </div>
 
         {/* 実ロゴ未支給。public/clients/ の SAMPLE 入りSVGを仮置き（README §7-4） */}
         <div className="border-b border-fog px-5 pb-12 md:px-16">
-          <div className="mb-7 font-inter text-[11px] tracking-[0.2em] text-mist">CLIENTS</div>
+          <div className="mb-7 font-label text-[11px] tracking-[0.2em] text-mist">CLIENTS</div>
           <ul className="flex list-none flex-wrap items-center gap-x-10 gap-y-6 p-0">
             {clients.map((c) => (
               <li key={c.name}>

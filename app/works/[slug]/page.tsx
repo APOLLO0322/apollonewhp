@@ -33,7 +33,7 @@ function Credit({ label, value }: { label: string; value?: string }) {
   if (!value) return null;
   return (
     <div className="flex justify-between gap-6 border-t border-fog py-4 last:border-b">
-      <span className="font-inter text-[11px] text-mist">{label}</span>
+      <span className="font-label text-[11px] text-mist">{label}</span>
       <span className="text-right text-sm">{value}</span>
     </div>
   );
@@ -52,17 +52,17 @@ export default async function WorkDetailPage({ params }: Params) {
       <SiteHeader current="works" />
 
       <article className="mx-auto max-w-[1440px]">
-        <div className="border-b border-fog px-5 py-5 font-inter text-[11px] tracking-[0.1em] text-mist md:px-16">
+        <div className="border-b border-fog px-5 py-5 font-label text-[11px] tracking-[0.1em] text-mist md:px-16">
           <Link href="/works">WORKS</Link>
           <span className="px-2">/</span>
           <span className="text-ink">{work.title}</span>
         </div>
 
         <header className="border-b border-fog px-5 pt-14 pb-12 md:px-16 md:pt-22">
-          <div className="font-inter text-[11px] tracking-[0.24em] text-blue">
+          <div className="font-label text-[11px] tracking-[0.24em] text-blue">
             {workMeta(work)}
           </div>
-          <h1 className="mt-5 font-serif-jp text-[30px] leading-[1.5] font-medium md:text-[44px]">
+          <h1 className="mt-5 font-display text-[30px] leading-[1.5] font-medium tracking-[0.06em] md:text-[44px]">
             {work.title}
           </h1>
           {work.lead && (
@@ -91,11 +91,11 @@ export default async function WorkDetailPage({ params }: Params) {
               <span className="flex size-[70px] items-center justify-center rounded-full border border-pale/85 text-[19px] text-pale">
                 ▶
               </span>
-              <span className="font-inter text-[11px] tracking-[0.24em] text-pale/85">PLAY</span>
+              <span className="font-label text-[11px] tracking-[0.24em] text-pale/85">PLAY</span>
             </a>
           ) : (
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-4.5">
-              <span className="font-inter text-[11px] tracking-[0.24em] text-pale/85">
+              <span className="font-label text-[11px] tracking-[0.24em] text-pale/85">
                 MOVIE — 準備中
               </span>
             </div>
@@ -105,14 +105,14 @@ export default async function WorkDetailPage({ params }: Params) {
         <div className="grid border-b border-fog lg:grid-cols-[1.5fr_1fr]">
           {work.overview && (
             <div className="border-b border-fog px-5 py-14 md:px-16 md:py-20 lg:border-r lg:border-b-0">
-              <div className="mb-7 font-inter text-[11px] tracking-[0.16em] text-mist">OVERVIEW</div>
+              <div className="mb-7 font-label text-[11px] tracking-[0.16em] text-mist">OVERVIEW</div>
               <div className="whitespace-pre-line text-[15px] leading-[2.4] text-body">
                 {work.overview}
               </div>
             </div>
           )}
           <div className="px-5 py-14 md:px-16 md:py-20">
-            <div className="mb-3.5 font-inter text-[11px] tracking-[0.16em] text-mist">CREDITS</div>
+            <div className="mb-3.5 font-label text-[11px] tracking-[0.16em] text-mist">CREDITS</div>
             <div className="flex flex-col">
               <Credit label="CLIENT" value={work.client} />
               <Credit label="CATEGORY" value={work.category} />
@@ -121,7 +121,7 @@ export default async function WorkDetailPage({ params }: Params) {
             </div>
             <Link
               href="/contact"
-              className="mt-8 block border border-blue p-4 text-center font-inter text-xs tracking-[0.1em] text-blue"
+              className="mt-8 block border border-blue p-4 text-center font-label text-xs tracking-[0.1em] text-blue"
             >
               同じような制作を相談する →
             </Link>
@@ -130,7 +130,7 @@ export default async function WorkDetailPage({ params }: Params) {
 
         {stills.length > 0 && (
           <div className="border-b border-fog">
-            <div className="px-5 pt-14 pb-7 font-inter text-[11px] tracking-[0.16em] text-mist md:px-16">
+            <div className="px-5 pt-14 pb-7 font-label text-[11px] tracking-[0.16em] text-mist md:px-16">
               STILLS
             </div>
             <div className="grid sm:grid-cols-2">
@@ -143,7 +143,7 @@ export default async function WorkDetailPage({ params }: Params) {
           </div>
         )}
 
-        <nav className="grid border-b border-fog font-inter text-xs tracking-[0.1em] text-mist sm:grid-cols-2">
+        <nav className="grid border-b border-fog font-label text-xs tracking-[0.1em] text-mist sm:grid-cols-2">
           <Link
             href={prev ? `/works/${prev.slug}` : "/works"}
             className="border-b border-fog px-5 py-8 md:px-16 sm:border-r sm:border-b-0"

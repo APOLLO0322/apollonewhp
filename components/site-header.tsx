@@ -29,12 +29,12 @@ export default function SiteHeader({ current = null }: { current?: NavCurrent })
       <div className="flex items-center justify-between px-5 py-6 md:px-16 md:py-[30px]">
         <Link
           href="/"
-          className="font-inter text-[13px] font-normal tracking-[0.36em] text-ink md:text-[15px]"
+          className="font-label text-[13px] font-normal tracking-[0.36em] text-ink md:text-[15px]"
         >
           APOLLO
         </Link>
 
-        <nav className="hidden items-center gap-10 font-inter text-[11px] tracking-[0.18em] text-mist md:flex">
+        <nav className="hidden items-center gap-10 font-label text-[11px] tracking-[0.18em] text-mist md:flex">
           {items.map((item) => (
             <Link
               key={item.label}
@@ -58,7 +58,7 @@ export default function SiteHeader({ current = null }: { current?: NavCurrent })
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
-          className="font-inter text-[11px] tracking-[0.24em] text-ink md:hidden"
+          className="font-label text-[11px] tracking-[0.24em] text-ink md:hidden"
         >
           {open ? "CLOSE" : "MENU"}
         </button>
@@ -71,7 +71,7 @@ export default function SiteHeader({ current = null }: { current?: NavCurrent })
               key={item.label}
               href={item.href}
               onClick={() => setOpen(false)}
-              className="border-b border-fog py-4 font-inter text-lg tracking-[0.2em]"
+              className="border-b border-fog py-4 font-label text-lg tracking-[0.2em]"
             >
               {item.label}
             </Link>
@@ -79,7 +79,7 @@ export default function SiteHeader({ current = null }: { current?: NavCurrent })
           <Link
             href="/contact"
             onClick={() => setOpen(false)}
-            className="border-b border-fog py-4 font-inter text-lg tracking-[0.2em] text-blue"
+            className="border-b border-fog py-4 font-label text-lg tracking-[0.2em] text-blue"
           >
             {navLabel.contact}
           </Link>

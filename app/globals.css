@@ -10,10 +10,13 @@
   --color-green: #4fd3a4; /* 若葉 — 送信完了メッセージのみ */
   --color-body: #3a3a38;
 
-  /* 見出し・和文の主役コピー / 本文・UI / 欧文ラベル（README §2.2） */
-  --font-serif-jp: "Noto Serif JP", "Hiragino Mincho ProN", serif;
-  --font-sans-jp: "Noto Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
-  --font-inter: "Inter", "Helvetica Neue", Arial, sans-serif;
+  /* 書体は Zen Kaku Gothic New の1書体に統一。和文と欧文が同じ設計者の
+     手によるので、和欧混植でも字面と重心がそろう。役割の differences は
+     ウェイトと字間だけでつける。display / body / label は将来の差し替え
+     余地として名前だけ分けてある。 */
+  --font-display: "Zen Kaku Gothic New", "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
+  --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
+  --font-label: "Zen Kaku Gothic New", "Helvetica Neue", Arial, sans-serif;
 
   --ease-panel: cubic-bezier(0.65, 0, 0.35, 1);
   --ease-fade: cubic-bezier(0.22, 1, 0.36, 1);
@@ -55,8 +58,8 @@
 
   body {
     margin: 0;
-    font-family: var(--font-sans-jp);
-    font-weight: 300;
+    font-family: var(--font-body);
+    font-weight: 400;
     color: var(--color-ink);
     background: var(--color-pale);
     -webkit-font-smoothing: antialiased;
@@ -79,7 +82,7 @@
   border-bottom: 1px solid var(--color-fog);
   background: transparent;
   padding: 10px 2px;
-  font-family: var(--font-sans-jp);
+  font-family: var(--font-body);
   font-size: 16px; /* iOSのズーム回避のため16px未満にしない */
   color: var(--color-ink);
   outline: none;
@@ -92,7 +95,7 @@ textarea.ap-field { resize: none; line-height: 1.9; }
 
 /* チップ（角丸なし） */
 .ap-chip {
-  font-family: var(--font-sans-jp);
+  font-family: var(--font-body);
   font-size: 13px;
   padding: 10px 20px;
   border: 1px solid var(--color-fog);
