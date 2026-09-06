@@ -4,15 +4,15 @@ import Link from "next/link";
 import { useState } from "react";
 import { navHref, navLabel, navOrder } from "@/lib/nav";
 
-export type NavCurrent = "works" | "about" | "contact" | null;
+export type NavCurrent = "works" | "contact" | null;
 
 // 順番・表記・遷移先は lib/nav.ts が正。
 // 事業内容の独立ページは作らない。Home のパネルを開いて見せる（README §0）。
 const currentOf: Record<string, NavCurrent> = {
-  vision: "about",
+  vision: null,
   works: "works",
   service: null,
-  company: "about",
+  company: null,
 };
 
 const items = navOrder.map((key) => ({

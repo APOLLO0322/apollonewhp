@@ -15,12 +15,12 @@ export const navLabel: Record<NavKey, string> = {
   contact: "CONTACT",
 };
 
-// フルページから辿るときの遷移先。事業内容は独立ページを持たず、
-// TOPのパネルを開く（README §0）。
+// フルページから辿るときの遷移先。理念・会社概要・事業内容は独立ページを
+// 持たず、TOPのパネルを開く（README §0）。
 export const navHref: Record<NavKey, string> = {
-  vision: "/about#vision",
+  vision: "/?panel=vision",
   works: "/works",
   service: "/?panel=service",
-  company: "/about",
+  company: "/?panel=company",
   contact: "/contact",
 };

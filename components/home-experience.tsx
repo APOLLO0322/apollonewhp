@@ -37,12 +37,10 @@ const panelMeta: Record<PanelKey, { label: string; title: string }> = {
   contact: { label: contactCopy.label, title: contactCopy.title },
 };
 
-// パネルの内容に対応するフルページ。TOPからしか辿れない情報を作らないための導線で、
-// パネル右上の「↗ フルページ」に出る。お問合せはパネル内で完結させるので持たない。
+// フルページを持つのは制作実績だけ。理念・会社概要・お問合せはパネル内で完結する。
+// パネル右上の「↗ フルページ」はこの表にあるものにだけ出る。
 const fullPageOf: Partial<Record<PanelKey, string>> = {
   works: "/works",
-  vision: "/about#vision",
-  company: "/about",
 };
 
 // 順番・表記は lib/nav.ts が正。PanelKey と NavKey は同じキー体系。
