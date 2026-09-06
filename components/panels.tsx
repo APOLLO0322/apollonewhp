@@ -24,7 +24,7 @@ function TableRows({
       {rows.map((row) => (
         <div
           key={row.k}
-          className="grid grid-cols-[84px_1fr] gap-4 border-t border-fog py-5 sm:grid-cols-[104px_1fr] sm:gap-5"
+          className="grid grid-cols-[84px_1fr] items-baseline gap-4 border-t border-fog py-5 sm:grid-cols-[104px_1fr] sm:gap-5"
         >
           <dt className="text-xs leading-[1.9] tracking-[0.08em] text-mist-panel">
             {row.k}
