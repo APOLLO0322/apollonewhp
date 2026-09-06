@@ -45,3 +45,6 @@ bun.lockb
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# 書体比較などの一時ページ（デプロイしない）
+public/_tmp/

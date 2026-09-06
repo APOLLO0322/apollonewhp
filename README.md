@@ -4,7 +4,7 @@
 実装指示書（`README.md` / `spec/apollo-site-design-spec-v1.md`）に基づく実装。
 
 - Next.js 16（App Router）/ TypeScript / Tailwind CSS v4
-- 和文は **Noto Serif JP**（明朝）、欧文ラベルと入力欄などのUIは **IBM Plex Sans JP**
+- 和文は **Zen Old Mincho**（明朝）、欧文ラベルと入力欄などのUIは **IBM Plex Sans JP**
   （`font-display` / `font-body` = 明朝、`font-label` = サンセリフ）
 - 制作実績は microCMS（API ID: `works`）。未設定時は `lib/works.ts` の静的データで動く
 - お問合せは Resend 経由でメール送信
