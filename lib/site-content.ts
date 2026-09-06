@@ -94,14 +94,21 @@ export function paragraphs(text: string): string[] {
   return text.split(/\n{2,}/).map((block) => block.split("\n").join(""));
 }
 
-// 実ロゴ・社名ともに未確定。public/clients/ に番号だけの枠を仮置きしている（README §7-4）。
-// 支給されたら logo を差し替え、name を実際の社名にする。件数もここで増減させる。
+// TOPのヒーロー下部に流すクライアントロゴ。public/clients/ に置く。
+// 映像の上なので brightness(0) invert(1) で白一色に潰している。単色の
+// ロゴならそのまま入れてよい（多色・グラデーションは白抜き版が必要）。
+// 01〜08 は番号だけの仮ロゴ。実ロゴが増えたら置き換えていく。
 export type Client = { name: string; logo: string };
 
-export const clients: Client[] = Array.from({ length: 7 }, (_, i) => {
-  const num = String(i + 1).padStart(2, "0");
-  return { name: `クライアントロゴ ${num}（仮）`, logo: `/clients/${num}.svg` };
-});
+export const clients: Client[] = [
+  { name: "愛媛県", logo: "/clients/ehime-pref.webp" },
+  { name: "アイホーム", logo: "/clients/ihome.png" },
+  { name: "月心グループ", logo: "/clients/gesshin.png" },
+  ...Array.from({ length: 8 }, (_, i) => {
+    const num = String(i + 1).padStart(2, "0");
+    return { name: `クライアントロゴ ${num}（仮）`, logo: `/clients/${num}.svg` };
+  }),
+];
 
 export const contactCopy = {
   label: "CONTACT",
