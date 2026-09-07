@@ -1,10 +1,12 @@
 // 制作実績。microCMS（API ID: works）が設定されていればそこから、
 // 未設定なら下の静的データ（現行サイトからの移植・仮素材）を返す。
 
-// カテゴリは「何を作ったか」＝成果物の形式。目的はタグ側で持つ。
-export type WorkCategory = "MOVIE" | "SNS" | "PHOTO";
+/* カテゴリは「何を作ったか」＝成果物。目的はタグ側で持つ。
+   EVENT は映像やSNSと違い、成果物がイベントそのもの。
+   目的タグの「イベント」と紛れないよう、タグ側からは外してある。 */
+export type WorkCategory = "MOVIE" | "SNS" | "PHOTO" | "EVENT";
 
-export const workCategories: WorkCategory[] = ["MOVIE", "SNS", "PHOTO"];
+export const workCategories: WorkCategory[] = ["MOVIE", "SNS", "PHOTO", "EVENT"];
 
 export type Work = {
   slug: string;
@@ -155,8 +157,7 @@ function normalizeCategory(value: WorkCategory | WorkCategory[] | undefined): Wo
   const raw = Array.isArray(value) ? value[0] : value;
   const upper = String(raw ?? "").toUpperCase();
   if ((workCategories as string[]).includes(upper)) return upper as WorkCategory;
-  // 整理前の branding / promotion / event が残っていても落とさない。
-  // これらは目的なので、形式としては映像として扱っておく。
+  // 整理前の branding / promotion が残っていても落とさない。
   if (upper) console.warn(`[works] 未知のカテゴリ「${upper}」。MOVIE として扱う`);
   return "MOVIE";
 }

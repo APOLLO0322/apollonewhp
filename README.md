@@ -66,7 +66,7 @@ rm hero-04.mp4.png
 
 ## microCMS スキーマ（`works`）
 
-`title` `slug` `category`(movie/sns/photo) `year` `thumbnail` `lead`
+`title` `slug` `category`(movie/sns/photo/event) `year` `thumbnail` `lead`
 `overview` `videoUrl` `stills` `client` `scope` `featured` `tags` `summary`
 
 一覧は `featured` を先頭、以降 `year` 降順。
@@ -88,12 +88,14 @@ rm hero-04.mp4.png
 
 | フィールド | 意味 | 選択肢 |
 |---|---|---|
-| `category` | **何を作ったか**（成果物の形式・1つ） | movie / sns / photo |
-| `tags` | **何のために作ったか**（目的・複数） | ブランディング / プロモーション / 採用 / 広告 / イベント / ドキュメンタリー |
+| `category` | **何を作ったか**（成果物・1つ） | movie / sns / photo / event |
+| `tags` | **何のために作ったか**（目的・複数） | ブランディング / プロモーション / 採用 / 広告 / ドキュメンタリー |
 | `scope` | **どこを担当したか**（複数） | 企画 / 撮影 / 編集 / アカウント設計 / コンテンツ制作 / 運用 など |
 
-`branding` `promotion` `event` を category から外したのは、これらが目的であって
-成果物の形式ではないため（tags 側と重複していた）。`スチール` を tags から外したのは
+`branding` `promotion` を category から外したのは、これらが目的であって成果物では
+ないため（tags 側と重複していた）。`event` だけは category に残す。イベントの企画・運営は
+成果物がイベントそのもので、映像やSNSと並ぶ「作ったもの」だから。そのぶん
+`イベント` は tags から外して、重複しないようにしている。`スチール` を tags から外したのは
 `photo` カテゴリと重複するため。`アカウント設計・戦略` `コンテンツ企画・制作` は
 `scope` と役割が同じなので tags から外した。
 
@@ -108,7 +110,7 @@ rm hero-04.mp4.png
 
 | fieldId | 表示名 | 種類 | 選択肢 |
 |---|---|---|---|
-| `tags` | タグ | 複数選択 | ブランディング / プロモーション / 採用 / 広告 / イベント / ドキュメンタリー |
+| `tags` | タグ | 複数選択 | ブランディング / プロモーション / 採用 / 広告 / ドキュメンタリー |
 
 未設定の実績はタグ絞り込みに出ない。フィールド自体が無くてもサイトは
 落ちず、タグを押すと「まだ登録されていません」と出る。
