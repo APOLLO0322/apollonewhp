@@ -73,6 +73,7 @@ export const services: Service[] = [
       { label: "プロモーション", tag: "プロモーション" },
       { label: "採用", tag: "採用" },
       { label: "広告", tag: "広告" },
+      { label: "イベント", tag: "イベント" },
       { label: "ドキュメンタリー", tag: "ドキュメンタリー" },
       { label: "写真", category: "PHOTO" },
     ],
@@ -91,7 +92,7 @@ export const services: Service[] = [
     // 上の2つが「伝える」仕事なのに対し、こちらは「集める」仕事。
     // 文脈が違うことが読んで分かるよう、対比から入る（代表確認中）。
     desc: "伝える仕事ではなく、集める仕事。企画から当日の運営まで、人が動く理由をつくります。都内の学童施設では運営をサポートし、利用者数の増加につなげました。",
-    links: [{ label: "イベントの実績", category: "EVENT" }],
+    links: [{ label: "企画・運営の実績", category: "EVENT" }],
   },
 ];
 
@@ -101,6 +102,7 @@ export const serviceTags: string[] = [
   "プロモーション",
   "採用",
   "広告",
+  "イベント",
   "ドキュメンタリー",
 ];
 

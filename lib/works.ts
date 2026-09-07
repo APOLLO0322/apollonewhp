@@ -2,11 +2,20 @@
 // 未設定なら下の静的データ（現行サイトからの移植・仮素材）を返す。
 
 /* カテゴリは「何を作ったか」＝成果物。目的はタグ側で持つ。
-   EVENT は映像やSNSと違い、成果物がイベントそのもの。
-   目的タグの「イベント」と紛れないよう、タグ側からは外してある。 */
+
+   EVENT は映像やSNSと違い、成果物がイベントそのもの。ただし
+   「イベントを撮った映像」は MOVIE + タグ「イベント」であって別物なので、
+   取り違えないよう表示名は EVENT PLANNING とする（CMSの値は event のまま）。 */
 export type WorkCategory = "MOVIE" | "SNS" | "PHOTO" | "EVENT";
 
 export const workCategories: WorkCategory[] = ["MOVIE", "SNS", "PHOTO", "EVENT"];
+
+export const categoryLabel: Record<WorkCategory, string> = {
+  MOVIE: "MOVIE",
+  SNS: "SNS",
+  PHOTO: "PHOTO",
+  EVENT: "EVENT PLANNING",
+};
 
 export type Work = {
   slug: string;
@@ -229,7 +238,7 @@ export async function getWorkNeighbours(slug: string) {
 // 「MOVIE · プロモーション · 2024」の並び。
 // 年やタグが未入力のレコードがあるため、無い要素は区切りごと落とす。
 export function workMeta(work: Work, opts?: { withTag?: boolean }): string {
-  const parts: string[] = [work.category];
+  const parts: string[] = [categoryLabel[work.category]];
   if (opts?.withTag && work.tags?.length) parts.push(work.tags[0]);
   if (work.year) parts.push(work.year);
   return parts.join(" · ");

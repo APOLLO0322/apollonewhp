@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import WorkCardBody from "@/components/work-card";
 import WorkThumb from "@/components/work-thumb";
 import { serviceTags } from "@/lib/site-content";
-import { workCategories, type Work, type WorkCategory } from "@/lib/works";
+import { categoryLabel, workCategories, type Work, type WorkCategory } from "@/lib/works";
 
 type Filter = "ALL" | WorkCategory;
 
@@ -92,7 +92,7 @@ export default function WorksGrid({ works }: { works: Work[] }) {
                   : "border-transparent text-mist hover:text-logo-blue"
               }`}
             >
-              {f}
+              {f === "ALL" ? "ALL" : categoryLabel[f]}
             </button>
           ))}
         </FilterRow>
