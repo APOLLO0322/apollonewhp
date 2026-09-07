@@ -66,7 +66,7 @@ rm hero-04.mp4.png
 
 ## microCMS スキーマ（`works`）
 
-`title` `slug` `category`(MOVIE/SNS/BRANDING/PHOTO) `year` `thumbnail` `lead`
+`title` `slug` `category`(movie/sns/photo) `year` `thumbnail` `lead`
 `overview` `videoUrl` `stills` `client` `scope` `featured` `tags` `summary`
 
 一覧は `featured` を先頭、以降 `year` 降順。
@@ -82,6 +82,23 @@ rm hero-04.mp4.png
 |---|---|---|
 | `summary` | 一行説明 | テキストフィールド |
 
+### 絞り込みの2軸
+
+役割が重ならないよう、次のとおり切り分ける。
+
+| フィールド | 意味 | 選択肢 |
+|---|---|---|
+| `category` | **何を作ったか**（成果物の形式・1つ） | movie / sns / photo |
+| `tags` | **何のために作ったか**（目的・複数） | ブランディング / プロモーション / 採用 / 広告 / イベント / ドキュメンタリー |
+| `scope` | **どこを担当したか**（複数） | 企画 / 撮影 / 編集 / アカウント設計 / コンテンツ制作 / 運用 など |
+
+`branding` `promotion` `event` を category から外したのは、これらが目的であって
+成果物の形式ではないため（tags 側と重複していた）。`スチール` を tags から外したのは
+`photo` カテゴリと重複するため。`アカウント設計・戦略` `コンテンツ企画・制作` は
+`scope` と役割が同じなので tags から外した。
+
+一覧は `/works?category=SNS` `/works?tag=採用` の形で絞り込める。両方の併用も可。
+
 ### `tags`（事業内容パネルとの連動）
 
 事業内容パネルのメニューをクリックすると `/works?tag=<タグ名>` に飛び、
@@ -91,7 +108,7 @@ rm hero-04.mp4.png
 
 | fieldId | 表示名 | 種類 | 選択肢 |
 |---|---|---|---|
-| `tags` | タグ | 複数選択 | ブランディング / プロモーション / 広告 / 採用 / イベント / ドキュメンタリー / スチール / アカウント設計・戦略 / コンテンツ企画・制作 |
+| `tags` | タグ | 複数選択 | ブランディング / プロモーション / 採用 / 広告 / イベント / ドキュメンタリー |
 
 未設定の実績はタグ絞り込みに出ない。フィールド自体が無くてもサイトは
 落ちず、タグを押すと「まだ登録されていません」と出る。

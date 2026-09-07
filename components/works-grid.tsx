@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import WorkCardBody from "@/components/work-card";
 import WorkThumb from "@/components/work-thumb";
 import { serviceTags } from "@/lib/site-content";
-import { categoryFilters, type Work, type WorkCategory } from "@/lib/works";
+import { workCategories, type Work, type WorkCategory } from "@/lib/works";
 
 type Filter = "ALL" | WorkCategory;
 
@@ -34,23 +34,40 @@ export default function WorksGrid({ works }: { works: Work[] }) {
   const [filter, setFilter] = useState<Filter>("ALL");
   const [tag, setTag] = useState<string | null>(null);
 
-  // タグは事業内容パネルのメニューから /works?tag=... でも渡ってくる。
+  // 事業内容パネルのメニューから /works?tag=... と /works?category=... の
+  // どちらでも渡ってくる。
   //
   // useSearchParams を使うとこのツリーがクライアント専用になり、
   // 実績へのリンクが初期HTMLから消えてクローラが辿れなくなる。
   // URLはマウント後に自前で読み、サーバでは全件を描画しておく。
   useEffect(() => {
+    const q = new URLSearchParams(window.location.search);
+    const c = (q.get("category") ?? "").toUpperCase();
     // eslint-disable-next-line react-hooks/set-state-in-effect -- 初回マウント時のURL読み取り
-    setTag(new URLSearchParams(window.location.search).get("tag"));
+    setTag(q.get("tag"));
+    if ((workCategories as string[]).includes(c)) setFilter(c as WorkCategory);
   }, []);
 
-  // 同じタグをもう一度押したら解除。共有できるようURLも書き換えるが、
+  // 選んだ状態はURLにも残す。共有・リロードで再現できるようにするが、
   // Nextのナビゲーションは起こさない（再取得も再描画も不要なので）。
+  function syncUrl(nextFilter: Filter, nextTag: string | null) {
+    const q = new URLSearchParams();
+    if (nextFilter !== "ALL") q.set("category", nextFilter);
+    if (nextTag) q.set("tag", nextTag);
+    const qs = q.toString();
+    window.history.replaceState(null, "", qs ? `/works?${qs}` : "/works");
+  }
+
+  function selectFilter(next: Filter) {
+    setFilter(next);
+    syncUrl(next, tag);
+  }
+
+  // 同じタグをもう一度押したら解除
   function toggleTag(next: string) {
     const value = tag === next ? null : next;
     setTag(value);
-    const url = value ? `/works?tag=${encodeURIComponent(value)}` : "/works";
-    window.history.replaceState(null, "", url);
+    syncUrl(filter, value);
   }
 
   const visible = works.filter((w) => {
@@ -63,11 +80,11 @@ export default function WorksGrid({ works }: { works: Work[] }) {
     <>
       <div className="flex flex-col gap-6 px-5 pb-12 md:px-16">
         <FilterRow label="CATEGORY">
-          {(["ALL", ...categoryFilters] as Filter[]).map((f) => (
+          {(["ALL", ...workCategories] as Filter[]).map((f) => (
             <button
               key={f}
               type="button"
-              onClick={() => setFilter(f)}
+              onClick={() => selectFilter(f)}
               aria-pressed={filter === f}
               className={`border-b pb-1.5 font-label text-[11px] tracking-[0.14em] transition-colors ${
                 filter === f

@@ -128,15 +128,19 @@ export function ServicePanel() {
                 塗りは淡霧40%だけでブラーはかけない。背後の映像が
                 そのまま透けることで、板が平坦に見えなくなる。
                 ホバーでロゴのドットの青に塗る。 */}
-            {s.menuItems.length > 0 && (
+            {s.links.length > 0 && (
               <ul className="mt-5 flex list-none flex-wrap gap-x-3 gap-y-2.5 p-0">
-                {s.menuItems.map((m) => (
-                  <li key={m}>
+                {s.links.map((m) => (
+                  <li key={m.label}>
                     <Link
-                      href={`/works?tag=${encodeURIComponent(m)}`}
+                      href={
+                        m.tag
+                          ? `/works?tag=${encodeURIComponent(m.tag)}`
+                          : `/works?category=${encodeURIComponent(m.category ?? "")}`
+                      }
                       className="group flex items-center gap-2 rounded-[2px] border border-ink/25 bg-pale/40 px-3.5 py-2 text-xs tracking-[0.04em] text-ink transition-all duration-300 hover:border-logo-blue hover:bg-logo-blue hover:text-pale"
                     >
-                      {m}
+                      {m.label}
                       <span
                         aria-hidden
                         className="font-label text-[10px] text-mist-panel transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-pale"

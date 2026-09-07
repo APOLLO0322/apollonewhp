@@ -43,15 +43,22 @@ export const profileRows: Row[] = [
   },
 ];
 
-// menuItems は制作実績のタグ名と完全に一致させること。
-// この文字列で microCMS の works.tags を絞り込む。
+/* 事業内容のメニュー。押すと制作実績を絞り込む。
+
+   実績の絞り込みは2軸で、役割が違う。
+     category … 何を作ったか（MOVIE / SNS / PHOTO）
+     tags     … 何のために作ったか（ブランディング / 採用 …）
+   メニューはどちらにも紐づけられるようにしてある。
+   tag の文字列は microCMS の works.tags の選択肢と完全一致させること。 */
+export type ServiceLink = { label: string; tag?: string; category?: string };
+
 export type Service = {
   num: string;
   name: string;
   // 各事業の一行キャッチ。名前と本文の間に置く
   tagline: string;
   desc: string;
-  menuItems: string[];
+  links: ServiceLink[];
 };
 
 // WEB制作は会社概要にのみ記載し、事業内容では紹介しない（README §6）。
@@ -61,23 +68,39 @@ export const services: Service[] = [
     name: "映像・写真制作",
     tagline: "想いを、カタチに。",
     desc: "ブランディング、プロモーション、採用。企画から撮影・編集まで一貫して手がけます。伝えたい人に、ちゃんと届く一本を。",
-    menuItems: ["ブランディング", "プロモーション", "広告", "採用", "イベント", "ドキュメンタリー", "スチール"],
+    links: [
+      { label: "ブランディング", tag: "ブランディング" },
+      { label: "プロモーション", tag: "プロモーション" },
+      { label: "採用", tag: "採用" },
+      { label: "広告", tag: "広告" },
+      { label: "ドキュメンタリー", tag: "ドキュメンタリー" },
+      { label: "写真", category: "PHOTO" },
+    ],
   },
   {
     num: "02",
     name: "SNS運用支援",
     tagline: "曇ったガラスを透明に。",
     desc: "共感が続くコンセプトを定め、作り手のエネルギーが絶えず溢れるブランドへ。日々の投稿から中長期の設計まで、社外広報として伴走。",
-    menuItems: ["アカウント設計・戦略", "コンテンツ企画・制作"],
+    links: [{ label: "SNS運用の実績", category: "SNS" }],
   },
   {
     num: "03",
     name: "イベント企画・運営",
     tagline: "人が集まり、愛される理由を知っている。",
     desc: "集客の施策づくりから、リアルイベントの企画・運営まで。都内学童施設の運営をサポートし、利用者数増加の実績。あなたの想いから、また来たくなる仕掛け作りを。",
-    // タグは未設定。実績と紐づけるときに menuItems を足す
-    menuItems: [],
+    links: [{ label: "イベント", tag: "イベント" }],
   },
+];
+
+// 一覧のタグ絞り込みに出す順番。microCMS の works.tags の選択肢と揃える。
+export const serviceTags: string[] = [
+  "ブランディング",
+  "プロモーション",
+  "採用",
+  "広告",
+  "イベント",
+  "ドキュメンタリー",
 ];
 
 export const vision = {
@@ -119,6 +142,3 @@ export const contactCopy = {
   title: "",
 };
 
-// 事業内容のメニュー＝制作実績のタグ。microCMS の works.tags の選択肢は
-// この一覧とまったく同じ文字列にすること（表記が1文字でも違うと拾えない）。
-export const serviceTags: string[] = services.flatMap((s) => s.menuItems);

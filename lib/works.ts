@@ -1,14 +1,10 @@
 // 制作実績。microCMS（API ID: works）が設定されていればそこから、
 // 未設定なら下の静的データ（現行サイトからの移植・仮素材）を返す。
 
-export type WorkCategory = "MOVIE" | "SNS" | "BRANDING" | "PHOTO";
+// カテゴリは「何を作ったか」＝成果物の形式。目的はタグ側で持つ。
+export type WorkCategory = "MOVIE" | "SNS" | "PHOTO";
 
-// CMS側の選択肢。値の検証に使うので BRANDING も残す。
-export const workCategories: WorkCategory[] = ["MOVIE", "SNS", "BRANDING", "PHOTO"];
-
-// 一覧の絞り込みに出すカテゴリ。BRANDING は「何を作ったか」ではなく
-// 「何のために作ったか」なので、こちらではなくタグ側で扱う。
-export const categoryFilters: WorkCategory[] = ["MOVIE", "SNS", "PHOTO"];
+export const workCategories: WorkCategory[] = ["MOVIE", "SNS", "PHOTO"];
 
 export type Work = {
   slug: string;
@@ -61,9 +57,10 @@ const staticWorks: Work[] = [
   {
     slug: "mana-yamasaki",
     title: "フリーアナウンサー 山崎愛",
-    category: "BRANDING",
+    category: "MOVIE",
     year: "2026",
     thumbnail: `${IMG}/2025/03/mana.jpg`,
+    tags: ["ブランディング"],
   },
   {
     slug: "color-knot",
@@ -103,9 +100,10 @@ const staticWorks: Work[] = [
   {
     slug: "fc-manticore",
     title: "サッカーチーム「FCマンチコア」",
-    category: "BRANDING",
+    category: "MOVIE",
     year: "2024",
     thumbnail: `${IMG}/2024/11/8.jpg`,
+    tags: ["ブランディング"],
   },
   {
     slug: "furugino-festa",
@@ -156,7 +154,11 @@ type MicroCmsWork = {
 function normalizeCategory(value: WorkCategory | WorkCategory[] | undefined): WorkCategory {
   const raw = Array.isArray(value) ? value[0] : value;
   const upper = String(raw ?? "").toUpperCase();
-  return (workCategories as string[]).includes(upper) ? (upper as WorkCategory) : "MOVIE";
+  if ((workCategories as string[]).includes(upper)) return upper as WorkCategory;
+  // 整理前の branding / promotion / event が残っていても落とさない。
+  // これらは目的なので、形式としては映像として扱っておく。
+  if (upper) console.warn(`[works] 未知のカテゴリ「${upper}」。MOVIE として扱う`);
+  return "MOVIE";
 }
 
 /* microCMS の複数選択は配列で返るが、テキストで運用されている場合もある。
