@@ -254,17 +254,29 @@ export function workSummary(work: Work): string | undefined {
   return work.summary?.trim() || work.lead?.trim() || undefined;
 }
 
-/* ホバー中だけ流す背景再生用の埋め込みURL。
-   Vimeo は background=1 が用意されていてUIも出ない。
-   YouTube は同等の指定を並べるが、タイトルとロゴが一瞬出る。
-   Instagram には背景再生の手段がないので null を返す（静止画のまま）。 */
-export function previewEmbedUrl(work: Work): string | null {
-  const url = work.videoUrl?.trim();
-  if (!url) return null;
+/* videoUrl から配信元を割り出す。Vimeo と YouTube だけ埋め込める。
+   Instagram には埋め込みで背景再生する手段がないので null を返す。 */
+function parseVideo(url: string | undefined): { host: "vimeo" | "youtube"; id: string; hash?: string } | null {
+  const value = url?.trim();
+  if (!value) return null;
 
-  const vimeo = url.match(/vimeo\.com\/(\d+)(?:\/([0-9a-zA-Z]+))?/);
-  if (vimeo) {
-    const [, id, hash] = vimeo;
+  const vimeo = value.match(/vimeo\.com\/(\d+)(?:\/([0-9a-zA-Z]+))?/);
+  if (vimeo) return { host: "vimeo", id: vimeo[1], hash: vimeo[2] };
+
+  const yt = value.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/);
+  if (yt) return { host: "youtube", id: yt[1] };
+
+  return null;
+}
+
+/* 一覧でホバー中だけ流す背景再生用。UIを出さず、無音でループする。
+   Vimeo は background=1 が用意されている。
+   YouTube は同等の指定を並べるが、タイトルとロゴが一瞬出る。 */
+export function previewEmbedUrl(work: Work): string | null {
+  const v = parseVideo(work.videoUrl);
+  if (!v) return null;
+
+  if (v.host === "vimeo") {
     const params = new URLSearchParams({
       background: "1",
       autoplay: "1",
@@ -272,28 +284,50 @@ export function previewEmbedUrl(work: Work): string | null {
       muted: "1",
       autopause: "0",
     });
-    if (hash) params.set("h", hash);
-    return `https://player.vimeo.com/video/${id}?${params}`;
+    if (v.hash) params.set("h", v.hash);
+    return `https://player.vimeo.com/video/${v.id}?${params}`;
   }
 
-  const yt = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/);
-  if (yt) {
-    const id = yt[1];
+  const params = new URLSearchParams({
+    autoplay: "1",
+    mute: "1",
+    loop: "1",
+    playlist: v.id,
+    controls: "0",
+    // modestbranding は 2023/8/15 に廃止済みで効かない。
+    // rel=0 も 2018 以降「関連動画を同一チャンネルに限定」の意味しかない。
+    // タイトルとチャンネル名の帯を消すパラメータは存在しない。
+    rel: "0",
+    playsinline: "1",
+    disablekb: "1",
+  });
+  return `https://www.youtube-nocookie.com/embed/${v.id}?${params}`;
+}
+
+/* 詳細ページで本編を見せる用。開いたら1回だけ自動再生する。
+   自動再生はブラウザの規定で無音でないと止められるので muted で始める。
+   操作パネルは出すので、そこから音を出す・見直すができる。 */
+export function watchEmbedUrl(work: Work): string | null {
+  const v = parseVideo(work.videoUrl);
+  if (!v) return null;
+
+  if (v.host === "vimeo") {
     const params = new URLSearchParams({
       autoplay: "1",
-      mute: "1",
-      loop: "1",
-      playlist: id,
-      controls: "0",
-      // modestbranding は 2023/8/15 に廃止済みで効かない。
-      // rel=0 も 2018 以降「関連動画を同一チャンネルに限定」の意味しかない。
-      // タイトルとチャンネル名の帯を消すパラメータは存在しない。
-      rel: "0",
-      playsinline: "1",
-      disablekb: "1",
+      muted: "1",
+      title: "0",
+      byline: "0",
+      portrait: "0",
     });
-    return `https://www.youtube-nocookie.com/embed/${id}?${params}`;
+    if (v.hash) params.set("h", v.hash);
+    return `https://player.vimeo.com/video/${v.id}?${params}`;
   }
 
-  return null;
+  const params = new URLSearchParams({
+    autoplay: "1",
+    mute: "1",
+    rel: "0",
+    playsinline: "1",
+  });
+  return `https://www.youtube-nocookie.com/embed/${v.id}?${params}`;
 }

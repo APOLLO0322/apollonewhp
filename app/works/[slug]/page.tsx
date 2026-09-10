@@ -6,7 +6,14 @@ import PageCta from "@/components/page-cta";
 import SiteFooter from "@/components/site-footer";
 import SiteHeader from "@/components/site-header";
 import Linkify from "@/components/linkify";
-import { categoryLabel, getWork, getWorkNeighbours, getWorks, workMeta } from "@/lib/works";
+import {
+  categoryLabel,
+  getWork,
+  getWorkNeighbours,
+  getWorks,
+  watchEmbedUrl,
+  workMeta,
+} from "@/lib/works";
 
 // microCMS の更新を再デプロイなしで反映する
 export const revalidate = 60;
@@ -49,6 +56,7 @@ export default async function WorkDetailPage({ params }: Params) {
   if (!work) notFound();
 
   const { prev, next } = await getWorkNeighbours(slug);
+  const watchEmbed = watchEmbedUrl(work);
   const stills = work.stills ?? [];
 
   return (
@@ -74,36 +82,48 @@ export default async function WorkDetailPage({ params }: Params) {
           )}
         </header>
 
-        {/* 動画未支給のものはサムネイル + PLACEHOLDER 表示（README §7） */}
-        <div className="relative aspect-video overflow-hidden border-b border-fog bg-ink">
-          <Image
-            src={work.thumbnail}
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="ap-ken object-cover"
-          />
-          {work.videoUrl ? (
-            <a
-              href={work.videoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ap-on-media absolute inset-0 flex flex-col items-center justify-center gap-4.5"
-            >
-              <span className="flex size-[70px] items-center justify-center rounded-full border border-pale/85 text-[19px] text-pale [filter:drop-shadow(0_1px_3px_rgba(22,25,26,0.7))]">
-                ▶
-              </span>
-              <span className="font-label text-[11px] tracking-[0.24em] text-pale">PLAY</span>
-            </a>
-          ) : (
-            <div className="ap-on-media absolute inset-0 flex flex-col items-center justify-center gap-4.5">
-              <span className="font-label text-[11px] tracking-[0.24em] text-pale">
-                MOVIE — 準備中
-              </span>
-            </div>
-          )}
-        </div>
+        {/* 埋め込める配信元（Vimeo / YouTube）なら開いた時点で1回再生する。
+            自動再生はブラウザの規定で無音でないと止まるので muted で始め、
+            操作パネルから音を出せるようにする。
+
+            Instagram は埋め込みで再生できないので、静止画と外部リンク。
+            写真だけの案件は静止画のみ。「準備中」のような文言は出さない
+            （動画が存在しない案件にとっては誤解を招くため）。 */}
+        {watchEmbed ? (
+          <div className="relative aspect-video overflow-hidden border-b border-fog bg-ink">
+            <iframe
+              src={watchEmbed}
+              title={`${work.title} の映像`}
+              allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+              allowFullScreen
+              className="absolute inset-0 size-full border-0"
+            />
+          </div>
+        ) : (
+          <div className="relative aspect-video overflow-hidden border-b border-fog bg-ink">
+            <Image
+              src={work.thumbnail}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="ap-ken object-cover"
+            />
+            {work.videoUrl && (
+              <a
+                href={work.videoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ap-on-media absolute inset-0 flex flex-col items-center justify-center gap-4.5"
+              >
+                <span className="flex size-[70px] items-center justify-center rounded-full border border-pale/85 text-[19px] text-pale [filter:drop-shadow(0_1px_3px_rgba(22,25,26,0.7))]">
+                  ▶
+                </span>
+                <span className="font-label text-[11px] tracking-[0.24em] text-pale">PLAY</span>
+              </a>
+            )}
+          </div>
+        )}
 
         <div className="grid border-b border-fog lg:grid-cols-[1.5fr_1fr]">
           {work.overview && (
