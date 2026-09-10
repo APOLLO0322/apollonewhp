@@ -348,7 +348,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
 
                     {open === "vision" && <VisionPanel />}
                     {open === "company" && <CompanyPanel />}
-                    {open === "service" && <ServicePanel />}
+                    {open === "service" && <ServicePanel works={works} />}
                     {open === "works" && <WorksPanel works={works} />}
                     {open === "contact" && (
                       <div className="mt-6">

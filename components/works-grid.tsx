@@ -5,7 +5,12 @@ import { useEffect, useState } from "react";
 import WorkCardBody from "@/components/work-card";
 import WorkThumb from "@/components/work-thumb";
 import { serviceTags } from "@/lib/site-content";
-import { categoryLabel, workCategories, type Work, type WorkCategory } from "@/lib/works";
+import {
+  categoryLabel,
+  workCategories,
+  type Work,
+  type WorkCategory,
+} from "@/lib/works";
 
 type Filter = "ALL" | WorkCategory;
 
@@ -19,7 +24,13 @@ type Filter = "ALL" | WorkCategory;
    見出しと喧嘩する。正典の「ボタンは塗りか下線のみ、箱型の枠ボタンは
    最小限」に従って、枠をやめて下線で選択を示す。 */
 
-function FilterRow({ label, children }: { label: string; children: React.ReactNode }) {
+function FilterRow({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
     <div className="flex flex-col gap-3 md:flex-row md:items-baseline md:gap-6">
       <div className="font-label text-[10px] tracking-[0.2em] text-mist md:w-16 md:shrink-0">
@@ -70,6 +81,21 @@ export default function WorksGrid({ works }: { works: Work[] }) {
     syncUrl(filter, value);
   }
 
+  /* 該当が1件も無い選択肢は出さない。押しても「まだありません」に
+     なるだけで、選べる場所が増えるほど何が有効なのか分からなくなる。
+
+     判定は常に全件に対して行う（絞り込み後ではなく）。絞り込むたびに
+     選択肢が増減すると、押した先で項目が消えて操作が迷子になるため。
+     いま選ばれている値だけは、0件でも残す（消えると解除できない）。 */
+  const has = (fn: (w: Work) => boolean) => works.some(fn);
+
+  const shownCategories = workCategories.filter(
+    (c) => has((w) => w.category === c) || filter === c,
+  );
+  const shownTags = serviceTags.filter(
+    (t) => has((w) => !!w.tags?.includes(t)) || tag === t,
+  );
+
   const visible = works.filter((w) => {
     if (filter !== "ALL" && w.category !== filter) return false;
     if (tag && !w.tags?.includes(tag)) return false;
@@ -80,7 +106,7 @@ export default function WorksGrid({ works }: { works: Work[] }) {
     <>
       <div className="flex flex-col gap-6 px-5 pb-12 md:px-16">
         <FilterRow label="CATEGORY">
-          {(["ALL", ...workCategories] as Filter[]).map((f) => (
+          {(["ALL", ...shownCategories] as Filter[]).map((f) => (
             <button
               key={f}
               type="button"
@@ -97,23 +123,25 @@ export default function WorksGrid({ works }: { works: Work[] }) {
           ))}
         </FilterRow>
 
-        <FilterRow label="TAG">
-          {serviceTags.map((t) => (
-            <button
-              key={t}
-              type="button"
-              onClick={() => toggleTag(t)}
-              aria-pressed={tag === t}
-              className={`border-b pb-1.5 font-label text-xs tracking-[0.06em] transition-colors duration-200 ${
-                tag === t
-                  ? "border-logo-blue text-ink"
-                  : "border-transparent text-mist hover:text-logo-blue"
-              }`}
-            >
-              {t}
-            </button>
-          ))}
-        </FilterRow>
+        {shownTags.length > 0 && (
+          <FilterRow label="TAG">
+            {shownTags.map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => toggleTag(t)}
+                aria-pressed={tag === t}
+                className={`border-b pb-1.5 font-label text-xs tracking-[0.06em] transition-colors duration-200 ${
+                  tag === t
+                    ? "border-logo-blue text-ink"
+                    : "border-transparent text-mist hover:text-logo-blue"
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </FilterRow>
+        )}
       </div>
 
       {/* 霧色を敷いてカードを淡霧で抜く組み方だと、3の倍数に満たない
@@ -121,7 +149,11 @@ export default function WorksGrid({ works }: { works: Work[] }) {
           罫線なし・余白だけで組む。 */}
       <div className="grid grid-cols-1 gap-x-7 gap-y-12 border-b border-fog px-5 pb-16 sm:grid-cols-2 md:px-16 lg:grid-cols-3">
         {visible.map((w) => (
-          <Link key={w.slug} href={`/works/${w.slug}`} className="ap-media block">
+          <Link
+            key={w.slug}
+            href={`/works/${w.slug}`}
+            className="ap-media block"
+          >
             <WorkThumb
               work={w}
               aspect="43"

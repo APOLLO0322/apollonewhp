@@ -99,7 +99,14 @@ export function CompanyPanel() {
   );
 }
 
-export function ServicePanel() {
+export function ServicePanel({ works }: { works: Work[] }) {
+  /* 該当が1件も無いボタンは出さない。押した先が「まだありません」だと
+     行き止まりになる。/works の絞り込みと同じ考え方。 */
+  const hasWorks = (link: { tag?: string; category?: string }) =>
+    works.some((w) =>
+      link.tag ? !!w.tags?.includes(link.tag) : w.category === link.category,
+    );
+
   return (
     <div className="mt-11 flex flex-col">
       {services.map((s) => (
@@ -128,30 +135,35 @@ export function ServicePanel() {
                 塗りは淡霧40%だけでブラーはかけない。背後の映像が
                 そのまま透けることで、板が平坦に見えなくなる。
                 ホバーでロゴのドットの青に塗る。 */}
-            {s.links.length > 0 && (
-              <ul className="mt-5 flex list-none flex-wrap gap-x-3 gap-y-2.5 p-0">
-                {s.links.map((m) => (
-                  <li key={m.label}>
-                    <Link
-                      href={
-                        m.tag
-                          ? `/works?tag=${encodeURIComponent(m.tag)}`
-                          : `/works?category=${encodeURIComponent(m.category ?? "")}`
-                      }
-                      className="group flex items-center gap-2 rounded-[2px] border border-ink/25 bg-pale/40 px-3.5 py-2 text-xs tracking-[0.04em] text-ink transition-all duration-300 hover:border-logo-blue hover:bg-logo-blue hover:text-pale"
-                    >
-                      {m.label}
-                      <span
-                        aria-hidden
-                        className="font-label text-[10px] text-mist-panel transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-pale"
-                      >
-                        →
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
+            {(() => {
+              const links = s.links.filter(hasWorks);
+              return (
+                links.length > 0 && (
+                  <ul className="mt-5 flex list-none flex-wrap gap-x-3 gap-y-2.5 p-0">
+                    {links.map((m) => (
+                      <li key={m.label}>
+                        <Link
+                          href={
+                            m.tag
+                              ? `/works?tag=${encodeURIComponent(m.tag)}`
+                              : `/works?category=${encodeURIComponent(m.category ?? "")}`
+                          }
+                          className="group flex items-center gap-2 rounded-[2px] border border-ink/25 bg-pale/40 px-3.5 py-2 text-xs tracking-[0.04em] text-ink transition-all duration-300 hover:border-logo-blue hover:bg-logo-blue hover:text-pale"
+                        >
+                          {m.label}
+                          <span
+                            aria-hidden
+                            className="font-label text-[10px] text-mist-panel transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-pale"
+                          >
+                            →
+                          </span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )
+              );
+            })()}
           </div>
         </div>
       ))}
@@ -172,7 +184,11 @@ export function WorksPanel({ works }: { works: Work[] }) {
           </div>
           <Link href={`/works/${featured.slug}`} className="ap-media block">
             <div className="mt-4">
-              <WorkThumb work={featured} aspect="video" sizes="(max-width: 767px) 100vw, 62vw" />
+              <WorkThumb
+                work={featured}
+                aspect="video"
+                sizes="(max-width: 767px) 100vw, 62vw"
+              />
             </div>
             <WorkCardBody work={featured} size="md" tone="panel" />
           </Link>
@@ -181,8 +197,16 @@ export function WorksPanel({ works }: { works: Work[] }) {
 
       <div className="grid grid-cols-1 gap-x-7 gap-y-9 border-t border-fog py-8 sm:grid-cols-2">
         {rest.map((w) => (
-          <Link key={w.slug} href={`/works/${w.slug}`} className="ap-media block">
-            <WorkThumb work={w} aspect="43" sizes="(max-width: 767px) 100vw, 31vw" />
+          <Link
+            key={w.slug}
+            href={`/works/${w.slug}`}
+            className="ap-media block"
+          >
+            <WorkThumb
+              work={w}
+              aspect="43"
+              sizes="(max-width: 767px) 100vw, 31vw"
+            />
             <WorkCardBody work={w} size="sm" tone="panel" />
           </Link>
         ))}
