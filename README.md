@@ -71,6 +71,17 @@ rm hero-04.mp4.png
 
 一覧は `featured` を先頭、以降 `year` 降順。
 
+### 本文中のURL
+
+`overview` に `https://…` と書くと、サイト側で自動的にリンクになる
+（`components/linkify.tsx`）。microCMS側はテキストエリアのままでよく、
+HTMLタグを書く必要はない。`http` / `https` だけを拾い、末尾の句読点や
+全角の閉じ括弧はURLに含めないので「（https://example.com）」と書ける。
+表示は `https://` を省いた形になる。
+
+リンクになるのは `overview` だけ。`summary` や `lead` は一覧カードや
+メタディスクリプションに使うので、リンクは張らない。
+
 ### `summary`（カードの一行説明）
 
 実績カードの3行目に出る短い説明。`lead`（詳細ページの導入文・メタ

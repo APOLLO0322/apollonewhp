@@ -5,7 +5,8 @@ import { notFound } from "next/navigation";
 import PageCta from "@/components/page-cta";
 import SiteFooter from "@/components/site-footer";
 import SiteHeader from "@/components/site-header";
-import { getWork, getWorkNeighbours, getWorks, workMeta } from "@/lib/works";
+import Linkify from "@/components/linkify";
+import { categoryLabel, getWork, getWorkNeighbours, getWorks, workMeta } from "@/lib/works";
 
 // microCMS の更新を再デプロイなしで反映する
 export const revalidate = 60;
@@ -109,7 +110,7 @@ export default async function WorkDetailPage({ params }: Params) {
             <div className="border-b border-fog px-5 py-14 md:px-16 md:py-20 lg:border-r lg:border-b-0">
               <div className="mb-7 font-label text-[11px] tracking-[0.16em] text-mist">OVERVIEW</div>
               <div className="whitespace-pre-line text-[15px] leading-[2.4] text-body">
-                {work.overview}
+                <Linkify text={work.overview} />
               </div>
             </div>
           )}
@@ -117,7 +118,7 @@ export default async function WorkDetailPage({ params }: Params) {
             <div className="mb-3.5 font-label text-[11px] tracking-[0.16em] text-mist">CREDITS</div>
             <div className="flex flex-col">
               <Credit label="CLIENT" value={work.client} />
-              <Credit label="CATEGORY" value={work.category} />
+              <Credit label="CATEGORY" value={categoryLabel[work.category]} />
               <Credit label="YEAR" value={work.year} />
               <Credit label="SCOPE" value={work.scope} />
             </div>
