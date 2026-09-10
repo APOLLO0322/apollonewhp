@@ -182,7 +182,7 @@ export function WorksPanel({ works }: { works: Work[] }) {
           <div className="font-label text-[10px] tracking-[0.16em] text-blue-panel">
             FEATURED
           </div>
-          <Link href={`/works/${featured.slug}`} className="ap-media block">
+          <Link href={`/works/${featured.slug}`} className="group ap-media block">
             <div className="mt-4">
               <WorkThumb
                 work={featured}
@@ -195,16 +195,16 @@ export function WorksPanel({ works }: { works: Work[] }) {
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-x-7 gap-y-9 border-t border-fog py-8 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-x-7 gap-y-8 border-t border-fog py-8 sm:grid-cols-2">
         {rest.map((w) => (
           <Link
             key={w.slug}
             href={`/works/${w.slug}`}
-            className="ap-media block"
+            className="group ap-media block"
           >
             <WorkThumb
               work={w}
-              aspect="43"
+              aspect="video"
               sizes="(max-width: 767px) 100vw, 31vw"
             />
             <WorkCardBody work={w} size="sm" tone="panel" />

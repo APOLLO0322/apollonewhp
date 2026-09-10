@@ -147,16 +147,16 @@ export default function WorksGrid({ works }: { works: Work[] }) {
       {/* 霧色を敷いてカードを淡霧で抜く組み方だと、3の倍数に満たない
           最終行の空きマスに下地の霧色が出てしまう。パネルと同じく
           罫線なし・余白だけで組む。 */}
-      <div className="grid grid-cols-1 gap-x-7 gap-y-12 border-b border-fog px-5 pb-16 sm:grid-cols-2 md:px-16 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-x-7 gap-y-10 border-b border-fog px-5 pb-16 sm:grid-cols-2 md:px-16 lg:grid-cols-3">
         {visible.map((w) => (
           <Link
             key={w.slug}
             href={`/works/${w.slug}`}
-            className="ap-media block"
+            className="group ap-media block"
           >
             <WorkThumb
               work={w}
-              aspect="43"
+              aspect="video"
               sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
             />
             <WorkCardBody work={w} size="sm" />
