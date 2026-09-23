@@ -57,6 +57,21 @@ const tagIcon = (
   </>
 );
 
+/* 札の塗り。枠線だけだと背景に溶けて、文字に線が付いただけに見える。
+   かといって塗り潰すとカードの中で一番強い要素になってしまうので、
+   下地が透ける程度に留める。パネルでは背後が映像なので、
+   霧色ではなく淡霧を敷いて文字の下を明るくする。 */
+const chipTone = {
+  page: {
+    category: "border-fog bg-mist/12 text-mist",
+    tag: "border-logo-blue/30 bg-logo-blue/12 text-logo-blue",
+  },
+  panel: {
+    category: "border-mist-panel/25 bg-pale/55 text-mist-panel",
+    tag: "border-logo-blue/30 bg-pale/55 text-logo-blue",
+  },
+} as const;
+
 function Chip({
   icon,
   children,
@@ -68,7 +83,7 @@ function Chip({
 }) {
   return (
     <span
-      className={`inline-flex items-center gap-1.5 border px-2 py-1 leading-none ${className}`}
+      className={`inline-flex items-center gap-1.5 rounded-[2px] border px-2.5 py-1.5 leading-none ${className}`}
     >
       <svg {...ICON_PROPS} className="size-3 shrink-0">
         {icon}
@@ -99,18 +114,11 @@ export default function WorkMeta({
         tone === "panel" ? "text-mist-panel" : "text-mist"
       } ${size === "md" ? "text-[11px]" : "text-[10px]"}`}
     >
-      <Chip
-        icon={categoryIcon[work.category]}
-        className={
-          tone === "panel"
-            ? "border-mist-panel/35 text-mist-panel"
-            : "border-fog text-mist"
-        }
-      >
+      <Chip icon={categoryIcon[work.category]} className={chipTone[tone].category}>
         {categoryLabel[work.category]}
       </Chip>
       {tag && (
-        <Chip icon={tagIcon} className="border-logo-blue/35 text-logo-blue">
+        <Chip icon={tagIcon} className={chipTone[tone].tag}>
           {tag}
         </Chip>
       )}

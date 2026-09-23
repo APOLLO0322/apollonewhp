@@ -39,19 +39,32 @@ export default function WorkCard({
 
   return (
     <Link href={`/works/${work.slug}`} className="group ap-media block">
-      <WorkMeta work={work} size={size} tone={tone} />
+      {/* 札から社名までを1つの塊として高さを決め打ちする。
 
-      {/* 説明は2行、社名は1行で打ち切る。行数は案件によって変わるが、
-          ここの高さを行数なりにすると画像の頭が1枚ずつずれて、
-          横に並べたときに列が崩れる。最大の組み合わせ（2行＋社名）ぶんを
-          確保して、サムネイルの開始位置を揃える。
+          説明は2行、社名は1行で打ち切るが、案件によって行数は変わる。
+          なりゆきにすると画像の頭が1枚ずつずれて、横に並べたときに
+          列が崩れる。最大の組み合わせぶんを確保して余りは下に逃がし、
+          サムネイルの開始位置を揃える。
 
-          md は FEATURED の1枚だけで隣に並ぶものが無い。揃える相手が
-          いないので、確保すると空白が出るだけ。 */}
-      <div className={size === "md" ? "mt-3.5" : "mt-3 min-h-[70px]"}>
+          パネルは1列 193px しかなく、札が2つある案件だけ札が2段に
+          折り返す。そのぶん高く取る。
+          md は FEATURED の1枚だけで、隣に並ぶものが無いので確保しない。 */}
+      <div
+        className={
+          size === "md"
+            ? undefined
+            : tone === "panel"
+              ? "min-h-[140px]"
+              : "min-h-[108px]"
+        }
+      >
+        <WorkMeta work={work} size={size} tone={tone} />
+
         <p
           className={`line-clamp-2 text-ink transition-colors duration-300 group-hover:text-logo-blue ${
-            size === "md" ? "text-base leading-[1.7]" : "text-sm leading-[1.7]"
+            size === "md"
+              ? "mt-3.5 text-base leading-[1.7]"
+              : "mt-3 text-sm leading-[1.7]"
           }`}
         >
           {lead}
@@ -62,7 +75,12 @@ export default function WorkCard({
         )}
       </div>
 
-      <WorkThumb work={work} aspect="video" sizes={sizes} />
+      {/* 社名とサムネイルの間。ここを詰めると文字が画像の
+          キャプションのように見えてしまうので、札〜説明の間より
+          はっきり広く取る。 */}
+      <div className={size === "md" ? "mt-6" : "mt-5"}>
+        <WorkThumb work={work} aspect="video" sizes={sizes} />
+      </div>
     </Link>
   );
 }

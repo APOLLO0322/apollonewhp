@@ -192,7 +192,7 @@ export function WorksPanel({ works }: { works: Work[] }) {
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-x-7 gap-y-8 border-t border-fog py-8 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-x-7 gap-y-14 border-t border-fog py-8 sm:grid-cols-2">
         {rest.map((w) => (
           <WorkCard
             key={w.slug}
