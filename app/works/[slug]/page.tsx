@@ -40,11 +40,17 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
 /* 値は文字列か配列。配列はスラッシュで区切って出す
    （配列をそのまま出すと「企画編集撮影」と繋がってしまう）。 */
-function Credit({ label, value }: { label: string; value?: string | string[] }) {
+function Credit({
+  label,
+  value,
+}: {
+  label: string;
+  value?: string | string[];
+}) {
   const text = Array.isArray(value) ? value.join(" / ") : value;
   if (!text) return null;
   return (
-    <div className="flex justify-between gap-6 border-t border-fog py-4 last:border-b">
+    <div className="flex items-center justify-between gap-6 border-t border-fog py-4 last:border-b">
       <span className="shrink-0 font-label text-[11px] text-mist">{label}</span>
       <span className="text-right text-sm leading-[1.9]">{text}</span>
     </div>
@@ -77,7 +83,9 @@ export default async function WorkDetailPage({ params }: Params) {
             {work.title}
           </h1>
           {work.lead && (
-            <p className="mt-5 max-w-[560px] text-base leading-[2.1] text-mist">{work.lead}</p>
+            <p className="mt-5 max-w-[560px] text-base leading-[2.1] text-mist">
+              {work.lead}
+            </p>
           )}
         </header>
 
@@ -88,53 +96,64 @@ export default async function WorkDetailPage({ params }: Params) {
             Instagram は埋め込みで再生できないので、静止画と外部リンク。
             写真だけの案件は静止画のみ。「準備中」のような文言は出さない
             （動画が存在しない案件にとっては誤解を招くため）。 */}
-        {watchEmbed ? (
-          <div className="relative aspect-video overflow-hidden border-b border-fog bg-ink">
-            <iframe
-              src={watchEmbed}
-              title={`${work.title} の映像`}
-              allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
-              allowFullScreen
-              className="absolute inset-0 size-full border-0"
-            />
-          </div>
-        ) : (
-          <div className="relative aspect-video overflow-hidden border-b border-fog bg-ink">
-            <Image
-              src={work.thumbnail}
-              alt=""
-              fill
-              priority
-              sizes="100vw"
-              className="ap-ken object-cover"
-            />
-            {work.videoUrl && (
-              <a
-                href={work.videoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ap-on-media absolute inset-0 flex flex-col items-center justify-center gap-4.5"
-              >
-                <span className="flex size-[70px] items-center justify-center rounded-full border border-pale/85 text-[19px] text-pale [filter:drop-shadow(0_1px_3px_rgba(22,25,26,0.7))]">
-                  ▶
-                </span>
-                <span className="font-label text-[11px] tracking-[0.24em] text-pale">PLAY</span>
-              </a>
-            )}
-          </div>
-        )}
+        {/* 映像は本文と同じ幅に収める。画面いっぱいに出すと、下の
+            OVERVIEW と左端が揃わず、1枚だけ別の紙に載っているように見える。
+            区切りの罫線だけは外側に出して、他の節と同じく端まで引く。 */}
+        <div className="border-b border-fog px-5 py-12 md:px-16 md:py-14">
+          {watchEmbed ? (
+            <div className="relative aspect-video overflow-hidden bg-ink">
+              <iframe
+                src={watchEmbed}
+                title={`${work.title} の映像`}
+                allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+                allowFullScreen
+                className="absolute inset-0 size-full border-0"
+              />
+            </div>
+          ) : (
+            <div className="relative aspect-video overflow-hidden bg-ink">
+              <Image
+                src={work.thumbnail}
+                alt=""
+                fill
+                priority
+                sizes="(max-width: 767px) 100vw, (max-width: 1440px) calc(100vw - 128px), 1312px"
+                className="ap-ken object-cover"
+              />
+              {work.videoUrl && (
+                <a
+                  href={work.videoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ap-on-media absolute inset-0 flex flex-col items-center justify-center gap-4.5"
+                >
+                  <span className="flex size-[70px] items-center justify-center rounded-full border border-pale/85 text-[19px] text-pale [filter:drop-shadow(0_1px_3px_rgba(22,25,26,0.7))]">
+                    ▶
+                  </span>
+                  <span className="font-label text-[11px] tracking-[0.24em] text-pale">
+                    PLAY
+                  </span>
+                </a>
+              )}
+            </div>
+          )}
+        </div>
 
         <div className="grid border-b border-fog lg:grid-cols-[1.5fr_1fr]">
           {work.overview && (
             <div className="border-b border-fog px-5 py-14 md:px-16 md:py-20 lg:border-r lg:border-b-0">
-              <div className="mb-7 font-label text-[11px] tracking-[0.16em] text-mist">OVERVIEW</div>
+              <div className="mb-7 font-label text-[11px] tracking-[0.16em] text-mist">
+                OVERVIEW
+              </div>
               <div className="whitespace-pre-line text-[15px] leading-[2.4] text-body">
                 <Linkify text={work.overview} />
               </div>
             </div>
           )}
           <div className="px-5 py-14 md:px-16 md:py-20">
-            <div className="mb-3.5 font-label text-[11px] tracking-[0.16em] text-mist">CREDITS</div>
+            <div className="mb-3.5 font-label text-[11px] tracking-[0.16em] text-mist">
+              CREDITS
+            </div>
             <div className="flex flex-col">
               <Credit label="CLIENT" value={work.client} />
               <Credit label="CATEGORY" value={categoryLabel[work.category]} />
@@ -157,10 +176,21 @@ export default async function WorkDetailPage({ params }: Params) {
             <div className="px-5 pt-14 pb-7 font-label text-[11px] tracking-[0.16em] text-mist md:px-16">
               STILLS
             </div>
-            <div className="grid sm:grid-cols-2">
+            {/* 本編の映像と同じく本文の幅に収める。ここだけ画面いっぱいだと
+                1節だけ組みが変わって見える。 */}
+            <div className="grid gap-5 px-5 pb-14 sm:grid-cols-2 md:px-16 md:pb-16">
               {stills.map((src) => (
-                <div key={src} className="relative aspect-[4/3] overflow-hidden">
-                  <Image src={src} alt="" fill sizes="(max-width: 639px) 100vw, 50vw" className="object-cover" />
+                <div
+                  key={src}
+                  className="relative aspect-[4/3] overflow-hidden"
+                >
+                  <Image
+                    src={src}
+                    alt=""
+                    fill
+                    sizes="(max-width: 639px) 100vw, (max-width: 1440px) calc((100vw - 148px) / 2), 646px"
+                    className="object-cover"
+                  />
                 </div>
               ))}
             </div>
