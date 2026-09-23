@@ -138,12 +138,11 @@ export type Client = { name: string; logo: string; w: number; h: number };
 
 export const clients: Client[] = [
   { name: "愛媛県", logo: "/clients/ehime-pref.webp", w: 500, h: 500 },
-  { name: "松山市", logo: "/clients/matsuyama-city.jpg", w: 1969, h: 1858 },
   { name: "ギノー味噌株式会社", logo: "/clients/ginomiso.svg", w: 154, h: 135 },
   { name: "株式会社アイホーム", logo: "/clients/ihome.png", w: 1495, h: 496 },
   { name: "月心グループ", logo: "/clients/gesshin.png", w: 894, h: 424 },
   { name: "株式会社愛新鉄工所", logo: "/clients/aishin.svg", w: 160, h: 111 },
-  { name: "税理士法人 片山会計", logo: "/clients/katayama-kaikei.png", w: 2000, h: 417 },
+  { name: "税理士法人 片山会計", logo: "/clients/katayama-kaikei.png", w: 1095, h: 228 },
   { name: "フジトラベルサービス", logo: "/clients/fujitravelservice.png", w: 208, h: 26 },
 ];
 export const contactCopy = {
