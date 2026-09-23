@@ -145,7 +145,7 @@ export default function WorksGrid({ works }: { works: Work[] }) {
       {/* 霧色を敷いてカードを淡霧で抜く組み方だと、3の倍数に満たない
           最終行の空きマスに下地の霧色が出てしまう。パネルと同じく
           罫線なし・余白だけで組む。 */}
-      <div className="grid grid-cols-1 gap-x-7 gap-y-16 border-b border-fog px-5 pb-16 sm:grid-cols-2 md:px-16 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-x-7 gap-y-20 border-b border-fog px-5 pb-16 sm:grid-cols-2 md:px-16 lg:grid-cols-3">
         {visible.map((w) => (
           <WorkCard
             key={w.slug}

@@ -39,46 +39,32 @@ export default function WorkCard({
 
   return (
     <Link href={`/works/${work.slug}`} className="group ap-media block">
-      {/* 札の段数ぶんの高さ。パネルは1列 193px しかなく、札が2つある
-          案件だけ2段に折り返すので、そのぶん先に取っておく。 */}
-      <div
-        className={
+      {/* 高さを揃えるための下駄は履かせない。
+
+          以前はサムネイルの頭を列で揃えるため、札と文章の塊に最小の
+          高さを持たせていた。案件ごとに文章量が違うので、その余りが
+          どこかに空白として出る。上に逃がせば札が浮き、下に逃がせば
+          文章が画像から離れる。どちらも「どの画像の話なのか」が
+          読めなくなる。
+
+          揃えるのはやめて、札から画像までを詰めて積む。カード同士は
+          80px 空けてあるので、間隔の差だけで1枚の塊が分かる。 */}
+      <WorkMeta work={work} size={size} tone={tone} />
+
+      <p
+        className={`line-clamp-2 text-ink transition-colors duration-300 group-hover:text-logo-blue ${
           size === "md"
-            ? undefined
-            : tone === "panel"
-              ? "min-h-[58px]"
-              : "min-h-[26px]"
-        }
-      >
-        <WorkMeta work={work} size={size} tone={tone} />
-      </div>
-
-      {/* 説明と社名。2行＋社名ぶんの高さを取って、余りは下ではなく
-          上に逃がす（justify-end）。
-
-          下に逃がすと、説明が1行の案件だけ文字とサムネイルが離れ、
-          その文字が上下どちらの画像のものか分からなくなる。
-          文字は必ず自分の画像の直上に置く。 */}
-      <div
-        className={`flex flex-col justify-end ${
-          size === "md" ? "mt-3.5" : "mt-3 min-h-[70px]"
+            ? "mt-3.5 text-base leading-[1.7]"
+            : "mt-3 text-sm leading-[1.7]"
         }`}
       >
-        <p
-          className={`line-clamp-2 text-ink transition-colors duration-300 group-hover:text-logo-blue ${
-            size === "md" ? "text-base leading-[1.7]" : "text-sm leading-[1.7]"
-          }`}
-        >
-          {lead}
-        </p>
+        {lead}
+      </p>
 
-        {byline && (
-          <p className={`mt-1.5 line-clamp-1 text-xs ${quiet}`}>{byline}</p>
-        )}
-      </div>
+      {byline && (
+        <p className={`mt-1.5 line-clamp-1 text-xs ${quiet}`}>{byline}</p>
+      )}
 
-      {/* 文字とサムネイルの間。カード間（64px）よりずっと詰めることで、
-          この文字がどの画像のものかを間隔だけで示す。 */}
       <div className={size === "md" ? "mt-4" : "mt-3.5"}>
         <WorkThumb work={work} aspect="video" sizes={sizes} />
       </div>
