@@ -83,7 +83,7 @@ function Chip({
 }) {
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-[2px] border px-2.5 py-1.5 leading-none ${className}`}
+      className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 leading-none shadow-[0_1px_2px_rgba(22,25,26,0.07)] ${className}`}
     >
       <svg {...ICON_PROPS} className="size-3 shrink-0">
         {icon}

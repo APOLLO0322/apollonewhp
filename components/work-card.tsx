@@ -39,32 +39,34 @@ export default function WorkCard({
 
   return (
     <Link href={`/works/${work.slug}`} className="group ap-media block">
-      {/* 札から社名までを1つの塊として高さを決め打ちする。
-
-          説明は2行、社名は1行で打ち切るが、案件によって行数は変わる。
-          なりゆきにすると画像の頭が1枚ずつずれて、横に並べたときに
-          列が崩れる。最大の組み合わせぶんを確保して余りは下に逃がし、
-          サムネイルの開始位置を揃える。
-
-          パネルは1列 193px しかなく、札が2つある案件だけ札が2段に
-          折り返す。そのぶん高く取る。
-          md は FEATURED の1枚だけで、隣に並ぶものが無いので確保しない。 */}
+      {/* 札の段数ぶんの高さ。パネルは1列 193px しかなく、札が2つある
+          案件だけ2段に折り返すので、そのぶん先に取っておく。 */}
       <div
         className={
           size === "md"
             ? undefined
             : tone === "panel"
-              ? "min-h-[140px]"
-              : "min-h-[108px]"
+              ? "min-h-[58px]"
+              : "min-h-[26px]"
         }
       >
         <WorkMeta work={work} size={size} tone={tone} />
+      </div>
 
+      {/* 説明と社名。2行＋社名ぶんの高さを取って、余りは下ではなく
+          上に逃がす（justify-end）。
+
+          下に逃がすと、説明が1行の案件だけ文字とサムネイルが離れ、
+          その文字が上下どちらの画像のものか分からなくなる。
+          文字は必ず自分の画像の直上に置く。 */}
+      <div
+        className={`flex flex-col justify-end ${
+          size === "md" ? "mt-3.5" : "mt-3 min-h-[70px]"
+        }`}
+      >
         <p
           className={`line-clamp-2 text-ink transition-colors duration-300 group-hover:text-logo-blue ${
-            size === "md"
-              ? "mt-3.5 text-base leading-[1.7]"
-              : "mt-3 text-sm leading-[1.7]"
+            size === "md" ? "text-base leading-[1.7]" : "text-sm leading-[1.7]"
           }`}
         >
           {lead}
@@ -75,10 +77,9 @@ export default function WorkCard({
         )}
       </div>
 
-      {/* 社名とサムネイルの間。ここを詰めると文字が画像の
-          キャプションのように見えてしまうので、札〜説明の間より
-          はっきり広く取る。 */}
-      <div className={size === "md" ? "mt-6" : "mt-5"}>
+      {/* 文字とサムネイルの間。カード間（64px）よりずっと詰めることで、
+          この文字がどの画像のものかを間隔だけで示す。 */}
+      <div className={size === "md" ? "mt-4" : "mt-3.5"}>
         <WorkThumb work={work} aspect="video" sizes={sizes} />
       </div>
     </Link>

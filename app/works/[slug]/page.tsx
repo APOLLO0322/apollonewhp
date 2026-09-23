@@ -159,12 +159,15 @@ export default async function WorkDetailPage({ params }: Params) {
               <Credit label="CATEGORY" value={categoryLabel[work.category]} />
               <Credit label="SCOPE" value={work.scope} />
             </div>
+            {/* このページで一番押してほしいもの。サイト全体が寒色で
+                通っているので、ここだけ熾火を置いて最後の一押しにする。
+                他の節より1.5倍の高さを取る。 */}
             <Link
               href="/contact"
-              className="mt-8 flex items-center justify-center gap-2 rounded-[2px] bg-logo-blue px-5 py-3.5 text-[13px] tracking-[0.04em] text-pale transition-colors duration-300 hover:bg-ink"
+              className="mt-10 flex items-center justify-center gap-2.5 rounded-[3px] bg-ember px-6 py-6 text-[16px] tracking-[0.08em] text-pale shadow-[0_2px_10px_rgba(168,84,49,0.25)] transition-colors duration-300 hover:bg-ember-deep"
             >
               制作のご相談
-              <span aria-hidden className="font-label text-[10px]">
+              <span aria-hidden className="font-label text-xs">
                 →
               </span>
             </Link>
