@@ -1,9 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import WorkCardBody from "@/components/work-card";
-import WorkThumb from "@/components/work-thumb";
+import WorkCard from "@/components/work-card";
 import { serviceTags } from "@/lib/site-content";
 import {
   categoryLabel,
@@ -149,18 +147,12 @@ export default function WorksGrid({ works }: { works: Work[] }) {
           罫線なし・余白だけで組む。 */}
       <div className="grid grid-cols-1 gap-x-7 gap-y-10 border-b border-fog px-5 pb-16 sm:grid-cols-2 md:px-16 lg:grid-cols-3">
         {visible.map((w) => (
-          <Link
+          <WorkCard
             key={w.slug}
-            href={`/works/${w.slug}`}
-            className="group ap-media block"
-          >
-            <WorkThumb
-              work={w}
-              aspect="video"
-              sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
-            />
-            <WorkCardBody work={w} size="sm" />
-          </Link>
+            work={w}
+            size="sm"
+            sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
+          />
         ))}
       </div>
 

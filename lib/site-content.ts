@@ -126,19 +126,25 @@ export function paragraphs(text: string): string[] {
 // 実ロゴが揃うまでの仮置きが2種類まざっている。公開前に全部外すこと。
 //   apollo-logo.png … 自社ロゴ。並びの見え方を確かめるためのサンプル
 //   01〜08.svg      … 番号だけの枠
-export type Client = { name: string; logo: string };
+/* CLIENTS のロゴ。
+
+   色も比率も改変しない（各社の利用規定に触れるため）。白抜きにもしない。
+   w / h は元画像の実寸。next/image はこの値で縦横比を決めるので、
+   実寸とずれているとロゴが横に潰れる。追加するときは必ず実寸を書く。
+
+   高さを揃えて並べるが、横長すぎるロゴだけは幅で頭打ちにする
+   （max-w。揃えるのが高さだけだと、細長いロゴが帯を占領する）。 */
+export type Client = { name: string; logo: string; w: number; h: number };
 
 export const clients: Client[] = [
-  { name: "愛媛県", logo: "/clients/ehime-pref.webp" },
-  { name: "アイホーム", logo: "/clients/ihome.png" },
-  { name: "月心グループ", logo: "/clients/gesshin.png" },
-  { name: "クライアントロゴ（仮）", logo: "/clients/apollo-logo.png" },
-  ...Array.from({ length: 8 }, (_, i) => {
-    const num = String(i + 1).padStart(2, "0");
-    return { name: `クライアントロゴ ${num}（仮）`, logo: `/clients/${num}.svg` };
-  }),
+  { name: "愛媛県", logo: "/clients/ehime-pref.webp", w: 500, h: 500 },
+  { name: "松山市", logo: "/clients/matsuyama-city.jpg", w: 1969, h: 1858 },
+  { name: "ギノー味噌株式会社", logo: "/clients/ginomiso.svg", w: 154, h: 135 },
+  { name: "株式会社アイホーム", logo: "/clients/ihome.png", w: 1495, h: 496 },
+  { name: "月心グループ", logo: "/clients/gesshin.png", w: 894, h: 424 },
+  { name: "株式会社愛新鉄工所", logo: "/clients/aishin.svg", w: 160, h: 111 },
+  { name: "フジトラベルサービス", logo: "/clients/fujitravelservice.png", w: 208, h: 26 },
 ];
-
 export const contactCopy = {
   label: "CONTACT",
   // 見出しもリード文も置かない。CONTACT のラベルだけで用は足りる

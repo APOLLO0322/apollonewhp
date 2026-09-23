@@ -27,6 +27,14 @@ const HERO_CLIPS: HeroClip[] = [
 // 仮素材の注記。本番素材が確定したら false のままでよい
 const HERO_IS_PLACEHOLDER = false;
 
+/* ロゴを並べる本数。ap-marquee は -50% 動くので、継ぎ目が出ないよう
+   セット数は必ず偶数にする。社数が少ないうちは繰り返しを増やして
+   帯の途中で列が途切れないようにする。 */
+const marqueeLogos = Array.from(
+  { length: Math.max(2, Math.ceil(12 / clients.length / 2) * 2) },
+  () => clients,
+).flat();
+
 type PanelKey = "vision" | "company" | "service" | "works" | "contact";
 
 const panelMeta: Record<PanelKey, { label: string; title: string }> = {
@@ -256,17 +264,27 @@ export default function HomeExperience({ works }: { works: Work[] }) {
             そのぶん暗い映像の上では濃色のロゴが沈むので、淡霧の帯を
             敷いてその上に置く。2セット並べて半分ぶん動かし継ぎ目を消す。
             パネル（z-7）より下の z-2 なので、開くと右側は隠れる。 */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] overflow-hidden bg-pale/70 py-4">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] overflow-hidden bg-pale/70 py-5">
           <div className="ap-marquee flex w-max items-center gap-14 md:gap-20">
-            {[...clients, ...clients].map((c, i) => (
+            {marqueeLogos.map((c, i) => (
               <Image
                 key={`${c.logo}-${i}`}
                 src={c.logo}
                 alt={i < clients.length ? c.name : ""}
                 aria-hidden={i >= clients.length}
-                width={260}
-                height={76}
-                className="h-8 w-auto md:h-10"
+                width={c.w}
+                height={c.h}
+                /* SVG は画像最適化を通すと 400 が返る。生のまま配信する。 */
+                unoptimized={c.logo.endsWith(".svg")}
+                /* sizes を書かないと最大幅（3840px）で焼かれる。
+                   実寸は 180px 止まりなので、そのぶんだけ取る。 */
+                sizes="200px"
+                /* 帯はヒーローと同時に見えている。遅延させると
+                   読み込み中だけ帯が空になる。1周目だけ先に読む。 */
+                loading={i < clients.length ? "eager" : "lazy"}
+                /* 高さで揃え、横長のものだけ幅で頭打ちにする。縦横比は
+                   object-contain が守るので、潰れずに背だけ低くなる。 */
+                className="h-10 w-auto max-w-[140px] object-contain md:h-14 md:max-w-[180px]"
               />
             ))}
           </div>

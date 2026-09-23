@@ -6,6 +6,7 @@ import PageCta from "@/components/page-cta";
 import SiteFooter from "@/components/site-footer";
 import SiteHeader from "@/components/site-header";
 import Linkify from "@/components/linkify";
+import WorkMeta from "@/components/work-meta";
 import {
   categoryLabel,
   getWork,
@@ -71,9 +72,7 @@ export default async function WorkDetailPage({ params }: Params) {
         </div>
 
         <header className="border-b border-fog px-5 pt-14 pb-12 md:px-16 md:pt-22">
-          <div className="font-label text-[11px] tracking-[0.24em] text-blue">
-            {workMeta(work)}
-          </div>
+          <WorkMeta work={work} size="md" />
           <h1 className="mt-5 font-display text-[24px] leading-[1.6] font-medium tracking-[0.06em] md:text-[32px]">
             {work.title}
           </h1>

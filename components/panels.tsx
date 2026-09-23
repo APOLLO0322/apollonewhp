@@ -8,8 +8,7 @@ import {
   services,
   vision,
 } from "@/lib/site-content";
-import WorkCardBody from "@/components/work-card";
-import WorkThumb from "@/components/work-thumb";
+import WorkCard from "@/components/work-card";
 import type { Work } from "@/lib/works";
 
 /* 罫線1本 + ラベル/1fr の定義リスト。カード・角丸・影は使わない。
@@ -182,33 +181,26 @@ export function WorksPanel({ works }: { works: Work[] }) {
           <div className="font-label text-[10px] tracking-[0.16em] text-blue-panel">
             FEATURED
           </div>
-          <Link href={`/works/${featured.slug}`} className="group ap-media block">
-            <div className="mt-4">
-              <WorkThumb
-                work={featured}
-                aspect="video"
-                sizes="(max-width: 767px) 100vw, 62vw"
-              />
-            </div>
-            <WorkCardBody work={featured} size="md" tone="panel" />
-          </Link>
+          <div className="mt-4">
+            <WorkCard
+              work={featured}
+              size="md"
+              tone="panel"
+              sizes="(max-width: 767px) 100vw, 62vw"
+            />
+          </div>
         </div>
       )}
 
       <div className="grid grid-cols-1 gap-x-7 gap-y-8 border-t border-fog py-8 sm:grid-cols-2">
         {rest.map((w) => (
-          <Link
+          <WorkCard
             key={w.slug}
-            href={`/works/${w.slug}`}
-            className="group ap-media block"
-          >
-            <WorkThumb
-              work={w}
-              aspect="video"
-              sizes="(max-width: 767px) 100vw, 31vw"
-            />
-            <WorkCardBody work={w} size="sm" tone="panel" />
-          </Link>
+            work={w}
+            size="sm"
+            tone="panel"
+            sizes="(max-width: 767px) 100vw, 31vw"
+          />
         ))}
       </div>
 
