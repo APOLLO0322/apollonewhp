@@ -41,21 +41,16 @@ export default function WorkCard({
     <Link href={`/works/${work.slug}`} className="group ap-media block">
       {/* 高さを揃えるための下駄は履かせない。
 
-          以前はサムネイルの頭を列で揃えるため、札と文章の塊に最小の
-          高さを持たせていた。案件ごとに文章量が違うので、その余りが
-          どこかに空白として出る。上に逃がせば札が浮き、下に逃がせば
-          文章が画像から離れる。どちらも「どの画像の話なのか」が
-          読めなくなる。
+          以前はサムネイルの頭を列で揃えるため、塊に最小の高さを
+          持たせていた。案件ごとに文章量が違うので、その余りがどこかに
+          空白として出る。上に逃がせば浮き、下に逃がせば文章が画像から
+          離れる。どちらも「どの画像の話なのか」が読めなくなる。
 
-          揃えるのはやめて、札から画像までを詰めて積む。カード同士は
-          80px 空けてあるので、間隔の差だけで1枚の塊が分かる。 */}
-      <WorkMeta work={work} size={size} tone={tone} />
-
+          揃えるのはやめて詰めて積む。カード同士は 80px 空けてあるので、
+          間隔の差だけで1枚の塊が分かる。 */}
       <p
         className={`line-clamp-2 text-ink transition-colors duration-300 group-hover:text-logo-blue ${
-          size === "md"
-            ? "mt-3.5 text-base leading-[1.7]"
-            : "mt-3 text-sm leading-[1.7]"
+          size === "md" ? "text-base leading-[1.7]" : "text-sm leading-[1.7]"
         }`}
       >
         {lead}
@@ -67,6 +62,12 @@ export default function WorkCard({
 
       <div className={size === "md" ? "mt-4" : "mt-3.5"}>
         <WorkThumb work={work} aspect="video" sizes={sizes} />
+      </div>
+
+      {/* 札は画像の下。次のカードとの間は 80px あるので、
+          この札が上の画像のものであることは間隔で分かる。 */}
+      <div className={size === "md" ? "mt-3.5" : "mt-3"}>
+        <WorkMeta work={work} size={size} tone={tone} />
       </div>
     </Link>
   );
