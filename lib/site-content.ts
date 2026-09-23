@@ -143,6 +143,7 @@ export const clients: Client[] = [
   { name: "株式会社アイホーム", logo: "/clients/ihome.png", w: 1495, h: 496 },
   { name: "月心グループ", logo: "/clients/gesshin.png", w: 894, h: 424 },
   { name: "株式会社愛新鉄工所", logo: "/clients/aishin.svg", w: 160, h: 111 },
+  { name: "税理士法人 片山会計", logo: "/clients/katayama-kaikei.png", w: 2000, h: 417 },
   { name: "フジトラベルサービス", logo: "/clients/fujitravelservice.png", w: 208, h: 26 },
 ];
 export const contactCopy = {
