@@ -235,12 +235,14 @@ export async function getWorkNeighbours(slug: string) {
   return { prev: i > 0 ? list[i - 1] : undefined, next: i >= 0 && i < list.length - 1 ? list[i + 1] : undefined };
 }
 
-// 「MOVIE · プロモーション · 2024」の並び。
-// 年やタグが未入力のレコードがあるため、無い要素は区切りごと落とす。
+// 「MOVIE · プロモーション」の並び。
+// タグが未入力のレコードがあるため、無い要素は区切りごと落とす。
+//
+// year は表示しない（並び順には使う）。制作年が出ていると、
+// 古い実績ほど仕事として劣って見えてしまう。
 export function workMeta(work: Work, opts?: { withTag?: boolean }): string {
   const parts: string[] = [categoryLabel[work.category]];
   if (opts?.withTag && work.tags?.length) parts.push(work.tags[0]);
-  if (work.year) parts.push(work.year);
   return parts.join(" · ");
 }
 

@@ -139,7 +139,6 @@ export default async function WorkDetailPage({ params }: Params) {
             <div className="flex flex-col">
               <Credit label="CLIENT" value={work.client} />
               <Credit label="CATEGORY" value={categoryLabel[work.category]} />
-              <Credit label="YEAR" value={work.year} />
               <Credit label="SCOPE" value={work.scope} />
             </div>
             <Link
