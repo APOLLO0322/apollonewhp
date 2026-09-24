@@ -32,24 +32,21 @@ export default function WorkCard({
 
   return (
     <Link href={`/works/${work.slug}`} className="group ap-media block">
-      {/* 文字の塊は「説明2行＋社名1行」ぶんの高さで固定する。
-          説明が1行で済む案件でも高さが変わらないので、横に並べた
-          サムネイルの頭が揃う。
+      {/* 文字の塊は「説明2行＋社名1行」で高さを決め打ちする。
 
-          余りは justify-end で上に逃がす。文字はいつでも自分の画像の
-          真上にいて、空いたぶんはカード間の余白に紛れる。
-          下に逃がすと文字と画像が離れ、どちらの画像の話か読めなくなる。
+          説明そのものにも2行ぶんの高さを持たせているので、1行で済む
+          案件でも書き出しの位置は変わらない。行数によって頭が上下に
+          動くと、横に並べたときに視線の高さが揃わない。
 
           説明は line-clamp-2、社名は line-clamp-1 で打ち切っているので、
-          この高さが必ず最大になる。 */}
-      <div
-        className={`flex flex-col justify-end ${
-          size === "md" ? "min-h-[80px]" : "min-h-[70px]"
-        }`}
-      >
+          この高さが必ず最大になる。余りが出るのは社名が未入力の
+          レコードだけで、そのぶんは社名の行として下に残る。 */}
+      <div className={size === "md" ? "min-h-[81px]" : "min-h-[70px]"}>
         <p
           className={`line-clamp-2 text-ink transition-colors duration-300 group-hover:text-logo-blue ${
-            size === "md" ? "text-base leading-[1.7]" : "text-sm leading-[1.7]"
+            size === "md"
+              ? "min-h-[55px] text-base leading-[1.7]"
+              : "min-h-[48px] text-sm leading-[1.7]"
           }`}
         >
           {lead}
