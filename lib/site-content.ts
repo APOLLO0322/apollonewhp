@@ -144,6 +144,8 @@ export const clients: Client[] = [
   { name: "株式会社愛新鉄工所", logo: "/clients/aishin.svg", w: 160, h: 111 },
   { name: "税理士法人 片山会計", logo: "/clients/katayama-kaikei.png", w: 1095, h: 228 },
   { name: "フジトラベルサービス", logo: "/clients/fujitravelservice.png", w: 208, h: 26 },
+  { name: "株式会社AIC", logo: "/clients/aiclogo.svg", w: 1600, h: 242 },
+  { name: "株式会社SPC", logo: "/clients/spc_logo.svg", w: 200, h: 37 },
 ];
 export const contactCopy = {
   label: "CONTACT",
