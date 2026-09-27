@@ -66,10 +66,14 @@ rm hero-04.mp4.png
 
 ## microCMS スキーマ（`works`）
 
-`title` `slug` `category`(movie/sns/photo/event) `year` `thumbnail` `lead`
-`overview` `videoUrl` `stills` `client` `scope` `featured` `tags` `summary`
+`title` `slug` `category`(movie/sns/photo/event) `thumbnail` `lead`
+`overview` `videoUrl` `stills` `client` `scope` `tags` `summary`
 
-一覧は `featured` を先頭、以降 `year` 降順。
+一覧の並び順は microCMS の並び順そのまま。サイト側では並べ替えていないので、
+管理画面で入れ替えた順がそのまま出る。先頭の1件が TOP パネルの FEATURED になる。
+
+`featured`（TOP掲載フラグ）と `year`（制作年）は廃止。年は画面のどこにも
+出していない（古い実績ほど劣って見えるため）。
 
 ### 本文中のURL
 

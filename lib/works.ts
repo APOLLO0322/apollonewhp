@@ -21,7 +21,6 @@ export type Work = {
   slug: string;
   title: string;
   category: WorkCategory;
-  year?: string;
   thumbnail: string;
   // lead は詳細ページの導入文とメタディスクリプション用
   lead?: string;
@@ -33,7 +32,6 @@ export type Work = {
   client?: string;
   // microCMS では複数選択なので配列で持つ
   scope?: string[];
-  featured?: boolean;
   // 事業内容のメニューと同じ文字列。/works?tag=... の絞り込みに使う
   tags?: string[];
 };
@@ -46,17 +44,14 @@ const staticWorks: Work[] = [
     slug: "katayama-kaikei",
     title: "税理士法人 片山会計｜SNS運用",
     category: "SNS",
-    year: "2026",
     thumbnail: `${IMG}/2025/03/katayama.jpg`,
     client: "税理士法人 片山会計",
     scope: ["アカウント設計", "コンテンツ制作", "運用"],
-    featured: true,
   },
   {
     slug: "passion-leaders",
     title: "一般社団法人 パッションリーダーズ",
     category: "MOVIE",
-    year: "2026",
     thumbnail: `${IMG}/2025/03/passsion.jpg`,
     lead: "「情熱でつながる」という理念を、人の表情と言葉から立ち上げるブランディングムービー。",
     overview:
@@ -69,7 +64,6 @@ const staticWorks: Work[] = [
     slug: "mana-yamasaki",
     title: "フリーアナウンサー 山崎愛",
     category: "MOVIE",
-    year: "2026",
     thumbnail: `${IMG}/2025/03/mana.jpg`,
     tags: ["ブランディング"],
   },
@@ -77,42 +71,36 @@ const staticWorks: Work[] = [
     slug: "color-knot",
     title: "松山のリペア業者「COLOR KNOT」",
     category: "MOVIE",
-    year: "2025",
     thumbnail: `${IMG}/2025/03/colornot.jpg`,
   },
   {
     slug: "matsuyama-symposium-40",
     title: "第40回 まつやま市民シンポジウム",
     category: "MOVIE",
-    year: "2024",
     thumbnail: `${IMG}/2024/11/12.jpg`,
   },
   {
     slug: "inbound-summit-setouchi",
     title: "インバウンドサミットin瀬戸内",
     category: "MOVIE",
-    year: "2024",
     thumbnail: `${IMG}/2024/11/10.jpg`,
   },
   {
     slug: "matsuyama-iju-tour",
     title: "まつやま移住体感ツアー",
     category: "MOVIE",
-    year: "2024",
     thumbnail: `${IMG}/2024/11/9.jpg`,
   },
   {
     slug: "sol-et-luna",
     title: "イタリアンダイニングバー「SOL ET LUNA」",
     category: "PHOTO",
-    year: "2024",
     thumbnail: `${IMG}/2024/09/6-740x520.jpg`,
   },
   {
     slug: "fc-manticore",
     title: "サッカーチーム「FCマンチコア」",
     category: "MOVIE",
-    year: "2024",
     thumbnail: `${IMG}/2024/11/8.jpg`,
     tags: ["ブランディング"],
   },
@@ -120,21 +108,18 @@ const staticWorks: Work[] = [
     slug: "furugino-festa",
     title: "ニューレトロ フルギノフェスタ × ノミノイチ",
     category: "MOVIE",
-    year: "2024",
     thumbnail: `${IMG}/2024/11/11.jpg`,
   },
   {
     slug: "ehime-im-service",
     title: "エヒメアイムサービス｜SNS運用",
     category: "SNS",
-    year: "2024",
     thumbnail: `${IMG}/2024/11/2-1-740x520.jpg`,
   },
   {
     slug: "iwayaji",
     title: "四国八十八ヶ所 第四十五番札所「岩屋寺」",
     category: "MOVIE",
-    year: "2024",
     thumbnail: `${IMG}/2024/09/8efa322da0f5c24135b9bf522d34760f-1-740x520.jpg`,
   },
 ];
@@ -147,7 +132,6 @@ type MicroCmsWork = {
   slug: string;
   title: string;
   category: WorkCategory | WorkCategory[];
-  year?: string;
   thumbnail: MicroCmsImage;
   lead?: string;
   summary?: string;
@@ -156,7 +140,6 @@ type MicroCmsWork = {
   stills?: MicroCmsImage[];
   client?: string;
   scope?: string | string[];
-  featured?: boolean;
   tags?: string | string[];
 };
 
@@ -185,7 +168,6 @@ function normalize(item: MicroCmsWork): Work {
     slug: item.slug,
     title: item.title,
     category: normalizeCategory(item.category),
-    year: item.year,
     thumbnail: item.thumbnail.url,
     lead: item.lead,
     summary: item.summary,
@@ -194,21 +176,19 @@ function normalize(item: MicroCmsWork): Work {
     stills: item.stills?.map((s) => s.url),
     client: item.client,
     scope: toList(item.scope),
-    featured: item.featured,
     tags: toList(item.tags),
   };
 }
 
-// featured を先頭、以降 year 降順（README §5）
-function sortWorks(list: Work[]): Work[] {
-  return [...list].sort((a, b) => {
-    if (!!a.featured !== !!b.featured) return a.featured ? -1 : 1;
-    return (b.year ?? "").localeCompare(a.year ?? "");
-  });
-}
+/* 並び順は microCMS の並び順そのまま。
+
+   以前は「TOP掲載フラグが先頭、あとは制作年の降順」で並べ替えていたが、
+   フラグは API から外され、順番は管理画面で直接入れ替える運用になった。
+   ここで並べ替えると管理画面で見えている順と食い違うので、
+   返ってきた順序に手を触れない。先頭の1件がパネルの FEATURED になる。 */
 
 export async function getWorks(): Promise<Work[]> {
-  if (!SERVICE_DOMAIN || !API_KEY) return sortWorks(staticWorks);
+  if (!SERVICE_DOMAIN || !API_KEY) return staticWorks;
 
   try {
     const res = await fetch(
@@ -217,10 +197,10 @@ export async function getWorks(): Promise<Work[]> {
     );
     if (!res.ok) throw new Error(`microCMS responded ${res.status}`);
     const data = (await res.json()) as { contents: MicroCmsWork[] };
-    return sortWorks(data.contents.map(normalize));
+    return data.contents.map(normalize);
   } catch (err) {
     console.error("[works] microCMS fetch failed, falling back to static data:", err);
-    return sortWorks(staticWorks);
+    return staticWorks;
   }
 }
 
@@ -235,11 +215,8 @@ export async function getWorkNeighbours(slug: string) {
   return { prev: i > 0 ? list[i - 1] : undefined, next: i >= 0 && i < list.length - 1 ? list[i + 1] : undefined };
 }
 
-// 「MOVIE · プロモーション」の並び。
+// 「MOVIE · プロモーション」の並び。詳細ページのメタディスクリプション用。
 // タグが未入力のレコードがあるため、無い要素は区切りごと落とす。
-//
-// year は表示しない（並び順には使う）。制作年が出ていると、
-// 古い実績ほど仕事として劣って見えてしまう。
 export function workMeta(work: Work, opts?: { withTag?: boolean }): string {
   const parts: string[] = [categoryLabel[work.category]];
   if (opts?.withTag && work.tags?.length) parts.push(work.tags[0]);
