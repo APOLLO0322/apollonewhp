@@ -19,8 +19,20 @@
 
 export const PRODUCTION_ORIGIN = "https://apollone.jp";
 
-export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? PRODUCTION_ORIGIN;
+/* 環境変数に末尾のスラッシュが付いていても同じ扱いにする。
+   ここを素の文字列比較にしていると、"https://apollone.jp/" と書いた日に
+   本公開しても noindex が外れず、しかも画面上は何も変わらないので
+   気づけない。判定に効く値は必ず均してから使う。 */
+function normalize(url: string): string {
+  return url.trim().replace(/\/+$/, "");
+}
+
+const configured = process.env.NEXT_PUBLIC_SITE_URL
+  ? normalize(process.env.NEXT_PUBLIC_SITE_URL)
+  : undefined;
+
+export const siteUrl = configured ?? PRODUCTION_ORIGIN;
 
 /* 本公開の日にやることは、Vercel の環境変数を本番ドメインに変えて
    再デプロイするだけ。これで robots.txt と noindex が同時に外れる。 */
-export const isIndexable = process.env.NEXT_PUBLIC_SITE_URL === PRODUCTION_ORIGIN;
+export const isIndexable = configured === PRODUCTION_ORIGIN;

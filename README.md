@@ -75,8 +75,13 @@ rm hero-04.mp4.png
 | 本公開 `apollone.jp` | `https://apollone.jp` | 出す |
 
 開放の判定は `lib/site-url.ts` の1か所。`NEXT_PUBLIC_SITE_URL` が本番ドメインと
-完全一致するときだけ `robots.txt` の許可と `noindex` の解除が同時に効く。
+一致するときだけ `robots.txt` の許可と `noindex` の解除が同時に効く
+（末尾のスラッシュは無視する）。
 **本公開の作業は、Vercel の環境変数をこの値に変えて再デプロイするだけ。**
+
+Vercel 側の型は **Config**。`NEXT_PUBLIC_` はビルド時にブラウザのコードへ
+埋め込まれるので Secret にする意味がなく、保存後に値を読み返せなくなって
+本公開の日に確認できない。
 
 旧WordPress の公開URLは `next.config.ts` の redirects と `app/archive/[slug]` で
 301 で引き取っている。本ドメインを切り替えるまでは効かない（別ホストのため）。
