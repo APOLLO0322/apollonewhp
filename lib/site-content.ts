@@ -5,7 +5,7 @@ export const company = {
   name: "株式会社APOLLO",
   nameEn: "APOLLO Inc.",
   concept: "まだ、誰も見ていない景色へ。",
-  mail: "contact@apollone.jp",
+  mail: "info@apollone.jp",
   hours: "平日 10:00 – 19:00",
   // サイト内ページ。本ドメインを新サイトに向けると WordPress 側の
   // /privacy-policy/ は消えるため、こちらを正とする。
@@ -122,13 +122,7 @@ export function paragraphs(text: string): string[] {
   return text.split(/\n{2,}/).map((block) => block.split("\n").join(""));
 }
 
-// TOPのヒーロー下部に流すクライアントロゴ。public/clients/ に置く。
-// 映像の上なので brightness(0) invert(1) で白一色に潰している。単色の
-// ロゴならそのまま入れてよい（多色・グラデーションは白抜き版が必要）。
-// 実ロゴが揃うまでの仮置きが2種類まざっている。公開前に全部外すこと。
-//   apollo-logo.png … 自社ロゴ。並びの見え方を確かめるためのサンプル
-//   01〜08.svg      … 番号だけの枠
-/* CLIENTS のロゴ。
+/* TOPのヒーロー下部に流すクライアントロゴ。public/clients/ に置く。
 
    色も比率も改変しない（各社の利用規定に触れるため）。白抜きにもしない。
    w / h は元画像の実寸。next/image はこの値で縦横比を決めるので、
@@ -148,7 +142,7 @@ export const clients: Client[] = [
   { name: "フジトラベルサービス", logo: "/clients/fujitravelservice.png", w: 208, h: 26 },
   { name: "株式会社AIC", logo: "/clients/aiclogo.svg", w: 1600, h: 242 },
   { name: "株式会社SPC", logo: "/clients/spc_logo.svg", w: 200, h: 37 },
-  { name: "koe+", logo: "/clients/koe.png", w: 567, h: 567 },
+  { name: "koe+", logo: "/clients/koe.png", w: 567, h: 395 },
 ];
 export const contactCopy = {
   label: "CONTACT",
