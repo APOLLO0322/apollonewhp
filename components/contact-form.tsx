@@ -243,6 +243,8 @@ export default function ContactForm({ variant = "panel" }: { variant?: Variant }
         </button>
         <p className="text-[11px] leading-[1.8] text-body">
           送信をもって
+          {/* 入力中に同じタブで飛ばすと書いた内容が消えるので、
+              ここだけは別タブで開く。 */}
           <a
             href={company.privacyUrl}
             target="_blank"

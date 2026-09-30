@@ -24,13 +24,7 @@ export default function SiteFooter() {
         </div>
         <div className="flex flex-col gap-3.5">
           <Link href={navHref.contact}>{navLabel.contact}</Link>
-          <a
-            href={company.privacyUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            POLICY
-          </a>
+          <Link href={company.privacyUrl}>POLICY</Link>
         </div>
       </div>
     </footer>

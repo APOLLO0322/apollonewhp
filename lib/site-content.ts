@@ -7,7 +7,9 @@ export const company = {
   concept: "まだ、誰も見ていない景色へ。",
   mail: "contact@apollone.jp",
   hours: "平日 10:00 – 19:00",
-  privacyUrl: "https://apollone.jp/privacy-policy/",
+  // サイト内ページ。本ドメインを新サイトに向けると WordPress 側の
+  // /privacy-policy/ は消えるため、こちらを正とする。
+  privacyUrl: "/privacy",
 } as const;
 
 export type Row = { k: string; v: string };
@@ -18,7 +20,7 @@ export const companyRows: Row[] = [
   { k: "所在地", v: "愛媛県松山市鴨川1-6-15" },
   { k: "設立", v: "2023年3月22日" },
   { k: "事業内容", v: "映像制作 / 写真撮影 / 出張撮影サービス\nSNS運用支援 / イベント企画・運営" },
-  { k: "個人情報保護方針", v: "apollone.jp/privacy-policy" },
+  { k: "個人情報保護方針", v: "apollone.jp/privacy" },
 ];
 
 export const profileBio =
@@ -146,6 +148,7 @@ export const clients: Client[] = [
   { name: "フジトラベルサービス", logo: "/clients/fujitravelservice.png", w: 208, h: 26 },
   { name: "株式会社AIC", logo: "/clients/aiclogo.svg", w: 1600, h: 242 },
   { name: "株式会社SPC", logo: "/clients/spc_logo.svg", w: 200, h: 37 },
+  { name: "koe+", logo: "/clients/koe.png", w: 567, h: 567 },
 ];
 export const contactCopy = {
   label: "CONTACT",
