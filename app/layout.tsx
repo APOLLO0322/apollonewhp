@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { company } from "@/lib/site-content";
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://apollone.jp";
+import { isIndexable, siteUrl } from "@/lib/site-url";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -25,6 +24,10 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image" },
   alternates: { canonical: "/" },
+  /* 仮公開中とプレビューは検索結果に出さない。robots.txt はクロールを
+     止めるだけで、外部リンクがあればURL自体は載ってしまう。
+     ページ側にも noindex を出して二重に止める。 */
+  robots: isIndexable ? undefined : { index: false, follow: false },
 };
 
 export const viewport: Viewport = {

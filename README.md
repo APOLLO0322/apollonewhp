@@ -64,6 +64,29 @@ rm hero-04.mp4.png
 最後に `components/home-experience.tsx` の `HERO_CLIPS` に1行足す。
 1本あたり5MB前後を目安に。大きくなるならリポジトリではなく Vercel Blob に置く。
 
+## 公開の段取り
+
+`apollone.jp` は現在ロリポップの WordPress。新サイトは3か所で動く。
+
+| どこ | `NEXT_PUBLIC_SITE_URL` | 検索エンジン |
+|---|---|---|
+| プレビュー `*.vercel.app` | 未設定 | 出さない |
+| 仮公開 `new.apollone.jp` | `https://new.apollone.jp` | 出さない |
+| 本公開 `apollone.jp` | `https://apollone.jp` | 出す |
+
+開放の判定は `lib/site-url.ts` の1か所。`NEXT_PUBLIC_SITE_URL` が本番ドメインと
+完全一致するときだけ `robots.txt` の許可と `noindex` の解除が同時に効く。
+**本公開の作業は、Vercel の環境変数をこの値に変えて再デプロイするだけ。**
+
+旧WordPress の公開URLは `next.config.ts` の redirects と `app/archive/[slug]` で
+301 で引き取っている。本ドメインを切り替えるまでは効かない（別ホストのため）。
+
+### DNS（ムームードメイン）
+
+**Aレコード以外は触らない。** メール（`MX: mx01.lolipop.jp`）、SPF、
+Resend のドメイン認証（`resend._domainkey` / `send` / `_dmarc`）、
+Search Console の所有権確認 TXT が同じゾーンに同居している。
+
 ## microCMS スキーマ（`works`）
 
 `title` `slug` `category`(movie/sns/photo/event) `thumbnail` `lead`

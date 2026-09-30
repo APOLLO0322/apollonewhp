@@ -1,12 +1,9 @@
 import type { MetadataRoute } from "next";
+import { siteUrl } from "@/lib/site-url";
 import { getWorks } from "@/lib/works";
 
-/* sitemap.xml。実績は microCMS 次第で増減するので都度組み立てる。
-   URL は NEXT_PUBLIC_SITE_URL が正。未設定だと本番ドメインではなく
-   プレビューの URL が載ってしまうので、Vercel 側に必ず入れておくこと。 */
+/* sitemap.xml。実績は microCMS 次第で増減するので都度組み立てる。 */
 export const revalidate = 60;
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://apollone.jp";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const works = await getWorks();
