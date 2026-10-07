@@ -10,6 +10,7 @@ import {
   vision,
 } from "@/lib/site-content";
 import ConsultLink from "@/components/consult-link";
+import PhaseScale from "@/components/phase-scale";
 import WorkCard from "@/components/work-card";
 import type { Work } from "@/lib/works";
 
@@ -128,15 +129,47 @@ export function ApproachPanel({ works }: { works: Work[] }) {
           {approach.think.lead}
         </p>
 
-        <p className="mt-5 max-w-[460px] text-[15px] leading-[2] whitespace-pre-line text-ink">
+        {/* 問いを1行ずつ立てる。畳んで1文にすると説明になってしまい、
+            「一緒に考える」が絵にならない。 */}
+        <ul className="mt-8 flex list-none flex-col gap-4 p-0">
+          {approach.think.questions.map((q) => (
+            <li
+              key={q}
+              className="font-display text-[19px] leading-[1.6] tracking-[0.06em] text-ink md:text-[21px]"
+            >
+              {q}
+            </li>
+          ))}
+        </ul>
+
+        <p className="mt-8 max-w-[460px] text-[15px] leading-[2] whitespace-pre-line text-ink">
           {approach.think.body}
         </p>
 
-        <div className="mt-7 font-label text-[11px] tracking-[0.16em] text-mist-panel">
+        {/* 実績カードと同じ目盛り。構想だけを灯して、どこから入れるかを
+            図で示す。同じ印が実績側にも出るので、主張と裏づけが結びつく。 */}
+        <div className="mt-10 flex flex-wrap items-start gap-x-9 gap-y-5">
+          <PhaseScale active={["構想"]} size="lg" tone="panel" />
+          {/* 段02のメニューと同じ文言。文脈で構想の実績だと分かる */}
+          <Link
+            href="/works?phase=%E6%A7%8B%E6%83%B3"
+            className="group flex items-center gap-2 border-b border-blue-panel pb-[3px] font-label text-xs tracking-[0.08em] text-blue-panel"
+          >
+            実績
+            <span
+              aria-hidden
+              className="text-[10px] transition-transform duration-300 group-hover:translate-x-0.5"
+            >
+              →
+            </span>
+          </Link>
+        </div>
+
+        <div className="mt-11 font-label text-[11px] tracking-[0.16em] text-mist-panel">
           {approach.think.scope}
         </div>
 
-        <div className="mt-9">
+        <div className="mt-4">
           <ConsultLink tone="panel" />
         </div>
       </section>
