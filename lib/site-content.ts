@@ -63,7 +63,6 @@ export const profileRows: Row[] = [
 export type ServiceLink = { label: string; tag?: string; category?: string };
 
 export type Service = {
-  num: string;
   name: string;
   // 各事業の一行キャッチ。名前と本文の間に置く
   tagline: string;
@@ -71,10 +70,36 @@ export type Service = {
   links: ServiceLink[];
 };
 
+/* APPROACH。2段構成（改修指示書 §2）。
+
+   APOLLOの差別化は「映像がつくれること」ではなく、つくると決まる前の
+   構想から関われること。これが3つのサービスと横並びになっていると
+   「メニューの1つ」にしか見えない。段を分けて上下関係にする。
+
+   段には連番を付け（考える→つくる、という順序が実際にあるため）、
+   段02の中の3サービスには付けない（並列で順序がないため）。 */
+export const approach = {
+  label: "APPROACH",
+  title: "私たちのしごと",
+
+  think: {
+    num: "01",
+    name: "考える",
+    lead: "正解がないところから、始める。",
+    body: "何を伝えるか、誰に届けるか、何をつくるか。\n決まっていないほど、話す価値がある。",
+    scope: "構想・戦略設計",
+    invite: "何も決まっていない段階で、どうぞ。",
+  },
+
+  make: {
+    num: "02",
+    name: "つくる・届ける",
+  },
+} as const;
+
 // WEB制作は会社概要にのみ記載し、事業内容では紹介しない（README §6）。
 export const services: Service[] = [
   {
-    num: "01",
     name: "映像・写真制作",
     tagline: "想いを、カタチに。",
     desc: "ブランディング、プロモーション、採用。構成から撮影・編集まで一貫して手がけます。伝わる一本を伝えたい人に届けます。",
@@ -89,14 +114,12 @@ export const services: Service[] = [
     ],
   },
   {
-    num: "02",
     name: "社外広報",
     tagline: "曇ったガラスを透明に。",
     desc: "ありのままの姿が、共感が続くはじめの一歩。一番身近な第三者として、伴走を見据えた設計をご提案します。",
     links: [{ label: "実績", category: "SNS" }],
   },
   {
-    num: "03",
     name: "イベント設計・運営",
     tagline: "人が集まり、愛される理由を知っている。",
     // 上の2つが「伝える」仕事なのに対し、こちらは「集める」仕事。

@@ -23,7 +23,8 @@ const nextConfig: NextConfig = {
       // 会社紹介・代表メッセージ・事業内容は、いずれもTOPのパネルに集約した
       { source: "/aboutus", destination: "/", permanent: true },
       { source: "/message", destination: "/", permanent: true },
-      { source: "/service", destination: "/", permanent: true },
+      // 事業内容は APPROACH パネルに集約した
+      { source: "/service", destination: "/?panel=approach", permanent: true },
       { source: "/news", destination: "/works", permanent: true },
     ];
   },

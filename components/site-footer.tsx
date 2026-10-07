@@ -19,7 +19,7 @@ export default function SiteFooter() {
           <Link href={navHref.works}>{navLabel.works}</Link>
         </div>
         <div className="flex flex-col gap-3.5">
-          <Link href={navHref.service}>{navLabel.service}</Link>
+          <Link href={navHref.approach}>{navLabel.approach}</Link>
           <Link href={navHref.company}>{navLabel.company}</Link>
         </div>
         <div className="flex flex-col gap-3.5">

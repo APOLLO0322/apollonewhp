@@ -2,15 +2,15 @@
 // TOPのヘッダー / フルページのヘッダー / フッターが同じ定義を見ることで、
 // 片方だけ順番や表記がずれるのを防ぐ。
 
-export type NavKey = "vision" | "works" | "service" | "company" | "contact";
+export type NavKey = "vision" | "works" | "approach" | "company" | "contact";
 
 // お問合せは下線付きのCTAとして別扱いにするため、末尾固定。
-export const navOrder: NavKey[] = ["vision", "works", "service", "company"];
+export const navOrder: NavKey[] = ["vision", "works", "approach", "company"];
 
 export const navLabel: Record<NavKey, string> = {
   vision: "VISION",
   works: "WORKS",
-  service: "SERVICE",
+  approach: "APPROACH",
   company: "COMPANY",
   contact: "CONTACT",
 };
@@ -20,7 +20,7 @@ export const navLabel: Record<NavKey, string> = {
 export const navHref: Record<NavKey, string> = {
   vision: "/?panel=vision",
   works: "/works",
-  service: "/?panel=service",
+  approach: "/?panel=approach",
   company: "/?panel=company",
   contact: "/contact",
 };

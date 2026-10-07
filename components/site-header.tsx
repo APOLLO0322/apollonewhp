@@ -11,7 +11,7 @@ export type NavCurrent = "works" | "contact" | null;
 const currentOf: Record<string, NavCurrent> = {
   vision: null,
   works: "works",
-  service: null,
+  approach: null,
   company: null,
 };
 

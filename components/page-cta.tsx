@@ -1,17 +1,16 @@
-import Link from "next/link";
+import ConsultLink from "@/components/consult-link";
 
+/* ページ末尾の相談導線。文言は「相談する」で全箇所そろえ、
+   場所ごとに変えるのはリード文だけ（改修指示書 §5.1）。 */
 export default function PageCta({ heading }: { heading: string }) {
   return (
     <section className="px-5 py-24 text-center md:px-16 md:py-30">
       <p className="font-display text-[22px] leading-[1.8] font-medium tracking-[0.06em] md:text-[30px]">
         {heading}
       </p>
-      <Link
-        href="/contact"
-        className="mt-9 inline-block border-b border-blue pb-[5px] font-label text-[13px] tracking-[0.14em] text-blue"
-      >
-        お問合せ →
-      </Link>
+      <div className="mt-9">
+        <ConsultLink />
+      </div>
     </section>
   );
 }

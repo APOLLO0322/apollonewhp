@@ -1,5 +1,6 @@
 import Link from "next/link";
 import {
+  approach,
   companyRows,
   paragraphs,
   profileBio,
@@ -8,6 +9,7 @@ import {
   services,
   vision,
 } from "@/lib/site-content";
+import ConsultLink from "@/components/consult-link";
 import WorkCard from "@/components/work-card";
 import type { Work } from "@/lib/works";
 
@@ -98,7 +100,7 @@ export function CompanyPanel() {
   );
 }
 
-export function ServicePanel({ works }: { works: Work[] }) {
+export function ApproachPanel({ works }: { works: Work[] }) {
   /* 該当が1件も無いボタンは出さない。押した先が「まだありません」だと
      行き止まりになる。/works の絞り込みと同じ考え方。 */
   const hasWorks = (link: { tag?: string; category?: string }) =>
@@ -107,65 +109,105 @@ export function ServicePanel({ works }: { works: Work[] }) {
     );
 
   return (
-    <div className="mt-11 flex flex-col">
-      {services.map((s) => (
-        <div
-          key={s.num}
-          className="relative overflow-hidden border-t border-fog py-9"
-        >
-          <span
-            aria-hidden
-            className="pointer-events-none absolute top-1.5 right-0 font-label text-[64px] leading-none font-medium text-blue-panel/8 sm:text-[88px]"
-          >
-            {s.num}
+    <div className="mt-10 flex flex-col">
+      {/* ── 段01 考える ──────────────────────────────────
+          カードにしない。枠で囲うと「3つのサービスと並ぶ4つ目」に
+          見えてしまう。罫線も持たせず、余白と文字の大きさだけで
+          段02より上のレイヤーだと示す。 */}
+      <section>
+        <div className="flex items-baseline gap-4">
+          <span className="font-label text-[12px] tracking-[0.2em] text-blue-panel">
+            {approach.think.num}
           </span>
-          <div className="relative">
-            <h3 className="font-display text-2xl font-medium tracking-[0.06em]">
-              {s.name}
-            </h3>
-            <p className="mt-3 font-display text-base leading-[1.8] tracking-[0.06em] text-blue-panel">
-              {s.tagline}
-            </p>
-            <p className="mt-3.5 max-w-[440px] text-sm leading-[1.9] text-mist-panel">
-              {s.desc}
-            </p>
-
-            {/* メニューは実績のタグ。押すと該当する実績だけを一覧で見せる。
-                塗りは淡霧40%だけでブラーはかけない。背後の映像が
-                そのまま透けることで、板が平坦に見えなくなる。
-                ホバーでロゴのドットの青に塗る。 */}
-            {(() => {
-              const links = s.links.filter(hasWorks);
-              return (
-                links.length > 0 && (
-                  <ul className="mt-5 flex list-none flex-wrap gap-x-3 gap-y-2.5 p-0">
-                    {links.map((m) => (
-                      <li key={m.label}>
-                        <Link
-                          href={
-                            m.tag
-                              ? `/works?tag=${encodeURIComponent(m.tag)}`
-                              : `/works?category=${encodeURIComponent(m.category ?? "")}`
-                          }
-                          className="group flex items-center gap-2 rounded-[2px] border border-ink/25 bg-pale/40 px-3.5 py-2 text-xs tracking-[0.04em] text-ink transition-all duration-300 hover:border-logo-blue hover:bg-logo-blue hover:text-pale"
-                        >
-                          {m.label}
-                          <span
-                            aria-hidden
-                            className="font-label text-[10px] text-mist-panel transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-pale"
-                          >
-                            →
-                          </span>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )
-              );
-            })()}
-          </div>
+          <h3 className="font-display text-[30px] leading-[1.4] font-medium tracking-[0.08em] md:text-[38px]">
+            {approach.think.name}
+          </h3>
         </div>
-      ))}
+
+        <p className="mt-5 font-display text-[19px] leading-[1.7] tracking-[0.06em] text-blue-panel md:text-[22px]">
+          {approach.think.lead}
+        </p>
+
+        <p className="mt-5 max-w-[460px] text-[15px] leading-[2] whitespace-pre-line text-ink">
+          {approach.think.body}
+        </p>
+
+        <div className="mt-7 font-label text-[11px] tracking-[0.16em] text-mist-panel">
+          {approach.think.scope}
+        </div>
+
+        <p className="mt-8 text-sm leading-[1.9] text-ink">
+          {approach.think.invite}
+        </p>
+        <div className="mt-4">
+          <ConsultLink tone="panel" />
+        </div>
+      </section>
+
+      {/* ── 段02 つくる・届ける ───────────────────────────
+          パネルは横 520〜720px しかないので、指示書の3カラムは組めない。
+          縦に積み、見出しを段01より一段小さくして従属を示す。 */}
+      <section className="mt-20 border-t border-fog pt-12">
+        <div className="flex items-baseline gap-4">
+          <span className="font-label text-[12px] tracking-[0.2em] text-blue-panel">
+            {approach.make.num}
+          </span>
+          <h3 className="font-display text-[21px] leading-[1.5] font-medium tracking-[0.08em] md:text-[24px]">
+            {approach.make.name}
+          </h3>
+        </div>
+
+        <div className="mt-9 flex flex-col">
+          {services.map((s) => (
+            <div key={s.name} className="border-t border-fog py-8 first:border-t-0 first:pt-0">
+              <h4 className="font-display text-[18px] font-medium tracking-[0.06em] md:text-[19px]">
+                {s.name}
+              </h4>
+              <p className="mt-2.5 font-display text-[15px] leading-[1.8] tracking-[0.06em] text-blue-panel">
+                {s.tagline}
+              </p>
+              <p className="mt-3 max-w-[440px] text-sm leading-[1.9] text-mist-panel">
+                {s.desc}
+              </p>
+
+              {/* メニューは実績のタグ。押すと該当する実績だけを一覧で見せる。 */}
+              {(() => {
+                const links = s.links.filter(hasWorks);
+                return (
+                  links.length > 0 && (
+                    <ul className="mt-5 flex list-none flex-wrap gap-x-3 gap-y-2.5 p-0">
+                      {links.map((m) => (
+                        <li key={m.label}>
+                          <Link
+                            href={
+                              m.tag
+                                ? `/works?tag=${encodeURIComponent(m.tag)}`
+                                : `/works?category=${encodeURIComponent(m.category ?? "")}`
+                            }
+                            className="group flex items-center gap-2 rounded-[2px] border border-ink/25 bg-pale/40 px-3.5 py-2 text-xs tracking-[0.04em] text-ink transition-all duration-300 hover:border-logo-blue hover:bg-logo-blue hover:text-pale"
+                          >
+                            {m.label}
+                            <span
+                              aria-hidden
+                              className="font-label text-[10px] text-mist-panel transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-pale"
+                            >
+                              →
+                            </span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )
+                );
+              })()}
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-10 border-t border-fog pt-8">
+          <ConsultLink tone="panel" />
+        </div>
+      </section>
     </div>
   );
 }

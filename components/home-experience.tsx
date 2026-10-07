@@ -4,9 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import ContactForm from "@/components/contact-form";
-import { CompanyPanel, ServicePanel, VisionPanel, WorksPanel } from "@/components/panels";
+import { ApproachPanel, CompanyPanel, VisionPanel, WorksPanel } from "@/components/panels";
 import { navLabel, navOrder } from "@/lib/nav";
-import { clients, company, contactCopy, vision } from "@/lib/site-content";
+import { approach, clients, company, contactCopy, vision } from "@/lib/site-content";
 import type { Work } from "@/lib/works";
 
 /* ── ヒーロー素材 ─────────────────────────────────────────────
@@ -35,12 +35,12 @@ const marqueeLogos = Array.from(
   () => clients,
 ).flat();
 
-type PanelKey = "vision" | "company" | "service" | "works" | "contact";
+type PanelKey = "vision" | "company" | "approach" | "works" | "contact";
 
 const panelMeta: Record<PanelKey, { label: string; title: string }> = {
   vision: { label: vision.label, title: vision.title },
   company: { label: "COMPANY", title: "会社概要" },
-  service: { label: "SERVICE", title: "事業内容" },
+  approach: { label: approach.label, title: approach.title },
   works: { label: "WORKS", title: "制作実績" },
   contact: { label: contactCopy.label, title: contactCopy.title },
 };
@@ -101,7 +101,10 @@ export default function HomeExperience({ works }: { works: Work[] }) {
   // URL という外部状態をマウント時に一度だけ読む用途なので、
   // searchParams で動的レンダリングにせず effect で拾う（TOPは静的配信を維持する）。
   useEffect(() => {
-    const key = new URLSearchParams(window.location.search).get("panel");
+    const raw = new URLSearchParams(window.location.search).get("panel");
+    // SERVICE から APPROACH に改名した。旧いリンクが外に出ている
+    // （旧サイトの /service/ からの転送を含む）ので、旧キーも受ける。
+    const key = raw === "service" ? "approach" : raw;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- 初回マウント時のURL読み取り。連鎖レンダリングにはならない
     if (isPanelKey(key)) setOpen(key);
   }, []);
@@ -290,9 +293,33 @@ export default function HomeExperience({ works }: { works: Work[] }) {
           </div>
         </div>
 
-        <div className="ap-on-media absolute right-5 bottom-24 flex gap-9 font-label text-[11px] tracking-[0.12em] md:right-16 md:bottom-28">
-          <Link href="/works" className="border-b border-pale/50 pb-1 text-pale">
+        {/* 映像の上なので塗りは敷かず、文字の影だけで読ませる（ap-on-media）。
+            実績が先、相談が後。まだ何も見ていない人にいきなり相談を
+            迫らない順番にする。 */}
+        <div className="ap-on-media absolute right-5 bottom-24 flex gap-7 font-label text-[11px] tracking-[0.12em] md:right-16 md:bottom-28">
+          <Link
+            href="/works"
+            className="group flex items-center gap-1.5 border-b border-pale/50 pb-1 text-pale"
+          >
             実績を見る
+            <span
+              aria-hidden
+              className="text-[10px] transition-transform duration-300 group-hover:translate-x-0.5"
+            >
+              →
+            </span>
+          </Link>
+          <Link
+            href="/contact"
+            className="group flex items-center gap-1.5 border-b border-pale/50 pb-1 text-pale"
+          >
+            相談する
+            <span
+              aria-hidden
+              className="text-[10px] transition-transform duration-300 group-hover:translate-x-0.5"
+            >
+              →
+            </span>
           </Link>
         </div>
 
@@ -366,7 +393,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
 
                     {open === "vision" && <VisionPanel />}
                     {open === "company" && <CompanyPanel />}
-                    {open === "service" && <ServicePanel works={works} />}
+                    {open === "approach" && <ApproachPanel works={works} />}
                     {open === "works" && <WorksPanel works={works} />}
                     {open === "contact" && (
                       <div className="mt-6">
