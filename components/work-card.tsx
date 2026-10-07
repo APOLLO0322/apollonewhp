@@ -6,7 +6,14 @@ import { workHeading, workSummary, type Work } from "@/lib/works";
 
 /* 実績カード。
 
-   並びは 説明 → 社名 → サムネイル → 札。
+   並びは 説明 → 社名 → サムネイル → 関与範囲 → 札。
+
+   関与範囲を札より先に置く。札（MOVIE / ブランディング）は塗りと影が
+   あって目立つが、伝えているのは他社と差がつかない情報。
+   「どこから関わったか」のほうが先に目に入るようにする。
+
+   パネルでは社名を出さない。覗き見せなので、まず何の仕事かだけ
+   分かればよく、誰の仕事かはフルページで読ませる。
 
    説明が未入力のレコードでは社名が主役に繰り上がる。
    社名も未入力なら実績名を使う（workHeading）。
@@ -29,20 +36,26 @@ export default function WorkCard({
   const client = workHeading(work);
 
   const lead = summary ?? client;
-  const byline = summary ? client : undefined;
+  const byline = tone === "panel" ? undefined : summary ? client : undefined;
+
+  /* 文字の塊は最大の組み合わせぶんの高さで固定する。説明そのものにも
+     2行ぶんを持たせているので、1行で済む案件でも書き出しの位置は
+     変わらない。行数で頭が上下すると、横に並べたとき視線の高さが揃わない。
+
+     説明は line-clamp-2、社名は line-clamp-1 で打ち切っているので、
+     この高さが必ず最大になる。社名を出さないパネルはそのぶん低い。 */
+  const textBlock =
+    tone === "panel"
+      ? size === "md"
+        ? "min-h-[55px]"
+        : "min-h-[48px]"
+      : size === "md"
+        ? "min-h-[81px]"
+        : "min-h-[70px]";
 
   return (
     <Link href={`/works/${work.slug}`} className="group ap-media block">
-      {/* 文字の塊は「説明2行＋社名1行」で高さを決め打ちする。
-
-          説明そのものにも2行ぶんの高さを持たせているので、1行で済む
-          案件でも書き出しの位置は変わらない。行数によって頭が上下に
-          動くと、横に並べたときに視線の高さが揃わない。
-
-          説明は line-clamp-2、社名は line-clamp-1 で打ち切っているので、
-          この高さが必ず最大になる。余りが出るのは社名が未入力の
-          レコードだけで、そのぶんは社名の行として下に残る。 */}
-      <div className={size === "md" ? "min-h-[81px]" : "min-h-[70px]"}>
+      <div className={textBlock}>
         <p
           className={`line-clamp-2 text-ink transition-colors duration-300 group-hover:text-logo-blue ${
             size === "md"
@@ -62,15 +75,12 @@ export default function WorkCard({
         <WorkThumb work={work} aspect="video" sizes={sizes} />
       </div>
 
-      {/* 札と関与範囲は画像の下にまとめる。どちらも「この仕事が何か」を
-          示す目盛りなので、画像を挟んで散らさない。次のカードとの間は
-          80px あるので、上の画像のものであることは間隔で分かる。 */}
-      <div className={size === "md" ? "mt-3.5" : "mt-3"}>
-        <WorkMeta work={work} size={size} tone={tone} />
+      <div className="mt-3.5">
+        <WorkPhaseScale work={work} tone={tone} />
       </div>
 
-      <div className="mt-2.5">
-        <WorkPhaseScale work={work} tone={tone} />
+      <div className="mt-3">
+        <WorkMeta work={work} size={size} tone={tone} />
       </div>
     </Link>
   );

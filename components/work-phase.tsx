@@ -20,19 +20,27 @@ export default function WorkPhaseScale({
   work: Work;
   tone?: "page" | "panel";
 }) {
-  // 未入力のレコードでは出さない。空の目盛りだけが並ぶと壊れて見える
-  if (!work.phase || work.phase.length === 0) return null;
+  /* 未入力のレコードでは何も見せない。空の目盛りだけが並ぶと、
+     その案件では何もしていないように見えてしまう。
+
+     ただし要素ごと消すと、未入力のカードだけ下の札がせり上がって
+     列が崩れる。同じ組みを描いたまま visibility で隠し、高さは残す。
+     全件に入力され次第、自然に現れる。 */
+  const filled = (work.phase?.length ?? 0) > 0;
 
   const on = tone === "panel" ? "text-blue-panel" : "text-blue";
   const off = tone === "panel" ? "text-mist-panel" : "text-mist";
 
   return (
     <div
-      className="flex items-start gap-0 font-label text-[11px] tracking-[0.04em]"
+      className={`flex items-start gap-0 font-label text-[12px] tracking-[0.06em] ${
+        filled ? "" : "invisible"
+      }`}
       // 読み上げでは「構想 — 制作 — 運用」の羅列ではなく、
       // 該当するものだけを文として渡す
-      role="group"
-      aria-label={`関与範囲: ${work.phase.join("・")}`}
+      {...(filled
+        ? { role: "group", "aria-label": `関与範囲: ${work.phase!.join("・")}` }
+        : { "aria-hidden": true })}
     >
       {workPhases.map((p, i) => {
         const active = work.phase?.includes(p);
@@ -40,9 +48,9 @@ export default function WorkPhaseScale({
           <div key={p} className="flex items-start" aria-hidden>
             {i > 0 && (
               /* 連結線はドットの高さに合わせる。ラベル1行ぶん下げた位置 */
-              <span className="mt-[19px] block h-px w-3 shrink-0 bg-fog" />
+              <span className="mt-[21px] block h-px w-3.5 shrink-0 bg-fog" />
             )}
-            <div className="flex flex-col items-center gap-[5px]">
+            <div className="flex flex-col items-center gap-[6px]">
               <span className={active ? on : off}>{p}</span>
               <span
                 className={`block size-[5px] rounded-full ${
