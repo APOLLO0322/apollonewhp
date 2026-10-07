@@ -10,6 +10,18 @@ export type WorkCategory = "MOVIE" | "SNS" | "PHOTO" | "EVENT";
 
 export const workCategories: WorkCategory[] = ["MOVIE", "SNS", "PHOTO", "EVENT"];
 
+/* 関与範囲。どこから関わった案件かを示す（改修指示書 §3）。
+
+   カテゴリやタグが「何を作ったか・何のために作ったか」なのに対し、
+   これは「どこから入ったか」。APOLLOの差別化はつくると決まる前の
+   構想から関われることなので、実績側でそれを裏づける。
+
+   microCMS 側のフィールドIDは phase。既存の scope は「撮影 / 編集」など
+   具体的な作業内容が入っていて別物なので、名前を分けている。 */
+export type WorkPhase = "構想" | "制作" | "運用";
+
+export const workPhases: WorkPhase[] = ["構想", "制作", "運用"];
+
 export const categoryLabel: Record<WorkCategory, string> = {
   MOVIE: "MOVIE",
   SNS: "SNS",
@@ -32,6 +44,8 @@ export type Work = {
   client?: string;
   // microCMS では複数選択なので配列で持つ
   scope?: string[];
+  // 関与範囲。未入力のレコードではインジケータを出さない
+  phase?: WorkPhase[];
   // 事業内容のメニューと同じ文字列。/works?tag=... の絞り込みに使う
   tags?: string[];
 };
@@ -140,6 +154,7 @@ type MicroCmsWork = {
   stills?: MicroCmsImage[];
   client?: string;
   scope?: string | string[];
+  phase?: string | string[];
   tags?: string | string[];
 };
 
@@ -163,6 +178,16 @@ function toList(value: string | string[] | undefined): string[] | undefined {
   return out.length > 0 ? out : undefined;
 }
 
+/* 関与範囲は3つの決まった値しか取らない。表記ゆれや未定義の値が
+   入っていたら落とす。順番は 構想 → 制作 → 運用 に揃える
+   （CMSでの選択順に引きずられると、カードごとに並びが変わる）。 */
+function normalizePhase(value: string | string[] | undefined): WorkPhase[] | undefined {
+  const list = toList(value);
+  if (!list) return undefined;
+  const out = workPhases.filter((p) => list.includes(p));
+  return out.length > 0 ? out : undefined;
+}
+
 function normalize(item: MicroCmsWork): Work {
   return {
     slug: item.slug,
@@ -176,6 +201,7 @@ function normalize(item: MicroCmsWork): Work {
     stills: item.stills?.map((s) => s.url),
     client: item.client,
     scope: toList(item.scope),
+    phase: normalizePhase(item.phase),
     tags: toList(item.tags),
   };
 }

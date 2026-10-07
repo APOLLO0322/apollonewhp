@@ -7,6 +7,7 @@ import SiteFooter from "@/components/site-footer";
 import SiteHeader from "@/components/site-header";
 import Linkify from "@/components/linkify";
 import WorkMeta from "@/components/work-meta";
+import WorkPhaseScale from "@/components/work-phase";
 import {
   categoryLabel,
   getWork,
@@ -158,6 +159,16 @@ export default async function WorkDetailPage({ params }: Params) {
               <Credit label="CLIENT" value={work.client} />
               <Credit label="CATEGORY" value={categoryLabel[work.category]} />
               <Credit label="SCOPE" value={work.scope} />
+              {/* 一覧で「構想から」と分かった案件を開いたときに、その情報が
+                  消えないよう詳細にも置く。目盛りは一覧と同じもの。 */}
+              {work.phase && work.phase.length > 0 && (
+                <div className="flex items-center justify-between gap-6 border-t border-fog py-4 last:border-b">
+                  <span className="shrink-0 font-label text-[11px] text-mist">
+                    関与範囲
+                  </span>
+                  <WorkPhaseScale work={work} />
+                </div>
+              )}
             </div>
             {/* このページで一番押してほしいもの。サイト全体が寒色で
                 通っているので、ここだけ熾火を置いて最後の一押しにする。

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import WorkMeta from "@/components/work-meta";
+import WorkPhaseScale from "@/components/work-phase";
 import WorkThumb from "@/components/work-thumb";
 import { workHeading, workSummary, type Work } from "@/lib/works";
 
@@ -61,10 +62,15 @@ export default function WorkCard({
         <WorkThumb work={work} aspect="video" sizes={sizes} />
       </div>
 
-      {/* 札は画像の下。次のカードとの間は 80px あるので、
-          この札が上の画像のものであることは間隔で分かる。 */}
+      {/* 札と関与範囲は画像の下にまとめる。どちらも「この仕事が何か」を
+          示す目盛りなので、画像を挟んで散らさない。次のカードとの間は
+          80px あるので、上の画像のものであることは間隔で分かる。 */}
       <div className={size === "md" ? "mt-3.5" : "mt-3"}>
         <WorkMeta work={work} size={size} tone={tone} />
+      </div>
+
+      <div className="mt-2.5">
+        <WorkPhaseScale work={work} tone={tone} />
       </div>
     </Link>
   );
