@@ -147,30 +147,31 @@ export function ApproachPanel({ works }: { works: Work[] }) {
         </p>
 
         {/* 実績カードと同じ目盛り。構想だけを灯して、どこから入れるかを
-            図で示す。同じ印が実績側にも出るので、主張と裏づけが結びつく。 */}
-        <div className="mt-10 flex flex-wrap items-start gap-x-9 gap-y-5">
+            図で示す。同じ印が実績側にも出るので、主張と裏づけが結びつく。
+
+            図だけを単独で置く。横に何かを並べると、それが目盛りの
+            4つ目の点に見えてしまう。 */}
+        <div className="mt-10">
           <PhaseScale active={["構想"]} size="lg" tone="panel" />
-          {/* 段02のメニューと同じ文言。文脈で構想の実績だと分かる */}
+        </div>
+
+        {/* 行き先は2つとも「次にすること」。図とは分けて下にまとめる。 */}
+        <div className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-5">
+          <ConsultLink tone="panel" />
+          {/* 段02のメニューと同じ文言。すぐ上の図が構想を灯しているので、
+              文脈で構想の実績だと分かる。 */}
           <Link
             href="/works?phase=%E6%A7%8B%E6%83%B3"
-            className="group flex items-center gap-2 border-b border-blue-panel pb-[3px] font-label text-xs tracking-[0.08em] text-blue-panel"
+            className="group flex items-center gap-2 border-b border-blue-panel pb-[3px] text-[13px] tracking-[0.06em] text-blue-panel"
           >
             実績
             <span
               aria-hidden
-              className="text-[10px] transition-transform duration-300 group-hover:translate-x-0.5"
+              className="font-label text-[11px] transition-transform duration-300 group-hover:translate-x-0.5"
             >
               →
             </span>
           </Link>
-        </div>
-
-        <div className="mt-11 font-label text-[11px] tracking-[0.16em] text-mist-panel">
-          {approach.think.scope}
-        </div>
-
-        <div className="mt-4">
-          <ConsultLink tone="panel" />
         </div>
       </section>
 
