@@ -46,7 +46,6 @@ export type Work = {
   scope?: string[];
   // 関与範囲。未入力のレコードではインジケータを出さない
   phase?: WorkPhase[];
-  __diag?: { keys: string[]; rawPhase: unknown };
   // 事業内容のメニューと同じ文字列。/works?tag=... の絞り込みに使う
   tags?: string[];
 };
@@ -203,9 +202,6 @@ function normalize(item: MicroCmsWork): Work {
     client: item.client,
     scope: toList(item.scope),
     phase: normalizePhase(item.phase),
-    // TODO 一時的な診断。phase が届かない原因（フィールドID違いか値違いか）を
-    // 切り分けたら消す。
-    __diag: { keys: Object.keys(item), rawPhase: item.phase },
     tags: toList(item.tags),
   };
 }

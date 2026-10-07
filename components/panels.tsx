@@ -119,12 +119,12 @@ export function ApproachPanel({ works }: { works: Work[] }) {
           <span className="font-label text-[12px] tracking-[0.2em] text-blue-panel">
             {approach.think.num}
           </span>
-          <h3 className="font-display text-[30px] leading-[1.4] font-medium tracking-[0.08em] md:text-[38px]">
+          <h3 className="font-display text-[22px] leading-[1.5] font-medium tracking-[0.08em] md:text-[26px]">
             {approach.think.name}
           </h3>
         </div>
 
-        <p className="mt-5 font-display text-[19px] leading-[1.7] tracking-[0.06em] text-blue-panel md:text-[22px]">
+        <p className="mt-4 font-display text-[17px] leading-[1.8] tracking-[0.06em] text-blue-panel md:text-[19px]">
           {approach.think.lead}
         </p>
 
@@ -136,10 +136,7 @@ export function ApproachPanel({ works }: { works: Work[] }) {
           {approach.think.scope}
         </div>
 
-        <p className="mt-8 text-sm leading-[1.9] text-ink">
-          {approach.think.invite}
-        </p>
-        <div className="mt-4">
+        <div className="mt-9">
           <ConsultLink tone="panel" />
         </div>
       </section>
@@ -152,18 +149,20 @@ export function ApproachPanel({ works }: { works: Work[] }) {
           <span className="font-label text-[12px] tracking-[0.2em] text-blue-panel">
             {approach.make.num}
           </span>
-          <h3 className="font-display text-[21px] leading-[1.5] font-medium tracking-[0.08em] md:text-[24px]">
+          <h3 className="font-display text-[19px] leading-[1.5] font-medium tracking-[0.08em] md:text-[21px]">
             {approach.make.name}
           </h3>
         </div>
 
-        <div className="mt-9 flex flex-col">
+        {/* 3サービスは段02の中身。左に細い罫線を1本引いて、
+            02 にぶら下がっていることを字下げで示す。 */}
+        <div className="mt-7 ml-1 flex flex-col border-l border-fog pl-6">
           {services.map((s) => (
-            <div key={s.name} className="border-t border-fog py-8 first:border-t-0 first:pt-0">
-              <h4 className="font-display text-[18px] font-medium tracking-[0.06em] md:text-[19px]">
+            <div key={s.name} className="border-t border-fog py-7 first:border-t-0 first:pt-0">
+              <h4 className="font-display text-[16px] font-medium tracking-[0.06em] md:text-[17px]">
                 {s.name}
               </h4>
-              <p className="mt-2.5 font-display text-[15px] leading-[1.8] tracking-[0.06em] text-blue-panel">
+              <p className="mt-2 font-display text-sm leading-[1.8] tracking-[0.06em] text-blue-panel">
                 {s.tagline}
               </p>
               <p className="mt-3 max-w-[440px] text-sm leading-[1.9] text-mist-panel">
