@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     template: `%s｜${company.name}`,
   },
   description:
-    "愛媛・松山の映像制作会社。PR・採用・ドキュメンタリーの映像／写真制作と、SNS運用支援。企画から撮影・編集まで一貫して手がけます。",
+    "愛媛・松山の映像制作会社。PR・採用・ドキュメンタリーの映像／写真制作と、SNS運用支援。構成から撮影・編集まで一貫して手がけます。",
   openGraph: {
     type: "website",
     locale: "ja_JP",
