@@ -111,6 +111,15 @@ export default function ContactForm({ variant = "panel" }: { variant?: Variant }
 
   if (sent) return <ContactSent variant={variant} />;
 
+  /* 相談内容によって聞くことを変える。
+
+     「構想から相談したい」だけを選んだ人は、まだ何をつくるかが
+     決まっていない。その人に撮影希望時期と予算を聞くのは、
+     APPROACH の段01で「決まっていないところから」と言っていることと
+     矛盾する。任意項目でも、空欄のまま送るのは重い。
+     制作の話が混ざったときだけ出す。 */
+  const planningOnly = topics.idea && !topics.movie && !topics.sns;
+
   const gridMax = isPage ? "" : "max-w-[520px]";
 
   return (
@@ -189,6 +198,7 @@ export default function ContactForm({ variant = "panel" }: { variant?: Variant }
         </div>
       </fieldset>
 
+      {!planningOnly && (
       <div className={`mt-7 grid gap-5 sm:grid-cols-2 sm:gap-x-7 ${gridMax}`}>
         <Field label="撮影希望時期">
           <input
@@ -211,14 +221,19 @@ export default function ContactForm({ variant = "panel" }: { variant?: Variant }
           />
         </Field>
       </div>
+      )}
 
       <div className={`mt-7 ${gridMax}`}>
-        <Field label="メッセージ">
+        <Field label={planningOnly ? "いま困っていること" : "メッセージ"}>
           <textarea
             className="ap-field"
             name="message"
-            rows={4}
-            placeholder="実現したいことや、いまお困りのことをお聞かせください。"
+            rows={planningOnly ? 6 : 4}
+            placeholder={
+              planningOnly
+                ? "まとまっていなくて大丈夫です。迷っていること、決めきれていないことを、そのまま書いてください。"
+                : "実現したいことや、いまお困りのことをお聞かせください。"
+            }
             value={values.message}
             onChange={set("message")}
           />
