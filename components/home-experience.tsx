@@ -51,6 +51,11 @@ const fullPageOf: Partial<Record<PanelKey, string>> = {
   works: "/works",
 };
 
+/* 常に描く見出し。お問合せだけは見出しを持たない（CONTACT のラベルで足りる）。 */
+const panelTitles = (Object.entries(panelMeta) as [PanelKey, { title: string }][])
+  .filter(([, m]) => m.title)
+  .map(([key, m]) => [key, m.title] as const);
+
 // 順番・表記は lib/nav.ts が正。PanelKey と NavKey は同じキー体系。
 const navItems = navOrder;
 
@@ -110,6 +115,14 @@ export default function HomeExperience({ works }: { works: Work[] }) {
   }, []);
 
   const panelOpen = open !== null;
+
+  /* 開いたままにして hidden で隠す作りなので、閉じてもスクロール位置が
+     残る。別のパネルを開いたときに途中から始まって見えるので、
+     開くたびに先頭へ戻す。 */
+  const panelRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (panelOpen && panelRef.current) panelRef.current.scrollTop = 0;
+  }, [open, panelOpen]);
 
   // 開いている間だけ Esc とスクロールロック
   useEffect(() => {
@@ -323,19 +336,32 @@ export default function HomeExperience({ works }: { works: Work[] }) {
           </Link>
         </div>
 
-        {/* ── スライドインパネル ── */}
+        {/* ── スライドインパネル ──
+
+            閉じている間も DOM に置いたままにして hidden で隠す。
+            開いたときに初めて生成する作りだと、理念・事業内容・会社概要の
+            文章が HTML に一文字も載らない。検索エンジンはページを開いても
+            クリックはしないので、構想の話が検索結果に出ない。リンクを
+            共有した相手が最初に見るのもヘッダーの数語だけになる。
+
+            見た目と動きは変えない。hidden が外れるのと同時に ap-panel-in が
+            付くので、スライドインもこれまでどおり走る。 */}
         {panelOpen && (
-          <>
-            <div
-              onClick={close}
-              aria-hidden
-              className="absolute inset-0 z-[6] bg-ink/20"
-            />
+          <div
+            onClick={close}
+            aria-hidden
+            className="absolute inset-0 z-[6] bg-ink/20"
+          />
+        )}
+        <div hidden={!panelOpen}>
             <div
               role="dialog"
               aria-modal="true"
               aria-label={meta ? `${meta.label} パネル` : "メニュー"}
-              className="ap-panel-in ap-scroll absolute inset-y-0 right-0 z-[7] w-full overflow-y-auto bg-pale/55 text-ink backdrop-blur-[8px] backdrop-saturate-[1.3] md:w-[clamp(520px,40vw,720px)]"
+              ref={panelRef}
+              className={`ap-scroll absolute inset-y-0 right-0 z-[7] w-full overflow-y-auto bg-pale/55 text-ink backdrop-blur-[8px] backdrop-saturate-[1.3] md:w-[clamp(520px,40vw,720px)] ${
+                panelOpen ? "ap-panel-in" : ""
+              }`}
             >
               <div className="flex items-center justify-between px-5 pt-28 md:px-12 md:pt-33">
                 <div className="font-label text-[11px] tracking-[0.28em] text-blue-panel">
@@ -385,15 +411,29 @@ export default function HomeExperience({ works }: { works: Work[] }) {
                 ) : (
                   <>
                     {/* お問合せは見出しを持たない。CONTACT のラベルで足りる */}
-                    {meta?.title && (
-                      <h2 className="ap-fade-q font-display text-[26px] leading-[1.5] font-medium tracking-[0.06em] whitespace-pre-line md:text-[34px]">
-                        {meta.title}
+                    {panelTitles.map(([key, title]) => (
+                      <h2
+                        key={key}
+                        hidden={open !== key}
+                        className="ap-fade-q font-display text-[26px] leading-[1.5] font-medium tracking-[0.06em] whitespace-pre-line md:text-[34px]"
+                      >
+                        {title}
                       </h2>
-                    )}
+                    ))}
 
-                    {open === "vision" && <VisionPanel />}
-                    {open === "company" && <CompanyPanel />}
-                    {open === "approach" && <ApproachPanel works={works} />}
+                    {/* 文章だけの3つは常に描いて表示のみ切り替える。
+                        HTML に載せるのが目的なので、重い実績（画像）と
+                        お問合せ（フォーム）は従来どおり開いたときだけ作る。 */}
+                    <div hidden={open !== "vision"}>
+                      <VisionPanel />
+                    </div>
+                    <div hidden={open !== "company"}>
+                      <CompanyPanel />
+                    </div>
+                    <div hidden={open !== "approach"}>
+                      <ApproachPanel works={works} />
+                    </div>
+
                     {open === "works" && <WorksPanel works={works} />}
                     {open === "contact" && (
                       <div className="mt-6">
@@ -406,8 +446,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
                 )}
               </div>
             </div>
-          </>
-        )}
+        </div>
       </div>
     </div>
   );
