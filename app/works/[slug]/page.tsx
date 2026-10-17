@@ -160,12 +160,24 @@ export default async function WorkDetailPage({ params }: Params) {
               <Credit label="CATEGORY" value={categoryLabel[work.category]} />
               <Credit label="SCOPE" value={work.scope} />
               {/* 一覧で「構想から」と分かった案件を開いたときに、その情報が
-                  消えないよう詳細にも置く。目盛りは一覧と同じもの。 */}
+                  消えないよう詳細にも置く。目盛りは一覧と同じもの。
+
+                  見出しは説明への入口にしておく。印の意味を知りたくなるのは
+                  この印を見た瞬間なので、戻る道をその場に置く。 */}
               {work.phase && work.phase.length > 0 && (
                 <div className="flex items-center justify-between gap-6 border-t border-fog py-4 last:border-b">
-                  <span className="shrink-0 font-label text-[11px] text-mist">
+                  <Link
+                    href="/?panel=approach"
+                    className="group flex shrink-0 items-center gap-1.5 font-label text-[11px] text-mist transition-colors duration-300 hover:text-blue"
+                  >
                     関与範囲
-                  </span>
+                    <span
+                      aria-hidden
+                      className="text-[9px] transition-transform duration-300 group-hover:translate-x-0.5"
+                    >
+                      →
+                    </span>
+                  </Link>
                   <WorkPhaseScale work={work} />
                 </div>
               )}

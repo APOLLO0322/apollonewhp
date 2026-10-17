@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import WorkCard from "@/components/work-card";
 import { serviceTags } from "@/lib/site-content";
@@ -107,6 +108,8 @@ export default function WorksGrid({ works }: { works: Work[] }) {
 
   // 構想から入った案件が1件も無いうちはトグル自体を出さない
   const hasIdeaWorks = has((w) => !!w.phase?.includes("構想"));
+  // 目盛りが1つでも出ているか（凡例を出すかの判定）
+  const hasPhaseWorks = has((w) => (w.phase?.length ?? 0) > 0);
 
   const visible = works.filter((w) => {
     if (filter !== "ALL" && w.category !== filter) return false;
@@ -195,6 +198,28 @@ export default function WorksGrid({ works }: { works: Work[] }) {
           </div>
         )}
       </div>
+
+      {/* 検索から来た人はこのページに着地する。カードに目盛りだけ置いても
+          「構想って何？」と思ったときに戻る先が無く、ヘッダーのAPPROACHを
+          押すしかない。印の意味と、その説明への道をここに1行だけ置く。
+          目盛りが1件も出ないうちは、説明だけ浮くので出さない。 */}
+      {hasPhaseWorks && (
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 px-5 pb-10 text-xs leading-[1.9] text-mist md:px-16">
+          <span>各実績の目盛りは、どこから関わったかを示しています。</span>
+          <Link
+            href="/?panel=approach"
+            className="group flex items-center gap-1.5 border-b border-blue pb-[2px] text-blue"
+          >
+            私たちのしごと
+            <span
+              aria-hidden
+              className="font-label text-[10px] transition-transform duration-300 group-hover:translate-x-0.5"
+            >
+              →
+            </span>
+          </Link>
+        </div>
+      )}
 
       {/* 霧色を敷いてカードを淡霧で抜く組み方だと、3の倍数に満たない
           最終行の空きマスに下地の霧色が出てしまう。パネルと同じく
