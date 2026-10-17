@@ -64,7 +64,11 @@ export default function WorksGrid({ works }: { works: Work[] }) {
 
   // 選んだ状態はURLにも残す。共有・リロードで再現できるようにするが、
   // Nextのナビゲーションは起こさない（再取得も再描画も不要なので）。
-  function syncUrl(nextFilter: Filter, nextTag: string | null, nextIdea: boolean) {
+  function syncUrl(
+    nextFilter: Filter,
+    nextTag: string | null,
+    nextIdea: boolean,
+  ) {
     const q = new URLSearchParams();
     if (nextFilter !== "ALL") q.set("category", nextFilter);
     if (nextTag) q.set("tag", nextTag);
@@ -162,64 +166,67 @@ export default function WorksGrid({ works }: { works: Work[] }) {
         {/* 「構想から」は種別・目的と別の軸。同じ列に並べると
             「種類の1つ」として読まれ、APPROACH で作った上下関係が
             打ち消される。区切りを挟んで一段下げ、別物だと配置で示す。 */}
-        {hasIdeaWorks && (
-          <div className="mt-2 border-t border-fog pt-6">
-            <button
-              type="button"
-              onClick={toggleFromIdea}
-              aria-pressed={fromIdea}
-              className={`group inline-flex items-center gap-2.5 font-label text-xs tracking-[0.06em] transition-colors duration-200 ${
-                fromIdea ? "text-blue" : "text-mist hover:text-blue"
-              }`}
-            >
-              <span
-                aria-hidden
-                className={`flex size-3.5 shrink-0 items-center justify-center rounded-[2px] border transition-colors duration-200 ${
-                  fromIdea
-                    ? "border-blue bg-blue text-pale"
-                    : "border-fog group-hover:border-blue"
+        {/* 「構想から」は種別・目的と別の軸。同じ列に並べると
+            「種類の1つ」として読まれ、APPROACH で作った上下関係が
+            打ち消される。区切りを挟んで一段下げ、別物だと配置で示す。
+
+            右端は説明への戻り道。検索から来た人はこのページに着地し、
+            カードの目盛りを見て「構想って何？」と思う。そこで戻れないと
+            ヘッダーのAPPROACHを探すしかない。凡例の文章は置かない
+            （このサイトは他のどこでも自分の記号を説明していない）。 */}
+        {hasPhaseWorks && (
+          <div className="mt-2 flex flex-wrap items-center justify-between gap-x-8 gap-y-4 border-t border-fog pt-6">
+            {hasIdeaWorks ? (
+              <button
+                type="button"
+                onClick={toggleFromIdea}
+                aria-pressed={fromIdea}
+                className={`group inline-flex items-center gap-2.5 font-label text-xs tracking-[0.06em] transition-colors duration-200 ${
+                  fromIdea ? "text-blue" : "text-mist hover:text-blue"
                 }`}
               >
-                {fromIdea && (
-                  <svg viewBox="0 0 10 10" className="size-2.5" aria-hidden>
-                    <path
-                      d="M1.6 5.2 3.9 7.4 8.4 2.7"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.6"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                )}
+                <span
+                  aria-hidden
+                  className={`flex size-3.5 shrink-0 items-center justify-center rounded-[2px] border transition-colors duration-200 ${
+                    fromIdea
+                      ? "border-blue bg-blue text-pale"
+                      : "border-fog group-hover:border-blue"
+                  }`}
+                >
+                  {fromIdea && (
+                    <svg viewBox="0 0 10 10" className="size-2.5" aria-hidden>
+                      <path
+                        d="M1.6 5.2 3.9 7.4 8.4 2.7"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.6"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  )}
+                </span>
+                構想から
+              </button>
+            ) : (
+              <span />
+            )}
+
+            <Link
+              href="/?panel=approach"
+              className="group flex items-center gap-1.5 border-b border-blue pb-[2px] text-xs tracking-[0.06em] text-blue"
+            >
+              私たちのしごと
+              <span
+                aria-hidden
+                className="font-label text-[10px] transition-transform duration-300 group-hover:translate-x-0.5"
+              >
+                →
               </span>
-              構想から
-            </button>
+            </Link>
           </div>
         )}
       </div>
-
-      {/* 検索から来た人はこのページに着地する。カードに目盛りだけ置いても
-          「構想って何？」と思ったときに戻る先が無く、ヘッダーのAPPROACHを
-          押すしかない。印の意味と、その説明への道をここに1行だけ置く。
-          目盛りが1件も出ないうちは、説明だけ浮くので出さない。 */}
-      {hasPhaseWorks && (
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 px-5 pb-10 text-xs leading-[1.9] text-mist md:px-16">
-          <span>各実績の目盛りは、どこから関わったかを示しています。</span>
-          <Link
-            href="/?panel=approach"
-            className="group flex items-center gap-1.5 border-b border-blue pb-[2px] text-blue"
-          >
-            私たちのしごと
-            <span
-              aria-hidden
-              className="font-label text-[10px] transition-transform duration-300 group-hover:translate-x-0.5"
-            >
-              →
-            </span>
-          </Link>
-        </div>
-      )}
 
       {/* 霧色を敷いてカードを淡霧で抜く組み方だと、3の倍数に満たない
           最終行の空きマスに下地の霧色が出てしまう。パネルと同じく
