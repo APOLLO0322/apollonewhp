@@ -64,6 +64,10 @@ export type ServiceLink = { label: string; tag?: string; category?: string };
 
 export type Service = {
   name: string;
+  /* 該当する実績がまだ1件も無いあいだは事業そのものを出さない。
+     実績で裏づけられない事業を並べても、読む人には確かめようがない。
+     microCMS に該当カテゴリの実績が入った時点で自動的に現れる。 */
+  hideUntilWorks?: boolean;
   // 各事業の一行キャッチ。名前と本文の間に置く
   tagline: string;
   desc: string;
@@ -89,7 +93,7 @@ export const approach = {
     /* 問いは畳まず1行ずつ立てる。並んだ問いそのものが「一緒に考える」の
        図になる。説明の文章を増やすより、問いの形のまま見せたほうが早い。 */
     questions: ["何を伝えるのか。", "誰に届けるのか。", "何から決めるのか。"],
-    body: "決まっていないほど、話す価値があります。\n一緒に悩んで、判断の基準からつくります。",
+    body: "想いを話してください。\n共に考えて、判断の基準と指針から創ります。",
   },
 
   make: {
@@ -122,6 +126,7 @@ export const services: Service[] = [
   },
   {
     name: "イベント設計・運営",
+    hideUntilWorks: true,
     tagline: "人が集まり、愛される理由を知っている。",
     // 上の2つが「伝える」仕事なのに対し、こちらは「集める」仕事。
     // 文脈が違うことが読んで分かるよう、対比から入る（代表確認中）。

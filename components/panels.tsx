@@ -109,6 +109,12 @@ export function ApproachPanel({ works }: { works: Work[] }) {
       link.tag ? !!w.tags?.includes(link.tag) : w.category === link.category,
     );
 
+  /* 実績が1件も無い事業は出さない。押せるボタンが無いだけでなく、
+     事業そのものを隠す。確かめようのない主張を並べないため。 */
+  const visibleServices = services.filter(
+    (s) => !s.hideUntilWorks || s.links.some(hasWorks),
+  );
+
   return (
     <div className="mt-10 flex flex-col">
       {/* ── 段01 考える ──────────────────────────────────
@@ -191,7 +197,7 @@ export function ApproachPanel({ works }: { works: Work[] }) {
         {/* 3サービスは段02の中身。左に細い罫線を1本引いて、
             02 にぶら下がっていることを字下げで示す。 */}
         <div className="mt-7 ml-1 flex flex-col border-l border-fog pl-6">
-          {services.map((s) => (
+          {visibleServices.map((s) => (
             <div key={s.name} className="border-t border-fog py-7 first:border-t-0 first:pt-0">
               <h4 className="font-display text-[16px] font-medium tracking-[0.06em] md:text-[17px]">
                 {s.name}
