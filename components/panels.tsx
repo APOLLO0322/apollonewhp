@@ -209,6 +209,12 @@ export function ApproachPanel({ works }: { works: Work[] }) {
                 {s.desc}
               </p>
 
+              {/* 段01と同じ目盛り。01が構想を灯しているので、縦に見ていくと
+                  構想 → 制作 → 運用 と受け持ちが移っていくのが分かる。 */}
+              <div className="mt-5">
+                <PhaseScale active={s.phase} tone="panel" />
+              </div>
+
               {/* メニューは実績のタグ。押すと該当する実績だけを一覧で見せる。 */}
               {(() => {
                 const links = s.links.filter(hasWorks);

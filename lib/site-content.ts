@@ -1,3 +1,5 @@
+import type { WorkPhase } from "@/lib/works";
+
 // 掲載コンテンツの正典。design/Home.dc.html と handoff README §6 から転記。
 // 文言の変更は代表確認が必要。実装都合で書き換えないこと。
 //
@@ -68,6 +70,9 @@ export type Service = {
      実績で裏づけられない事業を並べても、読む人には確かめようがない。
      microCMS に該当カテゴリの実績が入った時点で自動的に現れる。 */
   hideUntilWorks?: boolean;
+  /* 3段階のどこを受け持つ事業か。段01が構想を灯すのと同じ目盛りを使い、
+     01「考える」からの続きとして読めるようにする。 */
+  phase: readonly WorkPhase[];
   // 各事業の一行キャッチ。名前と本文の間に置く
   tagline: string;
   desc: string;
@@ -106,6 +111,7 @@ export const approach = {
 export const services: Service[] = [
   {
     name: "映像・写真制作",
+    phase: ["制作"],
     tagline: "想いを、カタチに。",
     desc: "ブランディング、プロモーション、採用。構成から撮影・編集まで一貫して手がけます。伝わる一本を伝えたい人に届けます。",
     links: [
@@ -120,6 +126,7 @@ export const services: Service[] = [
   },
   {
     name: "社外広報",
+    phase: ["運用"],
     tagline: "曇ったガラスを透明に。",
     desc: "ありのままの姿が、共感が続くはじめの一歩。一番身近な第三者として、伴走を見据えた設計をご提案します。",
     links: [{ label: "実績", category: "SNS" }],
@@ -127,6 +134,8 @@ export const services: Service[] = [
   {
     name: "イベント設計・運営",
     hideUntilWorks: true,
+    // 設計から当日の運営まで受け持つので2つ灯す
+    phase: ["制作", "運用"],
     tagline: "人が集まり、愛される理由を知っている。",
     // 上の2つが「伝える」仕事なのに対し、こちらは「集める」仕事。
     // 文脈が違うことが読んで分かるよう、対比から入る（代表確認中）。
