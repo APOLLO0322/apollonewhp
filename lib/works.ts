@@ -14,13 +14,16 @@ export const workCategories: WorkCategory[] = ["MOVIE", "SNS", "PHOTO", "EVENT"]
 
    カテゴリやタグが「何を作ったか・何のために作ったか」なのに対し、
    これは「どこから入ったか」。APOLLOの差別化はつくると決まる前の
-   構想から関われることなので、実績側でそれを裏づける。
+   企画から関われることなので、実績側でそれを裏づける。
+
+   映像制作の中の「構成」（絵コンテ・演出・尺）とは別。こちらは
+   つくると決まる前の、課題整理・発案・戦略設計を指す。
 
    microCMS 側のフィールドIDは phase。既存の scope は「撮影 / 編集」など
    具体的な作業内容が入っていて別物なので、名前を分けている。 */
-export type WorkPhase = "構想" | "制作" | "運用";
+export type WorkPhase = "企画" | "制作" | "運用";
 
-export const workPhases: WorkPhase[] = ["構想", "制作", "運用"];
+export const workPhases: WorkPhase[] = ["企画", "制作", "運用"];
 
 export const categoryLabel: Record<WorkCategory, string> = {
   MOVIE: "MOVIE",
@@ -179,12 +182,18 @@ function toList(value: string | string[] | undefined): string[] | undefined {
 }
 
 /* 関与範囲は3つの決まった値しか取らない。表記ゆれや未定義の値が
-   入っていたら落とす。順番は 構想 → 制作 → 運用 に揃える
-   （CMSでの選択順に引きずられると、カードごとに並びが変わる）。 */
+   入っていたら落とす。順番は 企画 → 制作 → 運用 に揃える
+   （CMSでの選択順に引きずられると、カードごとに並びが変わる）。
+
+   「構想」は旧称。microCMS の選択肢を差し替えるまで既存レコードに
+   残るので、同じものとして受ける。CMS側を直したらこの別名は消してよい。 */
+const PHASE_ALIAS: Record<string, WorkPhase> = { 構想: "企画" };
+
 function normalizePhase(value: string | string[] | undefined): WorkPhase[] | undefined {
   const list = toList(value);
   if (!list) return undefined;
-  const out = workPhases.filter((p) => list.includes(p));
+  const canon = new Set(list.map((v) => PHASE_ALIAS[v] ?? v));
+  const out = workPhases.filter((p) => canon.has(p));
   return out.length > 0 ? out : undefined;
 }
 

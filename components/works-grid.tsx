@@ -43,7 +43,7 @@ function FilterRow({
 export default function WorksGrid({ works }: { works: Work[] }) {
   const [filter, setFilter] = useState<Filter>("ALL");
   const [tag, setTag] = useState<string | null>(null);
-  // 「構想から」。種別・目的とは別の軸なので独立した状態で持つ
+  // 「企画から」。種別・目的とは別の軸なので独立した状態で持つ
   const [fromIdea, setFromIdea] = useState(false);
 
   // 事業内容パネルのメニューから /works?tag=... と /works?category=... の
@@ -59,7 +59,9 @@ export default function WorksGrid({ works }: { works: Work[] }) {
     setTag(q.get("tag"));
     if ((workCategories as string[]).includes(c)) setFilter(c as WorkCategory);
     // eslint-disable-next-line react-hooks/set-state-in-effect -- 同上
-    if (q.get("phase") === "構想") setFromIdea(true);
+    // 「構想」は旧称。外に出ている旧いリンクも受ける
+    const ph = q.get("phase");
+    if (ph === "企画" || ph === "構想") setFromIdea(true);
   }, []);
 
   // 選んだ状態はURLにも残す。共有・リロードで再現できるようにするが、
@@ -72,7 +74,7 @@ export default function WorksGrid({ works }: { works: Work[] }) {
     const q = new URLSearchParams();
     if (nextFilter !== "ALL") q.set("category", nextFilter);
     if (nextTag) q.set("tag", nextTag);
-    if (nextIdea) q.set("phase", "構想");
+    if (nextIdea) q.set("phase", "企画");
     const qs = q.toString();
     window.history.replaceState(null, "", qs ? `/works?${qs}` : "/works");
   }
@@ -110,15 +112,15 @@ export default function WorksGrid({ works }: { works: Work[] }) {
     (t) => has((w) => !!w.tags?.includes(t)) || tag === t,
   );
 
-  // 構想から入った案件が1件も無いうちはトグル自体を出さない
-  const hasIdeaWorks = has((w) => !!w.phase?.includes("構想"));
+  // 企画から入った案件が1件も無いうちはトグル自体を出さない
+  const hasIdeaWorks = has((w) => !!w.phase?.includes("企画"));
   // 目盛りが1つでも出ているか（凡例を出すかの判定）
   const hasPhaseWorks = has((w) => (w.phase?.length ?? 0) > 0);
 
   const visible = works.filter((w) => {
     if (filter !== "ALL" && w.category !== filter) return false;
     if (tag && !w.tags?.includes(tag)) return false;
-    if (fromIdea && !w.phase?.includes("構想")) return false;
+    if (fromIdea && !w.phase?.includes("企画")) return false;
     return true;
   });
 
@@ -163,15 +165,15 @@ export default function WorksGrid({ works }: { works: Work[] }) {
           </FilterRow>
         )}
 
-        {/* 「構想から」は種別・目的と別の軸。同じ列に並べると
+        {/* 「企画から」は種別・目的と別の軸。同じ列に並べると
             「種類の1つ」として読まれ、APPROACH で作った上下関係が
             打ち消される。区切りを挟んで一段下げ、別物だと配置で示す。 */}
-        {/* 「構想から」は種別・目的と別の軸。同じ列に並べると
+        {/* 「企画から」は種別・目的と別の軸。同じ列に並べると
             「種類の1つ」として読まれ、APPROACH で作った上下関係が
             打ち消される。区切りを挟んで一段下げ、別物だと配置で示す。
 
             右端は説明への戻り道。検索から来た人はこのページに着地し、
-            カードの目盛りを見て「構想って何？」と思う。そこで戻れないと
+            カードの目盛りを見て「企画って何？」と思う。そこで戻れないと
             ヘッダーのAPPROACHを探すしかない。凡例の文章は置かない
             （このサイトは他のどこでも自分の記号を説明していない）。 */}
         {hasPhaseWorks && (
@@ -206,7 +208,7 @@ export default function WorksGrid({ works }: { works: Work[] }) {
                     </svg>
                   )}
                 </span>
-                構想から
+                企画から
               </button>
             ) : (
               <span />
@@ -245,7 +247,7 @@ export default function WorksGrid({ works }: { works: Work[] }) {
       {visible.length === 0 && (
         <p className="border-b border-fog px-5 py-20 text-center text-sm text-mist md:px-16">
           {fromIdea
-            ? "この条件で、構想から関わった実績はまだありません。"
+            ? "この条件で、企画から関わった実績はまだありません。"
             : tag
               ? `「${tag}」の実績はまだ登録されていません。`
               : "該当する実績はまだありません。"}

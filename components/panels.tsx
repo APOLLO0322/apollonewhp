@@ -152,22 +152,22 @@ export function ApproachPanel({ works }: { works: Work[] }) {
           {approach.think.body}
         </p>
 
-        {/* 実績カードと同じ目盛り。構想だけを灯して、どこから入れるかを
+        {/* 実績カードと同じ目盛り。企画だけを灯して、どこから入れるかを
             図で示す。同じ印が実績側にも出るので、主張と裏づけが結びつく。
 
             図だけを単独で置く。横に何かを並べると、それが目盛りの
             4つ目の点に見えてしまう。 */}
         <div className="mt-10">
-          <PhaseScale active={["構想"]} size="lg" tone="panel" />
+          <PhaseScale active={["企画"]} size="lg" tone="panel" />
         </div>
 
         {/* 行き先は2つとも「次にすること」。図とは分けて下にまとめる。 */}
         <div className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-5">
           <ConsultLink tone="panel" />
-          {/* 段02のメニューと同じ文言。すぐ上の図が構想を灯しているので、
-              文脈で構想の実績だと分かる。 */}
+          {/* 段02のメニューと同じ文言。すぐ上の図が企画を灯しているので、
+              文脈で企画の実績だと分かる。 */}
           <Link
-            href="/works?phase=%E6%A7%8B%E6%83%B3"
+            href="/works?phase=%E4%BC%81%E7%94%BB"
             className="group flex items-center gap-2 border-b border-blue-panel pb-[3px] text-[13px] tracking-[0.06em] text-blue-panel"
           >
             実績
@@ -209,8 +209,8 @@ export function ApproachPanel({ works }: { works: Work[] }) {
                 {s.desc}
               </p>
 
-              {/* 段01と同じ目盛り。01が構想を灯しているので、縦に見ていくと
-                  構想 → 制作 → 運用 と受け持ちが移っていくのが分かる。 */}
+              {/* 段01と同じ目盛り。01が企画を灯しているので、縦に見ていくと
+                  企画 → 制作 → 運用 と受け持ちが移っていくのが分かる。 */}
               <div className="mt-5">
                 <PhaseScale active={s.phase} tone="panel" />
               </div>

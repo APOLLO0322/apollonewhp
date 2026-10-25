@@ -159,7 +159,7 @@ export default async function WorkDetailPage({ params }: Params) {
               <Credit label="CLIENT" value={work.client} />
               <Credit label="CATEGORY" value={categoryLabel[work.category]} />
               <Credit label="SCOPE" value={work.scope} />
-              {/* 一覧で「構想から」と分かった案件を開いたときに、その情報が
+              {/* 一覧で「企画から」と分かった案件を開いたときに、その情報が
                   消えないよう詳細にも置く。目盛りは一覧と同じもの。
 
                   見出しは説明への入口にしておく。印の意味を知りたくなるのは
