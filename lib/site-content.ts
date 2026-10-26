@@ -23,7 +23,9 @@ export const company = {
   privacyUrl: "/privacy",
 } as const;
 
-export type Row = { k: string; v: string };
+/* href を付けた行は、値そのものがリンクになる。
+   会社概要の個人情報保護方針だけが該当。 */
+export type Row = { k: string; v: string; href?: string };
 
 export const companyRows: Row[] = [
   { k: "会社名", v: "株式会社APOLLO" },
@@ -31,7 +33,7 @@ export const companyRows: Row[] = [
   { k: "所在地", v: "愛媛県松山市鴨川1-6-15" },
   { k: "設立", v: "2023年3月22日" },
   { k: "事業内容", v: "映像制作 / 写真撮影 / 出張撮影サービス\nSNS運用支援 / イベント設計・運営" },
-  { k: "個人情報保護方針", v: "apollone.jp/privacy" },
+  { k: "個人情報保護方針", v: "apollone.jp/privacy", href: "/privacy" },
 ];
 
 export const profileBio =

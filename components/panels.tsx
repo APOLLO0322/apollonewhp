@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Row } from "@/lib/site-content";
 import {
   approach,
   companyRows,
@@ -21,7 +22,7 @@ function TableRows({
   rows,
   size,
 }: {
-  rows: { k: string; v: string }[];
+  rows: readonly Row[];
   size: "md" | "sm";
 }) {
   return (
@@ -41,7 +42,16 @@ function TableRows({
                 : "text-sm leading-[2]"
             }`}
           >
-            <Segments text={row.v} />
+            {row.href ? (
+              <Link
+                href={row.href}
+                className="border-b border-blue-panel pb-[2px] text-blue-panel"
+              >
+                <Segments text={row.v} />
+              </Link>
+            ) : (
+              <Segments text={row.v} />
+            )}
           </dd>
         </div>
       ))}

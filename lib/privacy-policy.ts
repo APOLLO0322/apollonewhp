@@ -136,7 +136,7 @@ export const policyContact = {
   rows: [
     { k: "個人情報取扱事業者", v: "株式会社APOLLO" },
     { k: "所在地", v: "愛媛県松山市鴨川1丁目6-15" },
-    { k: "代表取締役", v: "池口祐太" },
+    { k: "代表取締役氏名", v: "池口祐太" },
   ],
   mail: "info@apollone.jp",
   established: "2023年3月22日",
