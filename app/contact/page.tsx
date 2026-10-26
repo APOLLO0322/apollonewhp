@@ -23,7 +23,11 @@ export default function ContactPage() {
 
       <div className="mx-auto max-w-[1440px]">
         <div className="grid lg:grid-cols-[0.85fr_1.15fr]">
-          <div className="relative min-h-[280px] overflow-hidden bg-ink lg:min-h-0">
+          {/* 素材は 1080x1920 の縦。スマホで高さ280pxの横長の枠に入れると、
+              縦の映像を横長に切り抜くことになって、何が写っているか
+              分からなくなる。枠のほうを縦にする。
+              横並びになる lg 以上では、右の列と同じ高さまで伸ばす。 */}
+          <div className="relative aspect-[3/4] overflow-hidden bg-ink sm:aspect-[4/5] lg:aspect-auto lg:min-h-0">
             {CONTACT_VIDEO && (
               <video
                 className="absolute inset-0 size-full object-cover"

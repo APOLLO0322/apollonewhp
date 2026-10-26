@@ -10,6 +10,7 @@ import {
   vision,
 } from "@/lib/site-content";
 import ConsultLink from "@/components/consult-link";
+import Segments from "@/components/segments";
 import PhaseScale from "@/components/phase-scale";
 import WorkCard from "@/components/work-card";
 import type { Work } from "@/lib/works";
@@ -34,13 +35,13 @@ function TableRows({
             {row.k}
           </dt>
           <dd
-            className={`m-0 whitespace-pre-line text-ink ${
+            className={`m-0 text-ink ${
               size === "md"
                 ? "text-[15px] leading-[1.9]"
                 : "text-sm leading-[2]"
             }`}
           >
-            {row.v}
+            <Segments text={row.v} />
           </dd>
         </div>
       ))}

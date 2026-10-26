@@ -6,6 +6,7 @@ import PageCta from "@/components/page-cta";
 import SiteFooter from "@/components/site-footer";
 import SiteHeader from "@/components/site-header";
 import Linkify from "@/components/linkify";
+import Segments from "@/components/segments";
 import WorkMeta from "@/components/work-meta";
 import {
   categoryLabel,
@@ -73,7 +74,9 @@ function Credit({
           {label}
         </span>
       )}
-      <span className="text-right text-sm leading-[1.9]">{text}</span>
+      <span className="text-right text-sm leading-[1.9]">
+        <Segments text={text} />
+      </span>
     </div>
   );
 }

@@ -94,7 +94,21 @@
     color: var(--color-ink);
     background: var(--color-pale);
     -webkit-font-smoothing: antialiased;
+
+    /* 和文の改行位置。幅の狭いスマホで特に効く。
+
+       line-break: strict … 長音符や小書き仮名を行頭に置かない。
+         既定（auto）だと「出張撮影サ／ービス」のように切れる。
+       word-break: auto-phrase … 文節で折る。「物語で／す。」のような
+         中途半端な切れ方を防ぐ。対応していないブラウザでは無視される。
+       text-wrap: pretty … 最終行に1〜2字だけ残るのを避ける。 */
+    line-break: strict;
+    word-break: auto-phrase;
+    text-wrap: pretty;
   }
+
+  /* 見出しは行の長さを揃える。1行目が長く2行目が1語だけ、を防ぐ */
+  h1, h2, h3, h4 { text-wrap: balance; }
 
   a { color: inherit; text-decoration: none; }
   button { font-family: inherit; cursor: pointer; }
