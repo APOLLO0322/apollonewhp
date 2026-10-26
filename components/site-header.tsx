@@ -25,7 +25,14 @@ export default function SiteHeader({ current = null }: { current?: NavCurrent })
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="border-b border-fog bg-pale">
+    /* スクロールしても出しっぱなしにする。フルページは縦に長く、
+       実績一覧は37件あるので、下まで行ったときに戻る道が無いと
+       ブラウザの戻るボタンしか残らない。
+
+       淡霧でべた塗りにする（半透明にすると、下を流れる写真や映像の
+       明暗でメニューの文字が読めたり読めなくなったりする）。
+       開いた状態のスマホメニューもこの中にあるので、一緒に追従する。 */
+    <header className="sticky top-0 z-50 border-b border-fog bg-pale">
       <div className="flex items-center justify-between px-5 py-6 md:px-16 md:py-[30px]">
         <Link
           href="/"
