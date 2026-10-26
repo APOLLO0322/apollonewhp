@@ -117,11 +117,10 @@ export const services: Service[] = [
     desc: "ブランディング、プロモーション、採用。構成から撮影・編集まで一貫して手がけます。伝わる一本を伝えたい人に届けます。",
     links: [
       { label: "ブランディング", tag: "ブランディング" },
-      { label: "プロモーション", tag: "プロモーション" },
+      { label: "集客・PR", tag: "集客・PR" },
+      { label: "観光・地域", tag: "観光・地域" },
       { label: "採用", tag: "採用" },
-      { label: "広告", tag: "広告" },
       { label: "イベント", tag: "イベント" },
-      { label: "ドキュメンタリー", tag: "ドキュメンタリー" },
       { label: "写真", category: "PHOTO" },
     ],
   },
@@ -148,11 +147,10 @@ export const services: Service[] = [
 // 一覧のタグ絞り込みに出す順番。microCMS の works.tags の選択肢と揃える。
 export const serviceTags: string[] = [
   "ブランディング",
-  "プロモーション",
+  "集客・PR",
+  "観光・地域",
   "採用",
-  "広告",
   "イベント",
-  "ドキュメンタリー",
 ];
 
 export const vision = {
