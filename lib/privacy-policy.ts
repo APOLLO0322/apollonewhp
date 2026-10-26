@@ -137,7 +137,8 @@ export const policyContact = {
      記載があるので、必要な人はそちらで分かる。 */
   rows: [
     { k: "個人情報取扱事業者", v: "株式会社APOLLO" },
-    { k: "代表取締役氏名", v: "池口祐太" },
+    // 会社概要の表記（代表取締役）と揃える
+    { k: "代表取締役", v: "池口祐太" },
   ],
   mail: "info@apollone.jp",
   established: "2023年3月22日",
