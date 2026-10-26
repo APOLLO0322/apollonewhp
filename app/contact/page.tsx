@@ -22,7 +22,12 @@ export default function ContactPage() {
       <SiteHeader current="contact" />
 
       <div className="mx-auto max-w-[1440px]">
-        <div className="grid lg:grid-cols-[0.85fr_1.15fr]">
+        {/* 左の列は右の列の高さに合わせて伸び縮みする。送信後は右が
+            「受け付けました」の一言になって短くなるので、何もしないと
+            左の枠が横長に潰れ、縦の映像が帯のように切り抜かれる。
+            最低の高さを持たせて、どちらの状態でも縦の枠を保つ。
+            フォーム表示中は右のほうが高いので、この指定は効かない。 */}
+        <div className="grid lg:min-h-[760px] lg:grid-cols-[0.85fr_1.15fr]">
           {/* 素材は 1080x1920 の縦。スマホで高さ280pxの横長の枠に入れると、
               縦の映像を横長に切り抜くことになって、何が写っているか
               分からなくなる。枠のほうを縦にする。
