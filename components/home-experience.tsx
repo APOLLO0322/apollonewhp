@@ -18,11 +18,34 @@ import type { Work } from "@/lib/works";
    時間帯で出し分けたくなったら、この配列を朝夕でフィルタすればよい。  */
 type HeroClip = { video: string; poster: string; alt: string };
 
-const HERO_CLIPS: HeroClip[] = [
-  { video: "/hero/hero-01.mp4", poster: "/hero/hero-01.jpg", alt: "瀬戸内の入江" },
-  { video: "/hero/hero-02.mp4", poster: "/hero/hero-02.jpg", alt: "車窓から愛媛の町を撮る" },
-  { video: "/hero/hero-03.mp4", poster: "/hero/hero-03.jpg", alt: "木漏れ日の庭" },
-];
+/* 初めてこのサイトに着いた人には、必ずこの1本を見せる。
+   第一印象を運まかせにしない。 */
+const HERO_INTRO: HeroClip = {
+  video: "/hero/main.mp4",
+  poster: "/hero/main.jpg",
+  alt: "株式会社APOLLOの紹介映像",
+};
+
+/* 2回目以降に戻ってきたときに流す短尺。ループはせず、終わるたびに
+   次の1本をランダムに選ぶ。 */
+const HERO_SHORTS: HeroClip[] = Array.from({ length: 13 }, (_, i) => {
+  const n = String(i + 1).padStart(2, "0");
+  return { video: `/hero/short-${n}.mp4`, poster: `/hero/short-${n}.jpg`, alt: "" };
+});
+
+/* 直前と同じものは選ばない。13本あっても偶然2回続くと
+   「1本しか無いサイト」に見えてしまう。 */
+function pickShort(previous?: string): HeroClip {
+  const pool = previous
+    ? HERO_SHORTS.filter((c) => c.video !== previous)
+    : HERO_SHORTS;
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+/* 紹介映像を見せたかどうか。タブを閉じるまで覚えておく。
+   同じ滞在の中で /works などから戻ってきたときは短尺に切り替わり、
+   日を改めて来たときはまた紹介映像から始まる。 */
+const INTRO_SHOWN_KEY = "ap-hero-intro-shown";
 
 // 仮素材の注記。本番素材が確定したら false のままでよい
 const HERO_IS_PLACEHOLDER = false;
@@ -68,16 +91,42 @@ function isPanelKey(value: string | null): value is PanelKey {
 export default function HomeExperience({ works }: { works: Work[] }) {
   const [open, setOpen] = useState<OpenKey | null>(null);
   const [clip, setClip] = useState<HeroClip | null>(null);
+  // 次に流す1本。先に決めておいて裏で読ませる（切り替わりで止まらないように）
+  const [nextClip, setNextClip] = useState<HeroClip | null>(null);
   const [playing, setPlaying] = useState(true);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  // 再生するクリップは読み込みごとにランダム。サーバとクライアントで
-  // 結果が食い違わないよう、マウント後に決めて1本だけ取りに行く。
+  /* 何を流すかはブラウザ側の事情（初回かどうか・乱数）で決まるので、
+     サーバとクライアントで食い違わないようマウント後に決める。 */
+  /* この判定は「初回かどうか」を記録しながら読むので、二度走ると
+     1回目の記録を2回目が読んでしまい、初回の人にも短尺が出る。
+     開発時は効果が2回呼ばれるため、必ず1回で止める。 */
+  const heroDecided = useRef(false);
+
   useEffect(() => {
-    const pick = HERO_CLIPS[Math.floor(Math.random() * HERO_CLIPS.length)];
+    if (heroDecided.current) return;
+    heroDecided.current = true;
+
+    let shown = false;
+    try {
+      shown = sessionStorage.getItem(INTRO_SHOWN_KEY) === "1";
+      sessionStorage.setItem(INTRO_SHOWN_KEY, "1");
+    } catch {
+      // プライベートモードなどで触れないことがある。毎回「初回」でよい
+    }
+    const first = shown ? pickShort() : HERO_INTRO;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- クライアント固有の値をマウント時に一度だけ決める
-    setClip(pick);
+    setClip(first);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- 同上
+    setNextClip(pickShort(first.video));
   }, []);
+
+  /* 1本終わったら次へ。紹介映像のあともここを通るので、初回の人も
+     30秒後からは短尺が流れ続ける。 */
+  const advance = useCallback(() => {
+    setClip(nextClip);
+    setNextClip(pickShort(nextClip?.video));
+  }, [nextClip]);
 
   // 映像そのものがこのサイトの主役なので、prefers-reduced-motion でも
   // 自動再生は止めない。代わりに止める手段を必ず用意する。
@@ -234,11 +283,26 @@ export default function HomeExperience({ works }: { works: Work[] }) {
             aria-label={clip.alt}
             autoPlay
             muted
-            loop
             playsInline
             preload="auto"
+            onEnded={advance}
             onPlay={() => setPlaying(true)}
             onPause={() => setPlaying(false)}
+          />
+        )}
+
+        {/* 次の1本を裏で読ませておく。display:none だと読み込みが
+            始まらないブラウザがあるので、透明にして端に逃がす。 */}
+        {nextClip && (
+          <video
+            key={`pre-${nextClip.video}`}
+            src={nextClip.video}
+            preload="auto"
+            muted
+            playsInline
+            aria-hidden
+            tabIndex={-1}
+            className="pointer-events-none absolute top-0 left-0 size-px opacity-0"
           />
         )}
 

@@ -61,7 +61,19 @@ sips -s format jpeg -Z 1280 --setProperty formatOptions 38 hero-04.mp4.png --out
 rm hero-04.mp4.png
 ```
 
-最後に `components/home-experience.tsx` の `HERO_CLIPS` に1行足す。
+最後に `components/home-experience.tsx` の `HERO_SHORTS` の本数を増やす。
+
+ヒーローの出し分けはこう。
+
+| いつ | 流れるもの |
+|---|---|
+| その滞在で初めてTOPに来たとき | `main.mp4`（固定） |
+| 同じ滞在で戻ってきたとき | `short-01〜13` からランダム |
+| 1本終わったとき | 次の1本をランダムに。直前と同じものは選ばない |
+
+ループはしない。紹介映像のあとも短尺に移るので、初回の人も30秒後からは
+短尺が流れ続ける。判定は sessionStorage（`ap-hero-intro-shown`）なので、
+タブを閉じて来直すとまた紹介映像から始まる。
 1本あたり5MB前後を目安に。大きくなるならリポジトリではなく Vercel Blob に置く。
 
 ## 公開の段取り
@@ -186,9 +198,9 @@ HTMLタグを書く必要はない。`http` / `https` だけを拾い、末尾�
 
 | # | 内容 | 現状 |
 |---|---|---|
-| 1 | ヒーロー動画 | 支給の3本を変換して `public/hero/hero-01〜03.mp4` に配置。読み込みごとに1本をランダム再生。増減は `components/home-experience.tsx` の `HERO_CLIPS` |
+| 1 | ヒーロー動画 | 初回は `main.mp4` 固定、2回目以降は `short-01〜13` をランダム連鎖。`components/home-experience.tsx` |
 | 2 | ヒーロー静止画 | 動画に置き換えたため廃止。`hero-0N.jpg` は各動画の先頭フレームで、読み込み中の poster としてのみ使う |
-| 3 | 時間帯での出し分け | 未実装。`HERO_CLIPS` を朝夕でフィルタすれば足せる |
+| 3 | 時間帯での出し分け | 未実装。`HERO_SHORTS` を朝夕でフィルタすれば足せる |
 | 3b | ロゴ | ヒーローは白抜き横組み `logo/whitecoltdlogo.png`（支給の 35562×11931 / 2.4MB を 1800px / 62KB に圧縮）。`apollo-logo-white.png` と黒版2種は未使用 |
 | 4 | CLIENTS ロゴ | 実ロゴ・社名ともに未確定。`public/clients/01〜07.svg` に番号だけの枠を仮置き。TOPのヒーロー下部にカルーセルで流している。`lib/site-content.ts` の `clients` で件数・社名・パスを差し替える |
 
