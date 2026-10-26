@@ -7,7 +7,6 @@ import SiteFooter from "@/components/site-footer";
 import SiteHeader from "@/components/site-header";
 import Linkify from "@/components/linkify";
 import WorkMeta from "@/components/work-meta";
-import WorkPhaseScale from "@/components/work-phase";
 import {
   categoryLabel,
   getWork,
@@ -44,15 +43,36 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 function Credit({
   label,
   value,
+  href,
 }: {
   label: string;
   value?: string | string[];
+  /* 見出しを別の場所への入口にしたいときだけ渡す。
+     いまは SCOPE から「私たちのしごと」へ。 */
+  href?: string;
 }) {
   const text = Array.isArray(value) ? value.join(" / ") : value;
   if (!text) return null;
   return (
     <div className="flex items-center justify-between gap-6 border-t border-fog py-4 last:border-b">
-      <span className="shrink-0 font-label text-[11px] text-mist">{label}</span>
+      {href ? (
+        <Link
+          href={href}
+          className="group flex shrink-0 items-center gap-1.5 font-label text-[11px] text-mist transition-colors duration-300 hover:text-blue"
+        >
+          {label}
+          <span
+            aria-hidden
+            className="text-[9px] transition-transform duration-300 group-hover:translate-x-0.5"
+          >
+            →
+          </span>
+        </Link>
+      ) : (
+        <span className="shrink-0 font-label text-[11px] text-mist">
+          {label}
+        </span>
+      )}
       <span className="text-right text-sm leading-[1.9]">{text}</span>
     </div>
   );
@@ -158,29 +178,14 @@ export default async function WorkDetailPage({ params }: Params) {
             <div className="flex flex-col">
               <Credit label="CLIENT" value={work.client} />
               <Credit label="CATEGORY" value={categoryLabel[work.category]} />
-              <Credit label="SCOPE" value={work.scope} />
-              {/* 一覧で「企画から」と分かった案件を開いたときに、その情報が
-                  消えないよう詳細にも置く。目盛りは一覧と同じもの。
-
-                  見出しは説明への入口にしておく。印の意味を知りたくなるのは
-                  この印を見た瞬間なので、戻る道をその場に置く。 */}
-              {work.phase && work.phase.length > 0 && (
-                <div className="flex items-center justify-between gap-6 border-t border-fog py-4 last:border-b">
-                  <Link
-                    href="/?panel=approach"
-                    className="group flex shrink-0 items-center gap-1.5 font-label text-[11px] text-mist transition-colors duration-300 hover:text-blue"
-                  >
-                    関与範囲
-                    <span
-                      aria-hidden
-                      className="text-[9px] transition-transform duration-300 group-hover:translate-x-0.5"
-                    >
-                      →
-                    </span>
-                  </Link>
-                  <WorkPhaseScale work={work} />
-                </div>
-              )}
+              {/* 目盛りはカード側にだけ出す。ここは具体的な作業の一覧で足りる。
+                  見出しを説明への入口にして、企画から入った仕事かを知りたく
+                  なった人がその場から戻れるようにする。 */}
+              <Credit
+                label="SCOPE"
+                value={work.scope}
+                href="/?panel=approach"
+              />
             </div>
             {/* このページで一番押してほしいもの。サイト全体が寒色で
                 通っているので、ここだけ熾火を置いて最後の一押しにする。

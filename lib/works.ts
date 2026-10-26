@@ -19,8 +19,10 @@ export const workCategories: WorkCategory[] = ["MOVIE", "SNS", "PHOTO", "EVENT"]
    映像制作の中の「構成」（絵コンテ・演出・尺）とは別。こちらは
    つくると決まる前の、課題整理・発案・戦略設計を指す。
 
-   microCMS 側のフィールドIDは phase。既存の scope は「撮影 / 編集」など
-   具体的な作業内容が入っていて別物なので、名前を分けている。 */
+   CMS に専用のフィールドは持たない。scope（担当した作業の一覧）から
+   導く。両方を手で入れると同じことを2回書くことになり、実際
+   「設計・戦略」「運用支援」という上流・下流の語が scope 側にも
+   入っていた。入力は scope ひとつにする。 */
 export type WorkPhase = "企画" | "制作" | "運用";
 
 export const workPhases: WorkPhase[] = ["企画", "制作", "運用"];
@@ -47,7 +49,7 @@ export type Work = {
   client?: string;
   // microCMS では複数選択なので配列で持つ
   scope?: string[];
-  // 関与範囲。未入力のレコードではインジケータを出さない
+  // 関与範囲。scope から導いた値。CMS には持たない
   phase?: WorkPhase[];
   // 事業内容のメニューと同じ文字列。/works?tag=... の絞り込みに使う
   tags?: string[];
@@ -157,7 +159,6 @@ type MicroCmsWork = {
   stills?: MicroCmsImage[];
   client?: string;
   scope?: string | string[];
-  phase?: string | string[];
   tags?: string | string[];
 };
 
@@ -181,20 +182,28 @@ function toList(value: string | string[] | undefined): string[] | undefined {
   return out.length > 0 ? out : undefined;
 }
 
-/* 関与範囲は3つの決まった値しか取らない。表記ゆれや未定義の値が
-   入っていたら落とす。順番は 企画 → 制作 → 運用 に揃える
-   （CMSでの選択順に引きずられると、カードごとに並びが変わる）。
+/* scope の各語を3段階のどこかに割り当てる。
 
-   「構想」は旧称。microCMS の選択肢を差し替えるまで既存レコードに
-   残るので、同じものとして受ける。CMS側を直したらこの別名は消してよい。 */
-const PHASE_ALIAS: Record<string, WorkPhase> = { 構想: "企画" };
+   上流と下流だけ語を決め打ちし、残りは全部「制作」に寄せる。
+   こうしておくと、CMS に新しい作業名（ナレーション手配など）が
+   増えても勝手に落ちない。増えるのはたいてい制作工程なので。
 
-function normalizePhase(value: string | string[] | undefined): WorkPhase[] | undefined {
-  const list = toList(value);
-  if (!list) return undefined;
-  const canon = new Set(list.map((v) => PHASE_ALIAS[v] ?? v));
-  const out = workPhases.filter((p) => canon.has(p));
-  return out.length > 0 ? out : undefined;
+   「構想」は旧称。既存レコードに残っているあいだ同じものとして受ける。 */
+const PHASE_OF: Record<string, WorkPhase> = {
+  企画: "企画",
+  構想: "企画",
+  "設計・戦略": "企画",
+  アカウント設計: "企画",
+  運用: "運用",
+  運用支援: "運用",
+};
+
+function derivePhase(scope: string[] | undefined): WorkPhase[] | undefined {
+  if (!scope || scope.length === 0) return undefined;
+  const hit = new Set(scope.map((v) => PHASE_OF[v] ?? "制作"));
+  // 並びは 企画 → 制作 → 運用 で固定する。CMSでの入力順に
+  // 引きずられると、カードごとに目盛りの並びが変わってしまう。
+  return workPhases.filter((p) => hit.has(p));
 }
 
 function normalize(item: MicroCmsWork): Work {
@@ -210,7 +219,6 @@ function normalize(item: MicroCmsWork): Work {
     stills: item.stills?.map((s) => s.url),
     client: item.client,
     scope: toList(item.scope),
-    phase: normalizePhase(item.phase),
     tags: toList(item.tags),
   };
 }
@@ -222,8 +230,14 @@ function normalize(item: MicroCmsWork): Work {
    ここで並べ替えると管理画面で見えている順と食い違うので、
    返ってきた順序に手を触れない。先頭の1件がパネルの FEATURED になる。 */
 
+/* phase は CMS から来ない。scope から導いてここで付ける。
+   静的データと microCMS のどちらを返す場合も同じ経路を通す。 */
+function withPhase(w: Work): Work {
+  return { ...w, phase: derivePhase(w.scope) };
+}
+
 export async function getWorks(): Promise<Work[]> {
-  if (!SERVICE_DOMAIN || !API_KEY) return staticWorks;
+  if (!SERVICE_DOMAIN || !API_KEY) return staticWorks.map(withPhase);
 
   try {
     const res = await fetch(
@@ -232,10 +246,10 @@ export async function getWorks(): Promise<Work[]> {
     );
     if (!res.ok) throw new Error(`microCMS responded ${res.status}`);
     const data = (await res.json()) as { contents: MicroCmsWork[] };
-    return data.contents.map(normalize);
+    return data.contents.map(normalize).map(withPhase);
   } catch (err) {
     console.error("[works] microCMS fetch failed, falling back to static data:", err);
-    return staticWorks;
+    return staticWorks.map(withPhase);
   }
 }
 
