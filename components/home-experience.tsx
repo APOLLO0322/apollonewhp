@@ -26,21 +26,21 @@ const HERO_INTRO: HeroClip = {
   alt: "株式会社APOLLOの紹介映像",
 };
 
-/* 2回目以降に戻ってきたときに流す短尺。ループはせず、終わるたびに
-   次の1本をランダムに選ぶ。 */
+/* 2回目以降に戻ってきたときに流す短尺。ループはせず、01→13 の順に
+   流していき、13の次は01に戻る。並び順は組んだとおりに保つ。 */
 const HERO_SHORTS: HeroClip[] = Array.from({ length: 13 }, (_, i) => {
   const n = String(i + 1).padStart(2, "0");
   return { video: `/hero/short-${n}.mp4`, poster: `/hero/short-${n}.jpg`, alt: "" };
 });
 
-/* 直前と同じものは選ばない。13本あっても偶然2回続くと
-   「1本しか無いサイト」に見えてしまう。 */
-function pickShort(previous?: string): HeroClip {
-  const pool = previous
-    ? HERO_SHORTS.filter((c) => c.video !== previous)
-    : HERO_SHORTS;
-  return pool[Math.floor(Math.random() * pool.length)];
+/* 来訪ごとに変わるのは入り口の番号だけ。8から入れば
+   8,9,…,13,1,…,7 と回る。毎回1本目から始まると
+   「いつも同じサイト」に見えてしまうため、入り口はずらす。 */
+function randomStart(): number {
+  return Math.floor(Math.random() * HERO_SHORTS.length);
 }
+
+const nextIndex = (i: number) => (i + 1) % HERO_SHORTS.length;
 
 /* 紹介映像を見せたかどうか。タブを閉じるまで覚えておく。
    同じ滞在の中で /works などから戻ってきたときは短尺に切り替わり、
@@ -90,11 +90,17 @@ function isPanelKey(value: string | null): value is PanelKey {
 
 export default function HomeExperience({ works }: { works: Work[] }) {
   const [open, setOpen] = useState<OpenKey | null>(null);
-  const [clip, setClip] = useState<HeroClip | null>(null);
-  // 次に流す1本。先に決めておいて裏で読ませる（切り替わりで止まらないように）
-  const [nextClip, setNextClip] = useState<HeroClip | null>(null);
+  /* いま流している位置。intro のあいだは紹介映像を出していて、
+     i は「紹介映像が終わったら入る番号」を押さえている。 */
+  const [hero, setHero] = useState<{ intro: boolean; i: number } | null>(null);
   const [playing, setPlaying] = useState(true);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  const clip = hero ? (hero.intro ? HERO_INTRO : HERO_SHORTS[hero.i]) : null;
+  // 次に流す1本。先に決めておいて裏で読ませる（切り替わりで止まらないように）
+  const nextClip = hero
+    ? HERO_SHORTS[hero.intro ? hero.i : nextIndex(hero.i)]
+    : null;
 
   /* 何を流すかはブラウザ側の事情（初回かどうか・乱数）で決まるので、
      サーバとクライアントで食い違わないようマウント後に決める。 */
@@ -114,19 +120,16 @@ export default function HomeExperience({ works }: { works: Work[] }) {
     } catch {
       // プライベートモードなどで触れないことがある。毎回「初回」でよい
     }
-    const first = shown ? pickShort() : HERO_INTRO;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- クライアント固有の値をマウント時に一度だけ決める
-    setClip(first);
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- 同上
-    setNextClip(pickShort(first.video));
+    setHero({ intro: !shown, i: randomStart() });
   }, []);
 
-  /* 1本終わったら次へ。紹介映像のあともここを通るので、初回の人も
+  /* 1本終わったら次の番号へ。13まで行ったら01に戻るだけで、順番は
+     入れ替えない。紹介映像のあともここを通るので、初回の人も
      30秒後からは短尺が流れ続ける。 */
   const advance = useCallback(() => {
-    setClip(nextClip);
-    setNextClip(pickShort(nextClip?.video));
-  }, [nextClip]);
+    setHero((h) => (h ? { intro: false, i: h.intro ? h.i : nextIndex(h.i) } : h));
+  }, []);
 
   // 映像そのものがこのサイトの主役なので、prefers-reduced-motion でも
   // 自動再生は止めない。代わりに止める手段を必ず用意する。
