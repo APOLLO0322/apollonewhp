@@ -26,6 +26,18 @@ const nextConfig: NextConfig = {
       // 事業内容は APPROACH パネルに集約した
       { source: "/service", destination: "/?panel=approach", permanent: true },
       { source: "/news", destination: "/works", permanent: true },
+
+      /* 実績の一覧・カテゴリ・著者。/archive/<slug> だけ受けていて
+         一覧そのものを落としていた。旧サイト内で最も多くリンク
+         されていたページなので、ここが404だと流入をまるごと失う。 */
+      { source: "/archive", destination: "/works", permanent: true },
+      { source: "/archive/page/:page", destination: "/works", permanent: true },
+      { source: "/interview_category/:slug*", destination: "/works", permanent: true },
+      { source: "/author/:slug*", destination: "/", permanent: true },
+
+      // WordPressのRSS。購読していた人を404で突き放さない
+      { source: "/feed", destination: "/", permanent: true },
+      { source: "/:path*/feed", destination: "/", permanent: true },
     ];
   },
 };
