@@ -6,7 +6,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import ContactForm from "@/components/contact-form";
 import { ApproachPanel, CompanyPanel, VisionPanel, WorksPanel } from "@/components/panels";
 import { navLabel, navOrder } from "@/lib/nav";
-import { approach, clients, company, contactCopy, vision } from "@/lib/site-content";
+import {
+  approach,
+  clients,
+  company,
+  contactCopy,
+  paragraphs,
+  vision,
+} from "@/lib/site-content";
 import type { Work } from "@/lib/works";
 
 /* ── ヒーロー素材 ─────────────────────────────────────────────
@@ -81,6 +88,31 @@ const panelTitles = (Object.entries(panelMeta) as [PanelKey, { title: string }][
 
 // 順番・表記は lib/nav.ts が正。PanelKey と NavKey は同じキー体系。
 const navItems = navOrder;
+
+/* ── スマホの下段で使うもの ──
+
+   スマホは映像を横幅ぴったりの 16:9 で見せるので、画面の下4分の3が余る。
+   そこを地の色で埋めると「終わっているページ」に見えるため、MENU の裏に
+   隠れている行き先を表に出し、既定で理念を置く。
+   新しい文章は一切書かない。すべて既存の原稿を借りる。 */
+
+/* 既定で出す理念。原稿はパネルと同じもので、ここに置くのは2段落目。
+   1段落目は「ゴールは見えない」という前置きで、単独で読むと何をする
+   会社か分からない。続きはパネルで読む。 */
+const visionLead = paragraphs(vision.body)[1];
+
+// 並べる行き先。理念は本文として上に出しているので外す。
+const mobileMenu: PanelKey[] = [...navItems.filter((k) => k !== "vision"), "contact"];
+
+/* 英字ラベルに添える日本語。パネルの見出しをそのまま使う。
+   お問合せだけは見出しを持たないので、ヒーローのリンクで使っている
+   「相談する」を借りる（PCでは出ているが、スマホでは隠すため）。 */
+const mobileMenuTitle: Record<string, string> = {
+  works: panelMeta.works.title,
+  approach: panelMeta.approach.title,
+  company: panelMeta.company.title,
+  contact: "相談する",
+};
 
 type OpenKey = PanelKey | "menu";
 
@@ -276,7 +308,14 @@ export default function HomeExperience({ works }: { works: Work[] }) {
       {/* 正典は min-height 760px だが、下端にロゴの帯を置いた以上、
           ヒーローがビューポートより高いと帯が画面外に落ちる。
           100svh を基本にして、極端に低い窓だけ min で受ける。 */}
-      <div className="relative h-[100svh] min-h-[420px] overflow-hidden">
+      {/* スマホは映像を画面上端の 16:9 の帯に収めるので、残りの下側に
+          地の色が必要になる。墨にするのは白抜きロゴをそのまま使える
+          唯一の色だから（ロゴの色は改変しない）。PCは全面が映像なので
+          地は見えない。 */}
+      {/* スマホは映像が上の帯だけなので、下段の地の色が必要になる。
+          サイト全体と同じ淡霧にして、パネルを開いたときに地続きに見せる。
+          PCは全面が映像なので地は見えない。 */}
+      <div className="relative h-[100svh] min-h-[420px] overflow-hidden bg-pale md:bg-transparent">
         {/* 動画は自前の動きを持つので apZoom はかけない。
             poster が即座に出るのでフェードインは挟まない（非表示タブで
             トランジションが止まると真っ黒のままになるため）。 */}
@@ -284,7 +323,11 @@ export default function HomeExperience({ works }: { works: Work[] }) {
           <video
             key={clip.video}
             ref={videoRef}
-            className="absolute inset-0 size-full object-cover"
+            /* スマホは横幅に合わせた 16:9 の帯。縦長の画面に object-cover で
+               敷くと中央の4分の1だけが残り、撮った画角が伝わらない。
+               帯の比率は素材と同じなので、ここでは切り取りが起きない。
+               PC（md以上）は従来どおり全面に敷く。 */
+            className="absolute inset-x-0 top-0 aspect-video w-full object-cover md:inset-0 md:aspect-auto md:size-full"
             src={clip.video}
             poster={clip.poster}
             aria-label={clip.alt}
@@ -322,7 +365,10 @@ export default function HomeExperience({ works }: { works: Work[] }) {
           </div>
         )}
 
-        <div className="ap-fade absolute inset-0 flex flex-col items-center justify-center gap-6">
+        {/* ロゴは映像の上に重ねる。スマホでは映像が上の帯だけなので、
+            その帯の中央に置く。大きさはPCと同じ比率にする
+            （PCは画面幅1440に対して300px ＝ 約21%）。 */}
+        <div className="ap-fade absolute inset-x-0 top-0 flex h-[56.25vw] flex-col items-center justify-center gap-6 md:h-full">
           {/* 映像の上なので白抜き版を使う（spec §3.6）。
               横組みのため、縦に高い旧マークより小さめの見え方になる。 */}
           <Image
@@ -331,7 +377,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
             width={1800}
             height={604}
             priority
-            className="h-auto w-[200px] [filter:drop-shadow(0_2px_6px_rgba(22,25,26,0.55))_drop-shadow(0_8px_40px_rgba(22,25,26,0.45))] md:w-[300px]"
+            className="h-auto w-[42vw] max-w-[180px] [filter:drop-shadow(0_2px_6px_rgba(22,25,26,0.55))_drop-shadow(0_8px_40px_rgba(22,25,26,0.45))] md:w-[300px] md:max-w-none"
           />
         </div>
 
@@ -341,7 +387,9 @@ export default function HomeExperience({ works }: { works: Work[] }) {
           <button
             type="button"
             onClick={togglePlay}
-            className="ap-on-media absolute bottom-24 left-5 font-label text-[11px] tracking-[0.24em] text-pale/85 transition-colors hover:text-pale md:bottom-28 md:left-16"
+            /* 止める相手は映像なので、映像の上に置く。スマホの下段は
+               淡霧なので、ここに置くと白文字が消える。 */
+            className="ap-on-media absolute top-[calc(56.25vw-34px)] left-5 font-label text-[11px] tracking-[0.24em] text-pale/85 transition-colors hover:text-pale md:top-auto md:bottom-28 md:left-16"
           >
             {playing ? "PAUSE" : "PLAY"}
           </button>
@@ -351,7 +399,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
             そのぶん暗い映像の上では濃色のロゴが沈むので、淡霧の帯を
             敷いてその上に置く。2セット並べて半分ぶん動かし継ぎ目を消す。
             パネル（z-7）より下の z-2 なので、開くと右側は隠れる。 */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] overflow-hidden bg-pale/70 py-5">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] overflow-hidden border-t border-fog bg-pale/70 py-5 short:py-3 md:border-0">
           <div className="ap-marquee flex w-max items-center gap-14 md:gap-20">
             {marqueeLogos.map((c, i) => (
               <Image
@@ -371,7 +419,7 @@ export default function HomeExperience({ works }: { works: Work[] }) {
                 loading={i < clients.length ? "eager" : "lazy"}
                 /* 高さで揃え、横長のものだけ幅で頭打ちにする。縦横比は
                    object-contain が守るので、潰れずに背だけ低くなる。 */
-                className="h-10 w-auto max-w-[140px] object-contain md:h-14 md:max-w-[180px]"
+                className="h-10 w-auto max-w-[140px] object-contain short:h-9 md:h-14 md:max-w-[180px]"
               />
             ))}
           </div>
@@ -380,7 +428,9 @@ export default function HomeExperience({ works }: { works: Work[] }) {
         {/* 映像の上なので塗りは敷かず、文字の影だけで読ませる（ap-on-media）。
             実績が先、相談が後。まだ何も見ていない人にいきなり相談を
             迫らない順番にする。 */}
-        <div className="ap-on-media absolute right-5 bottom-24 flex gap-7 font-label text-[11px] tracking-[0.12em] md:right-16 md:bottom-28">
+        {/* スマホでは下段の一覧に WORKS と CONTACT が出るので、同じ行き先を
+            2つ置かない。PCは下段を持たないのでこれまでどおり。 */}
+        <div className="ap-on-media absolute right-5 bottom-24 hidden gap-7 font-label text-[11px] tracking-[0.12em] md:right-16 md:bottom-28 md:flex">
           <Link
             href="/works"
             className="group flex items-center gap-1.5 border-b border-pale/50 pb-1 text-pale"
@@ -405,6 +455,55 @@ export default function HomeExperience({ works }: { works: Work[] }) {
               →
             </span>
           </Link>
+        </div>
+
+        {/* ── スマホの下段：既定の理念と、行き先の一覧 ──
+
+            映像の帯とクライアントロゴの帯にはさまれた領域。左寄せにして
+            余白を主役にする。PCは映像の上にロゴだけが載る構成なので出さない。 */}
+        <div className="absolute inset-x-0 top-[56.25vw] bottom-20 z-[3] flex flex-col justify-between px-5 pt-10 pb-5 short:bottom-[60px] short:pt-4 short:pb-3 md:hidden">
+          <div>
+            <div className="font-label text-[10px] tracking-[0.28em] text-blue">
+              {vision.label}
+            </div>
+            <h2 className="mt-3.5 text-[25px] leading-[1.45] tracking-[0.03em] text-ink short:mt-2 short:text-[21px]">
+              {vision.title}
+            </h2>
+            <p className="mt-4 max-w-[46ch] text-[12.5px] leading-[2.1] text-body short:leading-[1.85]">
+              {visionLead}
+            </p>
+            <button
+              type="button"
+              onClick={() => setOpen("vision")}
+              /* 表記はパネルの「VIEW ALL」に揃える。矢印は ↗ ではなく →
+                 にする。↗ は別ページへ出ることを指していて、ここは
+                 その場でパネルが開くため。 */
+              className="mt-5 inline-flex items-center gap-1.5 border-b border-fog pb-1 font-label text-[11px] tracking-[0.1em] text-ink short:mt-2"
+            >
+              VIEW ALL
+              <span aria-hidden className="text-[10px]">
+                →
+              </span>
+            </button>
+          </div>
+
+          <nav className="-mx-5">
+            {mobileMenu.map((key) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setOpen(key)}
+                className="flex w-full items-baseline justify-between border-t border-fog px-5 py-3.5 text-left short:py-3"
+              >
+                <span className="font-label text-[12px] tracking-[0.22em] text-ink">
+                  {navLabel[key]}
+                </span>
+                <span className="text-[11px] tracking-[0.04em] text-mist">
+                  {mobileMenuTitle[key]}
+                </span>
+              </button>
+            ))}
+          </nav>
         </div>
 
         {/* ── スライドインパネル ──

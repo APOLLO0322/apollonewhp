@@ -45,6 +45,13 @@
   --ease-fade: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* ── 背の低いスマホ ───────────────────────────────────────────
+   iPhone SE（375x667）など。TOPの下段は映像の帯とロゴの帯にはさまれた
+   固定の領域なので、画面が短いと中身が帯の下に潜る。文字の大きさは
+   読みやすさに関わるので触らず、余白と帯の高さだけを詰める。
+   PCは幅で除外する（低い窓のノートPCで下段の指定が効かないように）。 */
+@custom-variant short (@media (max-height: 740px) and (max-width: 767px));
+
 /* ── モーション（README §2.3） ─────────────────────────────── */
 @keyframes apFade {
   from { opacity: 0; transform: translateY(18px); }
