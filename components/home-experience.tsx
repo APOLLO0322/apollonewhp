@@ -220,8 +220,12 @@ export default function HomeExperience({ works }: { works: Work[] }) {
   return (
     <div className="relative mx-auto max-w-[1600px] overflow-hidden bg-ink">
       {/* ── ヘッダー：ヒーロー上の透過オーバーレイ ── */}
+      {/* スマホではパネルが全幅なので、開いている間はこの帯の裏を
+          パネルの中身が流れていき、ロゴやメニューが読みにくくなる。
+          開いている間だけ淡霧を敷いて塞ぐ。PCではパネルが右4割に
+          収まっていて、左にはヒーローの映像が見えているので敷かない。 */}
       <header className={`absolute top-0 right-0 left-0 z-[8] flex items-center justify-between px-5 py-7 transition-colors duration-500 md:py-10 ${
-          panelOpen ? "md:pr-12 md:pl-16" : "md:px-16"
+          panelOpen ? "bg-pale md:bg-transparent md:pr-12 md:pl-16" : "md:px-16"
         }`}>
         <button
           type="button"
@@ -427,7 +431,18 @@ export default function HomeExperience({ works }: { works: Work[] }) {
                 panelOpen ? "ap-panel-in" : ""
               }`}
             >
-              <div className="flex items-center justify-between px-5 pt-28 md:px-12 md:pt-33">
+              {/* 上に浮いているヘッダー（APOLLO / メニュー）と重ならない
+                  ぶんの余白。貼り付ける行とは分けておく。 */}
+              <div aria-hidden className="h-25 md:h-30" />
+
+              {/* 見出しと CLOSE は上に貼り付ける。実績パネルは縦に
+                  3000px 以上あり、下まで行くと閉じる手段が画面から
+                  消えてしまう。止まる位置は浮いているヘッダーの真下
+                  （スマホ76px / PC103px）。
+
+                  塗りは濃いめにする。パネルと同じ55%だと、下を流れる
+                  カードの写真や文字が透けて見出しが読めなくなる。 */}
+              <div className="sticky top-[76px] z-10 flex items-center justify-between bg-pale/90 px-5 py-3 backdrop-blur-[8px] md:top-[103px] md:px-12">
                 <div className="font-label text-[11px] tracking-[0.28em] text-blue-panel">
                   {meta ? meta.label : "MENU"}
                 </div>
