@@ -450,10 +450,14 @@ export default function HomeExperience({ works }: { works: Work[] }) {
                   {fullPageHref && (
                     <Link
                       href={fullPageHref}
-                      title="フルページで見る"
+                      /* このボタンが出るのは実績パネルだけ。7件の抜粋から
+                         37件すべてへ、という動きをそのまま言う。
+                         「フルページ」は作り手の言葉で、パネルとページの
+                         区別を知らない人には何が起きるか伝わらない。 */
+                      title="すべての実績を見る"
                       className="flex shrink-0 items-center gap-1.5 border-b border-mist-panel pb-[3px] font-label text-[11px] tracking-[0.1em] whitespace-nowrap text-mist-panel"
                     >
-                      ↗ フルページ
+                      ↗ VIEW ALL
                     </Link>
                   )}
                   <button
